@@ -14,8 +14,9 @@ Contrato técnico basado en **ISO/IEC 25010**. Ningún incremento funcional se c
 
 Al firmar, cada integrante confirma que comprende y se compromete a cumplir este contrato de calidad durante todo el proyecto.
 
-| Nombre | Firma / Usuario GitHub | Fecha |
-|---|---|---|
-| _Nombre 1_ | | |
-| _Nombre 2_ | | |
-| _Nombre 3_ | | |
+| Nombre                          | Usuario GitHub | Fecha      |
+|---                              |---             |---         |
+| Dilan Stiven Castillo Valencia  | DilanStiven    | 16/09/2026 |
+| Kevin Estiven Lucumi Polo       | Steven-L777    | 16/09/2026 |
+| Carlos Andres Rosales Lara      | adnoireph      | 16/09/2026 |
+| Santiago Edilno Hurtado Cuenu   | santiageao     | 16/09/2026 |
