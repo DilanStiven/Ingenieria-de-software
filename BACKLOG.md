@@ -4,12 +4,12 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 
 | ID | Historia de Usuario | MoSCoW | Story Points |
 |----|----|:---:|:---:|
-| HU-01 | Registro de Agricultores | M | 5 |
+| HU-01 | Registro de Agricultores | M | 3 |
 | HU-02 | Publicación de Productos | M | 5 |
-| HU-03 | Visualización de Precios Regionales | S | 3 |
-| HU-04 | Filtro de Categorías y Municipios | M | 3 |
+| HU-03 | Visualización de Precios Regionales | S | 2 |
+| HU-04 | Filtro de Categorías y Municipios | M | 2 |
 | HU-05 | Contacto Directo / Intención de Compra | S | 3 |
-| HU-06 | Registro de Vehículos de Carga | M | 3 |
+| HU-06 | Registro de Vehículos de Carga | M | 2 |
 | HU-07 | Programación y Asignación de Ruta | M | 5 |
 | HU-08 | Actualización de Estado de Entrega (Checkpoints) | S | 5 |
 | HU-09 | Pago de Pedido con Pasarela Virtual (PSE/Tarjetas) | M | 8 |
@@ -17,10 +17,10 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 | HU-11 | Visualización de Saldo (Billetera del Agricultor) | M | 5 |
 | HU-12 | Notificación de Pago Rechazado | C | 2 |
 | HU-13 | Calificación del Producto y del Agricultor | M | 3 |
-| HU-14 | Calificación del Servicio de Transporte | S | 3 |
-| HU-15 | Visualización de Reputación Promedio del Productor | M | 3 |
+| HU-14 | Calificación del Servicio de Transporte | S | 2 |
+| HU-15 | Visualización de Reputación Promedio del Productor | M | 2 |
 
-**Total estimado: 58 Story Points**
+**Total estimado: 52 Story Points**
 
 ---
 
@@ -28,7 +28,7 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 
 ### HU-01: Registro de Agricultores
 **Historia:** Como Agricultor, quiero registrarme en la plataforma para ofrecer mis productos.
-**Priorización:** Must Have — **Estimación:** 5 SP
+**Priorización:** Must Have — **Estimación:** 3 SP
 ```gherkin
 Given que el usuario ingresa a /api/v1/auth/register
 When envía un JSON con nombre, ubicacion_valle y cedula válida
@@ -46,7 +46,7 @@ Then el sistema valida que la fecha no sea anterior a hoy y retorna un ID de pro
 
 ### HU-03: Visualización de Precios Regionales
 **Historia:** Como Usuario, quiero ver los precios promedio del Valle para negociar mejor.
-**Priorización:** Should Have — **Estimación:** 3 SP
+**Priorización:** Should Have — **Estimación:** 2 SP
 ```gherkin
 Given que existen 50 transacciones de "Café" en las últimas 24 horas
 When solicito el precio promedio de "Café"
@@ -55,7 +55,7 @@ Then el sistema calcula la media aritmética y despliega el valor exacto en peso
 
 ### HU-04: Filtro de Categorías y Municipios
 **Historia:** Como Comprador, quiero filtrar las cosechas por municipio (Dagua, Palmira, Buga) y categoría, para encontrar productos locales de mi interés rápidamente.
-**Priorización:** Must Have — **Estimación:** 3 SP
+**Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
 Given que existen productos registrados en PostgreSQL bajo el municipio "Dagua" y categoría "Frutas"
 When el usuario realiza una petición GET a /api/v1/productos?municipio=Dagua&categoria=Frutas
@@ -73,7 +73,7 @@ Then el sistema persiste la interacción en PostgreSQL y retorna status 200 OK c
 
 ### HU-06: Registro de Vehículos de Carga
 **Historia:** Como agricultor o transportista, quiero registrar los vehículos disponibles (placa, tipo de camión y capacidad en kg), para tener una flota lista al momento de despachar los pedidos.
-**Priorización:** Must Have — **Estimación:** 3 SP
+**Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
 Given que el usuario tiene rol de transportista o agricultor
 When ingresa los datos de su camión (placa "ABC-123", capacidad "1500kg") y guarda
@@ -145,7 +145,7 @@ Then el sistema guarda la reseña y actualiza el perfil del agricultor
 
 ### HU-14: Calificación del Servicio de Transporte
 **Historia:** Como comerciante, quiero calificar de forma independiente al transportista (puntualidad, estado de las cajas), para garantizar que la logística se mantenga con altos estándares.
-**Priorización:** Should Have — **Estimación:** 3 SP
+**Priorización:** Should Have — **Estimación:** 2 SP
 ```gherkin
 Given que el comerciante está llenando el formulario de recepción de pedido
 When evalúa con 4 estrellas la puntualidad del camión
@@ -154,7 +154,7 @@ Then el sistema asocia esta métrica de desempeño al conductor que realizó el 
 
 ### HU-15: Visualización de Reputación Promedio del Productor
 **Historia:** Como comerciante, quiero ver la calificación promedio de un agricultor antes de comprarle, para sentir confianza en la calidad de los productos que voy a adquirir.
-**Priorización:** Must Have — **Estimación:** 3 SP
+**Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
 Given que un agricultor tiene 10 ventas calificadas previamente
 When un comprador visita el perfil del agricultor o ve su lote en el catálogo
