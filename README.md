@@ -23,8 +23,6 @@
 | Carlos Andres Rosales Lara    | Developer        |    adnoireph      |
 | Santiago Edilno Hurtado Cuenu | Developer        |    santiageao     |
 
-> ✏️ Reemplacen esta tabla con los datos reales del equipo antes de entregar.
-
 ## 🧱 Stack Tecnológico
 
 - **Backend:** Java 17 + Spring Boot
