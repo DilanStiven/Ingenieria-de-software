@@ -119,8 +119,8 @@ Elementos propuestos para el Sprint 2:
 
 ## 9. Enlaces
 
-- Repositorio: [COMPLETAR: URL de GitHub]
-- Tablero (GitHub Projects): [COMPLETAR: URL]
+- Repositorio: [https://github.com/DilanStiven/Ingenieria-de-software](https://github.com/DilanStiven/Ingenieria-de-software)
+- Tablero (GitHub Projects): [https://github.com/users/DilanStiven/projects/2](https://github.com/users/DilanStiven/projects/2)
 - Planning: [`docs/sprint-1-planning.md`](sprint-1-planning.md)
 - Bitácora de Dailies: [`docs/bitacora-daily-scrum.md`](bitacora-daily-scrum.md)
 - Retrospectiva: [`docs/sprint-1-retrospective.md`](sprint-1-retrospective.md)
