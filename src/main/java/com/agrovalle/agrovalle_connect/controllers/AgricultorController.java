@@ -11,15 +11,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agrovalle.agrovalle_connect.models.Agricultor;
 import com.agrovalle.agrovalle_connect.services.AgricultorService;
 
+/**
+ * Controlador REST para el registro de agricultores.
+ */
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AgricultorController {
 
+    /**
+     * Servicio utilizado para registrar agricultores.
+     */
     @Autowired
     private AgricultorService agricultorService;
 
+    /**
+     * Registra un nuevo agricultor.
+     *
+     * @param agricultor datos del agricultor
+     * @return respuesta con el agricultor registrado
+     */
     @PostMapping("/register")
-    public ResponseEntity<Agricultor> registrar(@RequestBody Agricultor agricultor) {
+    public final ResponseEntity<Agricultor> registrar(
+            final @RequestBody Agricultor agricultor) {
         Agricultor nuevo = agricultorService.registrar(agricultor);
         return new ResponseEntity<>(nuevo, HttpStatus.CREATED);
     }
