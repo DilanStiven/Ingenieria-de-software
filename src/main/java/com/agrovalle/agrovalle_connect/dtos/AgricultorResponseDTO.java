@@ -9,20 +9,24 @@ public class AgricultorResponseDTO {
     private String nombre;
     private String ubicacionValle;
     private String cedula;
+    private String token;
 
-    /**
+      /**
      * Crea la respuesta con todos sus campos.
      *
      * @param id identificador
      * @param nombre nombre del agricultor
      * @param ubicacionValle ubicación en el Valle
      * @param cedula cédula del agricultor
+     * @param token token de acceso JWT
      */
-    public AgricultorResponseDTO(Long id, String nombre, String ubicacionValle, String cedula) {
+    public AgricultorResponseDTO(Long id, String nombre, String ubicacionValle,
+            String cedula, String token) {
         this.id = id;
         this.nombre = nombre;
         this.ubicacionValle = ubicacionValle;
         this.cedula = cedula;
+        this.token = token;
     }
 
     /**
@@ -59,5 +63,15 @@ public class AgricultorResponseDTO {
      */
     public String getCedula() {
         return cedula;
+    }
+
+
+    /**
+     * Obtiene el token de acceso.
+     *
+     * @return token JWT
+     */
+    public String getToken() {
+        return token;
     }
 }
