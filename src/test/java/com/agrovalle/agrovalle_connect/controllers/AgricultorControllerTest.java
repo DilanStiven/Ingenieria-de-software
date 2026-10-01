@@ -21,11 +21,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class AgricultorControllerTest {
 
+    private static final String URL = "/api/v1/auth/register";
+
     /**
      * Cliente simulado para realizar peticiones HTTP.
      */
     @Autowired
     private MockMvc mockMvc;
+
+    /**
+     * Construye el JSON de registro con los datos indicados.
+     */
+    private String json(String nombre, String ubicacion, String cedula) {
+        return """
+                {
+                  "nombre": "%s",
+                  "ubicacionValle": "%s",
+                  "cedula": "%s"
+                }
+                """.formatted(nombre, ubicacion, cedula);
+    }
 
     /**
      * Given un JSON válido, When se envía a /api/v1/auth/register,
@@ -35,19 +50,54 @@ class AgricultorControllerTest {
     @DisplayName("Debe registrar un agricultor con datos válidos")
     void debeRegistrarAgricultorConDatosValidos() throws Exception {
         String cedulaUnica = String.valueOf(1_000_000_000L + (System.currentTimeMillis() % 9_000_000_000L));
-        String json = """
-                {
-                  "nombre": "Juan Perez",
-                  "ubicacionValle": "Dagua",
-                  "cedula": "%s"
-                }
-                """.formatted(cedulaUnica);
 
-        mockMvc.perform(post("/api/v1/auth/register")
+        mockMvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(json("Juan Perez", "Dagua", cedulaUnica)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.nombre").value("Juan Perez"));
+    }
+
+    /**
+     * Given una cédula ya registrada, When se registra de nuevo,
+     * Then responde 409 Conflict.
+     */
+    @Test
+    @DisplayName("Debe rechazar con 409 una cédula ya registrada")
+    void debeRechazarCedulaDuplicada() throws Exception {
+        String body = json("Ana Gomez", "Palmira", "1000000001");
+
+        mockMvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isConflict());
+    }
+
+    /**
+     * Given campos obligatorios vacíos, When se envía el registro,
+     * Then responde 400 Bad Request.
+     */
+    @Test
+    @DisplayName("Debe rechazar con 400 los campos obligatorios vacíos")
+    void debeRechazarCamposVacios() throws Exception {
+        mockMvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json("", "", "")))
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
+     * Given una cédula con formato inválido, When se envía el registro,
+     * Then responde 400 Bad Request.
+     */
+    @Test
+    @DisplayName("Debe rechazar con 400 una cédula con formato inválido")
+    void debeRechazarCedulaConFormatoInvalido() throws Exception {
+        mockMvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json("Maria Lopez", "Buga", "abc123")))
+                .andExpect(status().isBadRequest());
     }
 }
