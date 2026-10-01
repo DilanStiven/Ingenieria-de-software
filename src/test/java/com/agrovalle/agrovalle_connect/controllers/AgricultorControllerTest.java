@@ -56,7 +56,8 @@ class AgricultorControllerTest {
                         .content(json("Juan Perez", "Dagua", cedulaUnica)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.nombre").value("Juan Perez"));
+                .andExpect(jsonPath("$.nombre").value("Juan Perez"))
+                .andExpect(jsonPath("$.token", notNullValue()));
     }
 
     /**
