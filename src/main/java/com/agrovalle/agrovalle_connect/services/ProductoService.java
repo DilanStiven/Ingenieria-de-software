@@ -18,6 +18,7 @@ public class ProductoService {
     }
 
     // Método para guardar un nuevo producto
+    @SuppressWarnings("null")
     public Producto guardarProducto(Producto producto) {
         return productoRepository.save(producto);
     }

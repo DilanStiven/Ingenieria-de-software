@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@SuppressWarnings("null")
 class AgricultorControllerTest {
 
     private static final String URL = "/api/v1/auth/register";
