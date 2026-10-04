@@ -1,23 +1,31 @@
 package com.agrovalle.agrovalle_connect.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "productos")
 public class Producto {
 
+    private static final int NOMBRE_MAX_LENGTH = 100;
+    private static final int CATEGORIA_MAX_LENGTH = 50;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = NOMBRE_MAX_LENGTH)
     private String nombre;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = CATEGORIA_MAX_LENGTH)
     private String categoria;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = NOMBRE_MAX_LENGTH)
     private String municipio;
 
     @Column(nullable = false)
@@ -34,24 +42,59 @@ public class Producto {
     }
 
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getMunicipio() { return municipio; }
-    public void setMunicipio(String municipio) { this.municipio = municipio; }
+    public void setNombre(final String nombre) {
+        this.nombre = nombre;
+    }
 
-    public Double getCantidad() { return cantidad; }
-    public void setCantidad(Double cantidad) { this.cantidad = cantidad; }
+    public String getCategoria() {
+        return categoria;
+    }
 
-    public LocalDate getFechaCosecha() { return fechaCosecha; }
-    public void setFechaCosecha(LocalDate fechaCosecha) { this.fechaCosecha = fechaCosecha; }
+    public void setCategoria(final String categoria) {
+        this.categoria = categoria;
+    }
 
-    public Double getPrecioUnitario() { return precioUnitario; }
-    public void setPrecioUnitario(Double precioUnitario) { this.precioUnitario = precioUnitario; }
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(final String municipio) {
+        this.municipio = municipio;
+    }
+
+    public Double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(final Double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public LocalDate getFechaCosecha() {
+        return fechaCosecha;
+    }
+
+    public void setFechaCosecha(final LocalDate fechaCosecha) {
+        this.fechaCosecha = fechaCosecha;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(final Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
 }
