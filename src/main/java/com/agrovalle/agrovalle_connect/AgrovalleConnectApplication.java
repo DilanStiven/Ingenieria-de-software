@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Clase principal de la aplicación AgroValle Connect.
  */
 @SpringBootApplication
-public final class AgrovalleConnectApplication {
+public class AgrovalleConnectApplication {
 
     /**
      * Constructor privado para evitar instancias innecesarias.
