@@ -9,10 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AgrovalleConnectApplication {
 
-    /**
-     * Constructor privado para evitar instancias innecesarias.
-     */
-    private AgrovalleConnectApplication() {
+    public AgrovalleConnectApplication() {
     }
 
     /**
