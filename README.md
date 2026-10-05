@@ -2,14 +2,14 @@
 
 ![build](https://img.shields.io/badge/build-passing-brightgreen)
 ![coverage](https://img.shields.io/badge/coverage-60%25-yellow)
-![java](https://img.shields.io/badge/Java-25-orange)
+![java](https://img.shields.io/badge/Java-17-orange)
 ![spring](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
 
 ## 🌱 Declaración de la Visión del Producto
 
 > **Para** los productores del Valle del Cauca,
 > **Que** necesitan vender directo y sin intermediarios excesivos,
-> **AgroValle Connect** es una plataforma web empresarial en Java 25 / Spring Boot,
+> **AgroValle Connect** es una plataforma web empresarial en Java 17 / Spring Boot,
 > **Que** conecta la oferta agrícola de las fincas del Valle con la demanda comercial urbana de Cali a precio justo,
 > **A diferencia de** los intermediarios tradicionales y las cadenas de comercialización largas,
 > **Nuestro producto** garantiza trazabilidad logística en tiempo real y contratos de API transparentes.
@@ -25,7 +25,7 @@
 
 ## 🧱 Stack Tecnológico
 
-- **Backend:** Java 25 + Spring Boot
+- **Backend:** Java 17 + Spring Boot
 - **Base de datos:** PostgreSQL
 - **Arquitectura:** MVC en capas (`/models`, `/views`, `/controllers`)
 - **Patrones de diseño (GoF):** Repository, Factory, Observer, Singleton

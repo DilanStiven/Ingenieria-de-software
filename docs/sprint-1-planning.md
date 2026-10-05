@@ -42,7 +42,7 @@ Al finalizar el Sprint 1 el sistema permitirá:
 | Reserva para ceremonias e imprevistos | **10 h** (≈ 21 %): Daily Scrums, Sprint Review, Retrospectiva, revisión de PRs y correcciones |
 | Historias seleccionadas | 3 (HU-01, HU-02, HU-04) |
 | Prioridad global | Must Have (MoSCoW) |
-| Stack | Java 25, Spring Boot 3.4+, Spring Security + JWT, PostgreSQL 15, Flyway, JUnit 5, Mockito, Checkstyle |
+| Stack | Java 17, Spring Boot 3.4+, Spring Security + JWT, PostgreSQL 15, Flyway, JUnit 5, Mockito, Checkstyle |
 
 Las 38 h planificadas caben en la capacidad de 48 h y dejan margen de seguridad, lo que justifica
 comprometer **10 Story Points** en este Sprint.
@@ -181,7 +181,7 @@ public class Productor {
 
 #### Tarea 1.2 — `ProductorRepository` (1 h) — *Carlos*
 
-- **Componente:** Java 25, Spring Data JPA (métodos derivados).
+- **Componente:** Java 17, Spring Data JPA (métodos derivados).
 - **ISO/IEC 25010:** *Adecuación Funcional → Corrección funcional* (la consulta de existencia
   es exacta y se resuelve en la base de datos).
 - **Ubicación:** `src/main/java/com/agrovalle/repositories/ProductorRepository.java`

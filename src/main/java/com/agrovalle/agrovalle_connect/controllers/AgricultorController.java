@@ -1,6 +1,5 @@
 package com.agrovalle.agrovalle_connect.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +23,11 @@ public class AgricultorController {
     /**
      * Servicio encargado de la lógica de registro.
      */
-    @Autowired
-    private AgricultorService agricultorService;
+    private final AgricultorService agricultorService;
+
+    public AgricultorController(AgricultorService agricultorService) {
+        this.agricultorService = agricultorService;
+    }
 
     /**
      * Registra un nuevo agricultor en la plataforma.
