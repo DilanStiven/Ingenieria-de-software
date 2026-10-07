@@ -30,6 +30,34 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja fechas de cosecha inválidas (anteriores a hoy).
+     *
+     * @param ex excepción de fecha inválida
+     * @return respuesta HTTP 400 Bad Request
+     */
+    @ExceptionHandler(FechaCosechaInvalidaException.class)
+    public ResponseEntity<Map<String, String>> manejarFechaInvalida(
+            final FechaCosechaInvalidaException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    /**
+     * Maneja municipios fuera del área soportada por la plataforma.
+     *
+     * @param ex excepción de municipio no válido
+     * @return respuesta HTTP 400 Bad Request
+     */
+    @ExceptionHandler(MunicipioNoValidoException.class)
+    public ResponseEntity<Map<String, String>> manejarMunicipioNoValido(
+            final MunicipioNoValidoException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    /**
      * Maneja errores de validación de campos (Bean Validation).
      *
      * @param ex excepción con los errores de validación
