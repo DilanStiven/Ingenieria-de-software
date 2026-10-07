@@ -30,6 +30,20 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja consultas que contienen un municipio fuera del catálogo permitido.
+     *
+     * @param ex excepción lanzada por el servicio
+     * @return respuesta HTTP 400 con el mensaje de error
+     */
+    @ExceptionHandler(MunicipioNoValidoException.class)
+    public ResponseEntity<Map<String, String>> manejarMunicipioNoValido(
+            final MunicipioNoValidoException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    /**
      * Maneja errores de validación de campos (Bean Validation).
      *
      * @param ex excepción con los errores de validación
