@@ -1,18 +1,16 @@
 package com.agrovalle.agrovalle_connect.exceptions;
 
 /**
- * Se lanza cuando el municipio solicitado no pertenece al Valle del Cauca soportado.
+ * Excepción lanzada cuando el municipio solicitado no pertenece al catálogo permitido.
  */
 public class MunicipioNoValidoException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-
     /**
-     * Crea la excepción con el mensaje indicado.
+     * Crea la excepción con el municipio rechazado.
      *
-     * @param mensaje descripción del error
+     * @param municipio municipio no válido
      */
-    public MunicipioNoValidoException(final String mensaje) {
-        super(mensaje);
+    public MunicipioNoValidoException(final String municipio) {
+        super("Municipio no válido: " + municipio);
     }
 }

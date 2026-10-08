@@ -20,12 +20,14 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/auth")
 public class AgricultorController {
 
-    /**
-     * Servicio encargado de la lógica de registro.
-     */
     private final AgricultorService agricultorService;
 
-    public AgricultorController(AgricultorService agricultorService) {
+    /**
+     * Crea el controlador con el servicio de agricultores.
+     *
+     * @param agricultorService servicio encargado del registro
+     */
+    public AgricultorController(final AgricultorService agricultorService) {
         this.agricultorService = agricultorService;
     }
 
