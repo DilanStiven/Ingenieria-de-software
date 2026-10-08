@@ -39,7 +39,7 @@ public class Producto {
     private Long id;
 
     @Column(nullable = false, length = CAMPO_LARGO)
-    private String tipo;
+    private String nombre;
 
     @Column(nullable = false, length = CAMPO_CORTO)
     private String categoria;
@@ -82,21 +82,21 @@ public class Producto {
     }
 
     /**
-     * Obtiene el tipo del producto.
+     * Obtiene el nombre del producto.
      *
-     * @return tipo del producto
+     * @return nombre del producto
      */
-    public String getTipo() {
-        return tipo;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
-     * Establece el tipo del producto.
+     * Establece el nombre del producto.
      *
-     * @param tipo tipo del producto
+     * @param nombre nombre del producto
      */
-    public void setTipo(final String tipo) {
-        this.tipo = tipo;
+    public void setNombre(final String nombre) {
+        this.nombre = nombre;
     }
 
     /**

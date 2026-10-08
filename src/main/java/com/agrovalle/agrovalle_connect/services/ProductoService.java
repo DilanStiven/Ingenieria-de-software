@@ -34,7 +34,7 @@ public class ProductoService {
     /**
      * Crea el servicio con sus dependencias.
      *
-     * @param productoRepository  repositorio de productos
+     * @param productoRepository   repositorio de productos
      * @param agricultorRepository repositorio de agricultores
      */
     public ProductoService(final ProductoRepository productoRepository,
@@ -63,7 +63,7 @@ public class ProductoService {
                 new IllegalStateException("Agricultor no encontrado con ID: " + agricultorId));
 
         Producto producto = new Producto();
-        producto.setTipo(dto.getTipo());
+        producto.setNombre(dto.getNombre());
         producto.setCategoria(dto.getCategoria());
         producto.setMunicipio(agricultor.getUbicacionValle());
         producto.setCantidad(dto.getCantidad());
@@ -77,25 +77,45 @@ public class ProductoService {
     }
 
     /**
-     * Filtra el catálogo de productos activos por municipio y categoría (HU-04).
+     * Busca productos aplicando filtros opcionales por municipio, categoría y estado (HU-04).
+     * Los filtros nulos o en blanco se ignoran. Valida el municipio si se informa.
+     *
+     * @param municipio municipio de origen, opcional
+     * @param categoria categoría del producto, opcional
+     * @param estado    estado del producto, opcional
+     * @return lista de productos que coinciden con los filtros
+     */
+    @Transactional(readOnly = true)
+    public List<Producto> filtrar(final String municipio,
+            final String categoria, final String estado) {
+        String municipioNorm = normalizarFiltro(municipio);
+        if (municipioNorm != null && !MUNICIPIOS_VALIDOS.contains(municipioNorm)) {
+            throw new MunicipioNoValidoException("Municipio no válido: " + municipioNorm);
+        }
+        return productoRepository.buscarPorFiltros(
+                municipioNorm,
+                normalizarFiltro(categoria),
+                normalizarFiltro(estado));
+    }
+
+    /**
+     * Filtra el catálogo de productos activos por municipio y categoría (HU-04). Ruta pública.
      *
      * @param municipio municipio de origen (obligatorio)
      * @param categoria categoría del producto (opcional)
-     * @return lista de productos que coinciden con los filtros
+     * @return lista de DTOs de productos que coinciden con los filtros
      */
     @Transactional(readOnly = true)
     public List<ProductoDTO> filtrarProductos(final String municipio,
             final String categoria) {
-        if (!MUNICIPIOS_VALIDOS.contains(municipio)) {
-            throw new MunicipioNoValidoException("Municipio no válido: " + municipio);
-        }
-        List<Producto> resultado;
-        if (categoria == null || categoria.isBlank()) {
-            resultado = productoRepository.findByMunicipioAndEstado(municipio, ESTADO_ACTIVO);
-        } else {
-            resultado = productoRepository.findByMunicipioAndCategoriaAndEstado(
-                municipio, categoria, ESTADO_ACTIVO);
-        }
+        List<Producto> resultado = filtrar(municipio, categoria, ESTADO_ACTIVO);
         return resultado.stream().map(ProductoDTO::desde).toList();
+    }
+
+    private String normalizarFiltro(final String filtro) {
+        if (filtro == null || filtro.isBlank()) {
+            return null;
+        }
+        return filtro.trim();
     }
 }

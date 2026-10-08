@@ -11,8 +11,8 @@ import java.time.LocalDate;
  */
 public class ProductoRequestDTO {
 
-    @NotBlank(message = "El tipo de producto es obligatorio")
-    private String tipo;
+    @NotBlank(message = "El nombre del producto es obligatorio")
+    private String nombre;
 
     @NotBlank(message = "La categoría es obligatoria")
     private String categoria;
@@ -29,21 +29,21 @@ public class ProductoRequestDTO {
     private LocalDate fechaCosecha;
 
     /**
-     * Obtiene el tipo del producto.
+     * Obtiene el nombre del producto.
      *
-     * @return tipo del producto
+     * @return nombre del producto
      */
-    public String getTipo() {
-        return tipo;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
-     * Establece el tipo del producto.
+     * Establece el nombre del producto.
      *
-     * @param tipo tipo del producto
+     * @param nombre nombre del producto
      */
-    public void setTipo(final String tipo) {
-        this.tipo = tipo;
+    public void setNombre(final String nombre) {
+        this.nombre = nombre;
     }
 
     /**

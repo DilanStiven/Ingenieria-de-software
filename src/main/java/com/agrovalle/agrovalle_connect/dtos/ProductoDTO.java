@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class ProductoDTO {
 
     private Long id;
-    private String tipo;
+    private String nombre;
     private String municipio;
     private String categoria;
     private BigDecimal cantidad;
@@ -18,18 +18,18 @@ public class ProductoDTO {
     /**
      * Crea un DTO de producto con todos sus campos.
      *
-     * @param id            identificador
-     * @param tipo          tipo de producto
-     * @param municipio     municipio de origen
-     * @param categoria     categoría del producto
-     * @param cantidad      cantidad disponible en kg
+     * @param id             identificador
+     * @param nombre         nombre del producto
+     * @param municipio      municipio de origen
+     * @param categoria      categoría del producto
+     * @param cantidad       cantidad disponible en kg
      * @param precioUnitario precio unitario por kg
      */
-    public ProductoDTO(final Long id, final String tipo, final String municipio,
+    public ProductoDTO(final Long id, final String nombre, final String municipio,
             final String categoria, final BigDecimal cantidad,
             final BigDecimal precioUnitario) {
         this.id = id;
-        this.tipo = tipo;
+        this.nombre = nombre;
         this.municipio = municipio;
         this.categoria = categoria;
         this.cantidad = cantidad;
@@ -44,7 +44,7 @@ public class ProductoDTO {
      */
     public static ProductoDTO desde(final Producto p) {
         return new ProductoDTO(
-            p.getId(), p.getTipo(), p.getMunicipio(),
+            p.getId(), p.getNombre(), p.getMunicipio(),
             p.getCategoria(), p.getCantidad(), p.getPrecioUnitario());
     }
 
@@ -58,12 +58,12 @@ public class ProductoDTO {
     }
 
     /**
-     * Obtiene el tipo del producto.
+     * Obtiene el nombre del producto.
      *
-     * @return tipo
+     * @return nombre
      */
-    public String getTipo() {
-        return tipo;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
