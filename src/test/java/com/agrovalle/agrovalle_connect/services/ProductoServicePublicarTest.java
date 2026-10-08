@@ -55,7 +55,7 @@ class ProductoServicePublicarTest {
         agricultorMock.setCedula("1234567890");
 
         dtoValido = new ProductoRequestDTO();
-        dtoValido.setTipo("Mango");
+        dtoValido.setNombre("Mango");
         dtoValido.setCategoria("Frutas");
         dtoValido.setCantidad(CANTIDAD);
         dtoValido.setPrecioUnitario(PRECIO);
