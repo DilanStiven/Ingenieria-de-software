@@ -1,16 +1,4 @@
-name: AgroValle Connect CI
-
-on:
-  push:
-    branches: [ "main", "develop", "feature/*" ]
-  pull_request:
-    branches: [ "main", "develop" ]
-
-jobs:
-  build-and-verify:
-    runs-on: ubuntu-latest
-
-    steps:
+steps:
       - name: Descargar codigo fuente
         uses: actions/checkout@v4
 
@@ -21,6 +9,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Dar permisos de ejecucion a Maven Wrapper
+        run: chmod +x mvnw
+
       - name: 1. Compilar proyecto
         run: ./mvnw clean compile
 
@@ -29,3 +20,7 @@ jobs:
 
       - name: 3. Ejecutar pruebas y verificar Cobertura JaCoCo (>= 60%)
         run: ./mvnw test jacoco:check
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://127.0.0.1:5432/agrovalle_db
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: ci_password
