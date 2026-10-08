@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Lógica de negocio para publicación y consulta de productos agrícolas (HU-02, HU-04).
+ * Lógica de negocio para publicación y consulta de productos agrícolas (HU-02,
+ * HU-04).
  */
 @Service
 public class ProductoService {
@@ -25,8 +26,8 @@ public class ProductoService {
     private static final String ESTADO_ACTIVO = "ACTIVO";
 
     /** Municipios del Valle del Cauca soportados por la plataforma. */
-    private static final Set<String> MUNICIPIOS_VALIDOS =
-        Set.of("Dagua", "Palmira", "Buga", "Tulua", "Caicedonia", "Jamundi");
+    private static final Set<String> MUNICIPIOS_VALIDOS = Set.of("Dagua", "Palmira", "Buga", "Tulua", "Caicedonia",
+            "Jamundi");
 
     private final ProductoRepository productoRepository;
     private final AgricultorRepository agricultorRepository;
@@ -56,11 +57,10 @@ public class ProductoService {
             final Long agricultorId) {
         if (dto.getFechaCosecha().isBefore(LocalDate.now())) {
             throw new FechaCosechaInvalidaException(
-                "La fecha de cosecha no puede ser anterior a hoy");
+                    "La fecha de cosecha no puede ser anterior a hoy");
         }
         Agricultor agricultor = agricultorRepository.findById(agricultorId)
-            .orElseThrow(() ->
-                new IllegalStateException("Agricultor no encontrado con ID: " + agricultorId));
+                .orElseThrow(() -> new IllegalStateException("Agricultor no encontrado con ID: " + agricultorId));
 
         Producto producto = new Producto();
         producto.setNombre(dto.getNombre());
@@ -77,7 +77,8 @@ public class ProductoService {
     }
 
     /**
-     * Busca productos aplicando filtros opcionales por municipio, categoría y estado (HU-04).
+     * Busca productos aplicando filtros opcionales por municipio, categoría y
+     * estado (HU-04).
      * Los filtros nulos o en blanco se ignoran. Valida el municipio si se informa.
      *
      * @param municipio municipio de origen, opcional
@@ -90,7 +91,8 @@ public class ProductoService {
             final String categoria, final String estado) {
         String municipioNorm = normalizarFiltro(municipio);
         if (municipioNorm != null && !MUNICIPIOS_VALIDOS.contains(municipioNorm)) {
-            throw new MunicipioNoValidoException("Municipio no válido: " + municipioNorm);
+            // Cambio aplicado: Se pasa únicamente el nombre del municipio normalizado
+            throw new MunicipioNoValidoException(municipioNorm);
         }
         return productoRepository.buscarPorFiltros(
                 municipioNorm,
@@ -99,7 +101,8 @@ public class ProductoService {
     }
 
     /**
-     * Filtra el catálogo de productos activos por municipio y categoría (HU-04). Ruta pública.
+     * Filtra el catálogo de productos activos por municipio y categoría (HU-04).
+     * Ruta pública.
      *
      * @param municipio municipio de origen (obligatorio)
      * @param categoria categoría del producto (opcional)

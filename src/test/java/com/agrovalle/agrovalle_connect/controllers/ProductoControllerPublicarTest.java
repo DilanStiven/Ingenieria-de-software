@@ -25,7 +25,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(ProductoController.class)
-@Import({GlobalExceptionHandler.class, SecurityConfig.class})
+@Import({ GlobalExceptionHandler.class, SecurityConfig.class })
 @AutoConfigureMockMvc
 @DisplayName("ProductoController — Pruebas Integración HU-02: Publicación de Productos")
 class ProductoControllerPublicarTest {
@@ -33,14 +33,14 @@ class ProductoControllerPublicarTest {
     private static final String URL = "/api/v1/productos";
     private static final Long PRODUCTO_ID = 1L;
     private static final String BODY_VALIDO = """
-        {
-          "tipo": "Mango",
-          "categoria": "Frutas",
-          "cantidad": 50.0,
-          "precioUnitario": 2500.0,
-          "fechaCosecha": "2027-06-15"
-        }
-        """;
+            {
+              "nombre": "Mango",
+              "categoria": "Frutas",
+              "cantidad": 50.0,
+              "precioUnitario": 2500.0,
+              "fechaCosecha": "2027-06-15"
+            }
+            """;
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,15 +59,15 @@ class ProductoControllerPublicarTest {
     @DisplayName("Escenario 1: datos validos con token -> 201 Created con ID")
     void dadoDatosValidos_cuandoPublica_entonces201ConId() throws Exception {
         given(productoService.publicar(any(), eq(PRODUCTO_ID)))
-            .willReturn(new ProductoResponseDTO(PRODUCTO_ID, "Producto publicado exitosamente"));
+                .willReturn(new ProductoResponseDTO(PRODUCTO_ID, "Producto publicado exitosamente"));
 
         mockMvc.perform(post(URL)
                 .with(user("1"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(BODY_VALIDO))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(PRODUCTO_ID))
-            .andExpect(jsonPath("$.mensaje").value("Producto publicado exitosamente"));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(PRODUCTO_ID))
+                .andExpect(jsonPath("$.mensaje").value("Producto publicado exitosamente"));
     }
 
     /**
@@ -81,25 +81,25 @@ class ProductoControllerPublicarTest {
     @DisplayName("Escenario 2: fecha pasada -> 400 Bad Request")
     void dadoFechaPasada_cuandoPublica_entonces400() throws Exception {
         String bodyFechaPasada = """
-            {
-              "tipo": "Mango",
-              "categoria": "Frutas",
-              "cantidad": 50.0,
-              "precioUnitario": 2500.0,
-              "fechaCosecha": "2020-01-01"
-            }
-            """;
+                {
+                  "nombre": "Mango",
+                  "categoria": "Frutas",
+                  "cantidad": 50.0,
+                  "precioUnitario": 2500.0,
+                  "fechaCosecha": "2020-01-01"
+                }
+                """;
 
         given(productoService.publicar(any(), any()))
-            .willThrow(new FechaCosechaInvalidaException(
-                "La fecha de cosecha no puede ser anterior a hoy"));
+                .willThrow(new FechaCosechaInvalidaException(
+                        "La fecha de cosecha no puede ser anterior a hoy"));
 
         mockMvc.perform(post(URL)
                 .with(user("1"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(bodyFechaPasada))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.error")
-                .value("La fecha de cosecha no puede ser anterior a hoy"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error")
+                        .value("La fecha de cosecha no puede ser anterior a hoy"));
     }
 }
