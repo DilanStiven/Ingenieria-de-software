@@ -191,3 +191,29 @@ public class OfertaController {
 - Los patrones Repository, DTO, Data Mapper e IoC reducen el acoplamiento y hacen el código más fácil de probar y mantener.
 
 - El modelo de datos definido en el punto anterior se integra con esta arquitectura a través de las entidades JPA del paquete model.
+
+## 8. Requisitos de Software (IEEE 29148)
+
+### Requisitos Funcionales
+| ID | Requisito | Descripción | Criterio de Aceptación |
+|---|---|---|---|
+| RF-01 | Registrar Oferta | El agricultor puede publicar cosechas para venta. | Recibe DTO válido y retorna HTTP 201 Created. |
+
+### Requisitos No Funcionales
+- **RNF-01 (Seguridad):** Autenticación basada en JWT para endpoints protegidos.
+- **RNF-02 (Rendimiento):** Consultas JPA optimizadas con respuesta en < 200 ms.
+
+---
+
+## 9. Estrategia de Pruebas: TDD y BDD
+
+### BDD (Gherkin - Cucumber / Scenario)
+**Escenario:** Publicación exitosa de una oferta de cultivo
+- **Dado que** el agricultor autenticado tiene una cosecha disponible
+- **Cuando** envía los datos de la oferta con un precio y cantidad válidos
+- **Entonces** el sistema guarda la oferta en PostgreSQL y responde HTTP 201 Created.
+
+### TDD (Ciclo JUnit 5 + Mockito)
+1. **Red:** Se crea la prueba unitaria en `OfertaServiceTest` que falla si el precio es negativo.
+2. **Green:** Se implementa la validación en `OfertaService`.
+3. **Refactor:** Se limpia el código utilizando DTOs y Mappers.
