@@ -3,6 +3,7 @@ package com.agrovalle.agrovalle_connect.services;
 import com.agrovalle.agrovalle_connect.dtos.ProductoDTO;
 import com.agrovalle.agrovalle_connect.dtos.ProductoRequestDTO;
 import com.agrovalle.agrovalle_connect.dtos.ProductoResponseDTO;
+import com.agrovalle.agrovalle_connect.events.ProductoPublicadoEvent;
 import com.agrovalle.agrovalle_connect.exceptions.FechaCosechaInvalidaException;
 import com.agrovalle.agrovalle_connect.exceptions.MunicipioNoValidoException;
 import com.agrovalle.agrovalle_connect.models.Agricultor;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.agrovalle.agrovalle_connect.events.ProductoPublicadoEvent;
 
 /**
  * Lógica de negocio para publicación y consulta de productos agrícolas (HU-02,
@@ -31,17 +33,21 @@ public class ProductoService {
 
     private final ProductoRepository productoRepository;
     private final AgricultorRepository agricultorRepository;
+    private final org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     /**
      * Crea el servicio con sus dependencias.
      *
      * @param productoRepository   repositorio de productos
      * @param agricultorRepository repositorio de agricultores
+     * @param eventPublisher       publicador de eventos de dominio (Observer)
      */
     public ProductoService(final ProductoRepository productoRepository,
-            final AgricultorRepository agricultorRepository) {
+            final AgricultorRepository agricultorRepository,
+            final org.springframework.context.ApplicationEventPublisher eventPublisher) {
         this.productoRepository = productoRepository;
         this.agricultorRepository = agricultorRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -73,6 +79,14 @@ public class ProductoService {
         producto.setAgricultor(agricultor);
 
         Producto guardado = productoRepository.save(producto);
+        // Emitir evento de producto publicado
+        // Disparo del patrón Observer (usando el import de la línea 18)
+        eventPublisher.publishEvent(new ProductoPublicadoEvent(
+                guardado.getId(),
+                guardado.getNombre(),
+                guardado.getMunicipio(),
+                guardado.getCantidad()));
+
         return new ProductoResponseDTO(guardado.getId(), "Producto publicado exitosamente");
     }
 
@@ -123,4 +137,3 @@ public class ProductoService {
     }
 
 }
-

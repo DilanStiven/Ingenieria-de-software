@@ -29,12 +29,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProductoService — Pruebas Unitarias HU-02: Publicación de Productos")
 class ProductoServicePublicarTest {
-
     @Mock
     private ProductoRepository productoRepository;
 
     @Mock
     private AgricultorRepository agricultorRepository;
+
+    @Mock
+    private org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private ProductoService productoService;
@@ -75,9 +77,9 @@ class ProductoServicePublicarTest {
         productoGuardado.setId(AGRICULTOR_ID);
 
         when(agricultorRepository.findById(AGRICULTOR_ID))
-            .thenReturn(Optional.of(agricultorMock));
+                .thenReturn(Optional.of(agricultorMock));
         when(productoRepository.save(any(Producto.class)))
-            .thenReturn(productoGuardado);
+                .thenReturn(productoGuardado);
 
         ProductoResponseDTO response = productoService.publicar(dtoValido, AGRICULTOR_ID);
 
@@ -99,7 +101,7 @@ class ProductoServicePublicarTest {
         dtoValido.setFechaCosecha(LocalDate.now().minusDays(1));
 
         assertThrows(FechaCosechaInvalidaException.class,
-            () -> productoService.publicar(dtoValido, AGRICULTOR_ID));
+                () -> productoService.publicar(dtoValido, AGRICULTOR_ID));
 
         verify(productoRepository, never()).save(any());
     }
