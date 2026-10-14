@@ -13,14 +13,18 @@ public class ProductoPublicadoListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductoPublicadoListener.class);
 
-    /**
+  /**
      * Procesa la notificación cuando se publica un nuevo producto.
      *
      * @param event evento de producto publicado
      */
     @EventListener
     public void onProductoPublicado(final ProductoPublicadoEvent event) {
-        LOGGER.info("[OBSERVER EVENT] Notificación: Nuevo producto disponible - ID: {}, Nombre: '{}', Municipio: {}, Cantidad: {} kg",
-                event.getProductoId(), event.getNombre(), event.getMunicipio(), event.getCantidad());
+        LOGGER.info(
+                "[OBSERVER] Producto ID: {}, Nombre: '{}', Municipio: {}, Cantidad: {} kg",
+                event.getProductoId(),
+                event.getNombre(),
+                event.getMunicipio(),
+                event.getCantidad());
     }
 }
