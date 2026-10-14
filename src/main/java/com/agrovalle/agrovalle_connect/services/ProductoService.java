@@ -1,5 +1,12 @@
 package com.agrovalle.agrovalle_connect.services;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.agrovalle.agrovalle_connect.dtos.ProductoDTO;
 import com.agrovalle.agrovalle_connect.dtos.ProductoRequestDTO;
 import com.agrovalle.agrovalle_connect.dtos.ProductoResponseDTO;
@@ -10,12 +17,6 @@ import com.agrovalle.agrovalle_connect.models.Agricultor;
 import com.agrovalle.agrovalle_connect.models.Producto;
 import com.agrovalle.agrovalle_connect.repositories.AgricultorRepository;
 import com.agrovalle.agrovalle_connect.repositories.ProductoRepository;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.agrovalle.agrovalle_connect.events.ProductoPublicadoEvent;
 
 /**
  * Lógica de negocio para publicación y consulta de productos agrícolas (HU-02,
