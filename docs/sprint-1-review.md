@@ -1,5 +1,10 @@
 # Sprint 1 Review — AgroValle Connect
 
+> **Disponibilidad de evidencias:** los archivos `docs/evidencias/*.png` citados en este informe
+> no están incluidos en el repositorio. Los resultados y respuestas de la demo se conservan como
+> registro reportado de la Review, pero esas capturas no se pueden consultar ni reproducir desde
+> esta copia.
+
 | Campo | Valor |
 | --- | --- |
 | **Proyecto** | AgroValle Connect |
@@ -24,6 +29,10 @@ pruebas automatizadas en verde y Checkstyle sin errores.
 
 ## 2. Incremento entregado
 
+El equipo confirma que podía seleccionar sus propias historias del Product Backlog. Por eso el
+incremento de este Sprint corresponde a HU-01, HU-02 y HU-04; la HU-07 de la guía se trató como
+ejemplo, no como requisito obligatorio del Sprint 1.
+
 | Historia | SP comprometidos | SP completados | Estado | Evidencia |
 | --- | --- | --- | --- | --- |
 | HU-01 — Registro de Agricultores | 3 | 3 | Done | Issues #1–#8 (un PR por tarea) |
@@ -35,45 +44,45 @@ pruebas automatizadas en verde y Checkstyle sin errores.
 
 ## 3. Demo del incremento
 
-Entorno: `http://localhost:8080` (aplicación Spring Boot + PostgreSQL 15).
+Entorno: `http://localhost:8080` (aplicación Spring Boot + PostgreSQL; la versión no quedó registrada aquí).
 
 ### 3.1 HU-01 — Registro de Agricultores
 
 | # | Escenario BDD | Petición | Resultado esperado | Resultado real | Evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Registro exitoso | `POST /api/v1/auth/register` con nombre, ubicacion_valle y cedula | 201 + `id` + `token` | 201 Created con `id` y token JWT | `docs/evidencias/hu01-e1.png` |
-| 2 | Cédula duplicada | Mismo cuerpo del caso 1 | 409 Conflict | 409 Conflict: "Ya existe un productor con la cédula: 1234567890" | `docs/evidencias/hu01-e2.png` |
-| 3 | Datos inválidos | nombre vacío y cédula `abc` | 400 Bad Request | 400 Bad Request con el detalle de los campos inválidos | `docs/evidencias/hu01-e3.png` |
+| 1 | Registro exitoso | `POST /api/v1/auth/register` con `nombre`, `ubicacionValle` y `cedula` | 201 + `id` + `token` | 201 Created con `id` y token JWT (resultado reportado) | Captura citada, no incluida en el repositorio |
+| 2 | Cédula duplicada | Mismo cuerpo del caso 1 | 409 Conflict | 409 Conflict: "Ya existe un productor con la cédula: 1234567890" (resultado reportado) | Captura citada, no incluida en el repositorio |
+| 3 | Datos inválidos | nombre vacío y cédula `abc` | 400 Bad Request | 400 Bad Request con el detalle de los campos inválidos (resultado reportado) | Captura citada, no incluida en el repositorio |
 
 ```bash
 curl -i -X POST http://localhost:8080/api/v1/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"nombre":"Juan Pérez","ubicacion_valle":"Dagua","cedula":"1234567890"}'
+  -d '{"nombre":"Juan Pérez","ubicacionValle":"Dagua","cedula":"1234567890"}'
 ```
 
 ### 3.2 HU-02 — Publicación de Productos
 
 | # | Escenario BDD | Petición | Resultado esperado | Resultado real | Evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Publicación exitosa | `POST /api/v1/productos` con `Authorization: Bearer <token>` | 201 + ID único | 201 Created con `id` = 1 | `docs/evidencias/hu02-e1.png` |
-| 2 | Fecha anterior a hoy | Igual, con `fecha_cosecha` pasada | 400 Bad Request | 400: "La fecha de cosecha no puede ser anterior a hoy" | `docs/evidencias/hu02-e2.png` |
-| 3 | Sin token | Igual, sin header `Authorization` | 401 Unauthorized | 401 Unauthorized | `docs/evidencias/hu02-e3.png` |
+| 1 | Publicación exitosa | `POST /api/v1/productos` con token JWT | 201 + ID único | 201 Created con `id` = 1 (resultado reportado) | Captura citada, no incluida en el repositorio |
+| 2 | Fecha anterior a hoy | Igual, con `fechaCosecha` pasada | 400 Bad Request | 400: "La fecha de cosecha no puede ser anterior a hoy" (resultado reportado) | Captura citada, no incluida en el repositorio |
+| 3 | Sin token | Igual, sin header `Authorization` | 401 Unauthorized | 401 Unauthorized (resultado reportado) | Captura citada, no incluida en el repositorio |
 
 ```bash
 curl -i -X POST http://localhost:8080/api/v1/productos \
-  -H "Authorization: Bearer <TOKEN>" \
+  -H "Authorization: Bearer <JWT>"\
   -H "Content-Type: application/json" \
-  -d '{"tipo":"Mango","categoria":"Frutas","cantidad":50,
-       "precio_unitario":2500,"fecha_cosecha":"2026-10-20"}'
+  -d '{"nombre":"Mango","categoria":"Frutas","cantidad":50,
+       "precioUnitario":2500,"fechaCosecha":"2026-10-20"}'
 ```
 
 ### 3.3 HU-04 — Filtro de Categorías y Municipios
 
 | # | Escenario BDD | Petición | Resultado esperado | Resultado real | Evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Con resultados | `GET /api/v1/productos?municipio=Dagua&categoria=Frutas` | 200 + arreglo con ofertas | 200 OK con 1 producto (Mango) | `docs/evidencias/hu04-e1.png` |
-| 2 | Sin resultados | `GET ...?municipio=Buga&categoria=Granos` | 200 + `[]` | 200 OK con arreglo vacío | `docs/evidencias/hu04-e2.png` |
-| 3 | Municipio no válido | `GET ...?municipio=Otro` | 400 Bad Request | 400: "Municipio no válido: Otro" | `docs/evidencias/hu04-e3.png` |
+| 1 | Con resultados | `GET /api/v1/productos?municipio=Dagua&categoria=Frutas` | 200 + arreglo con productos | 200 OK con 1 producto (Mango; resultado reportado) | Captura citada, no incluida en el repositorio |
+| 2 | Sin resultados | `GET ...?municipio=Buga&categoria=Granos` | 200 + `[]` | 200 OK con arreglo vacío (resultado reportado) | Captura citada, no incluida en el repositorio |
+| 3 | Municipio no válido | `GET ...?municipio=Otro` | 400 Bad Request | 400: "Municipio no válido: Otro" (resultado reportado) | Captura citada, no incluida en el repositorio |
 
 ```bash
 curl -i "http://localhost:8080/api/v1/productos?municipio=Dagua&categoria=Frutas"
@@ -83,9 +92,9 @@ curl -i "http://localhost:8080/api/v1/productos?municipio=Dagua&categoria=Frutas
 
 | Verificación | Comando | Resultado | Evidencia |
 | --- | --- | --- | --- |
-| Pruebas automatizadas (BDD → JUnit 5) | `mvn test` | 13 pruebas ejecutadas, 13 exitosas (HU-01: 6, HU-02: 4, HU-04: 3) | `docs/evidencias/mvn-test.png` |
-| Estilo de código | `mvn checkstyle:check` | 0 errores | `docs/evidencias/checkstyle.png` |
-| Pre-commit hooks (Husky) | commit de prueba con código mal formateado | El hook bloqueó el commit hasta corregir el estilo | `docs/evidencias/husky-hook.png` |
+| Pruebas automatizadas (BDD → JUnit 5) | `mvn test` | 13 pruebas ejecutadas, 13 exitosas (HU-01: 6, HU-02: 4, HU-04: 3), según el registro de la Review | Captura citada, no incluida en el repositorio |
+| Estilo de código | `mvn checkstyle:check` | 0 errores, según el registro de la Review | Captura citada, no incluida en el repositorio |
+| Pre-commit hooks (Husky) | commit de prueba con código mal formateado | El hook bloqueó el commit hasta corregir el estilo, según el registro de la Review | Captura citada, no incluida en el repositorio |
 
 ## 5. Esfuerzo planificado vs. real
 
