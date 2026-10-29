@@ -17,7 +17,7 @@ representan la implementación actual.
 | [`kanban-policies.md`](kanban-policies.md) | Políticas de flujo y métricas; incluye las limitaciones de evidencia. |
 | [`sprint-2-planning.md`](sprint-2-planning.md) | Propuesta de selección HU-06 para el Sprint 2; requiere decisiones y aprobación del equipo. |
 | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | Estado ejecutivo del avance técnico verificable y pendientes; no inventa resultados de un Sprint no documentado. |
-| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Cobertura del reporte JaCoCo descargado del CI Java 25, con acceso al HTML completo y contadores agregados. |
+| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Evidencia histórica de cobertura JaCoCo generada por CI con Java 25; no valida la configuración académica vigente en Java 17. |
 | [`evidencias/anexo-evidencias-jacoco-kanban.pdf`](evidencias/anexo-evidencias-jacoco-kanban.pdf) | Anexo PDF con resultados JaCoCo y captura de los límites WIP visibles en GitHub Projects. |
 | [`sprint-2-review-template.md`](sprint-2-review-template.md) | Plantilla vacía para documentar la Review real del Sprint 2. |
 | [`sprint-2-retrospective-template.md`](sprint-2-retrospective-template.md) | Plantilla vacía para documentar la retrospectiva real del Sprint 2. |
@@ -41,7 +41,7 @@ verificaciones realizadas el 22/10/2026 y el 28/10/2026, no evidencia histórica
 - [Anexo PDF: cobertura JaCoCo y captura de WIP](evidencias/anexo-evidencias-jacoco-kanban.pdf).
 - [Captura del tablero con WIP In Progress 3 y Code Review / Testing 2](evidencias/tablero-kanban-limites-wip-2026-10-28.png); muestra la configuración visible en ese momento, no su cumplimiento histórico.
 - [Build exitoso y Checkstyle](evidencias/validacion-build-checkstyle-2026-10-22.png).
-- [Pull Request #56 con CI Java 25 aprobado y revisión pendiente](evidencias/ci-java25-pr-56-2026-10-28.png).
+- [Captura histórica del Pull Request #56 con CI Java 25 aprobado y revisión pendiente al momento de la captura](evidencias/ci-java25-pr-56-2026-10-28.png).
 - [Restricción única para la cédula en PostgreSQL](evidencias/pgadmin-restriccion-2026-10-28.png).
 - [Tablas de `agrovalle_db` antes de crear `productos`](evidencias/pgadmin-tablas-2026-10-28.png).
 - [Listado de reglas de protección para `main` y `develop`](evidencias/proteccion-ramas-main-develop-2026-10-28.png).
@@ -79,11 +79,16 @@ Una primera petición contra una copia desechable no devolvió respuesta HTTP y 
 determinar si llegó a ejecutarse. La copia temporal se eliminó antes de consultar el marcador de
 esa petición, así que su resultado queda indeterminado. En un segundo intento se preparó otra
 base vacía, pero el lanzador Java no inició la aplicación: su compilación Maven usó el JDK
-predeterminado 17.0.12, mientras el proyecto requiere Java 25 (`release 25`). No se envió ninguna
+predeterminado 17.0.12, mientras el proyecto estaba configurado entonces para Java 25
+(`release 25`). No se envió ninguna
 petición en este segundo intento. La base y el archivo de configuración temporales se eliminaron,
 y la base real no recibió solicitudes de prueba. Por tanto, el DDL y la inserción SQL reversible
-están verificados; la persistencia mediante HTTP queda pendiente hasta configurar el depurador con
-el JDK 25 y obtener una ejecución exitosa.
+están verificados; la persistencia mediante HTTP queda pendiente de una ejecución exitosa con la
+versión Java 17 requerida por la guía académica.
+
+El 29/10/2026 se corrigieron el `pom.xml`, el workflow y la documentación para volver a Java 17.
+Los resultados y el reporte JaCoCo obtenidos con Java 25 que se describen a continuación son
+evidencia histórica de esa configuración anterior, no validación de la configuración vigente.
 
 ### Verificación local de calidad — 2026-10-28
 
@@ -103,23 +108,23 @@ La ejecución remota #91 de GitHub Actions para el [Pull Request #56](https://gi
 finalizó correctamente el 28/10/2026: el workflow configuró Java 25 Temurin y pasaron compilación,
 Checkstyle y JaCoCo. La [ejecución #91](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40811041503)
 corresponde al commit `0c9d664`; el reporte descargado midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas.
-El PR sigue abierto contra `develop` y GitHub indica que falta
-al menos una aprobación; por tanto, el CI está verde, pero los cambios todavía no se han integrado.
-La captura enlazada arriba conserva la vista del PR y su check exitoso.
+Al momento de la captura, el PR esperaba una aprobación. Después se integró en `develop` y luego
+los cambios de `develop` llegaron a `main` mediante el PR #58. La captura enlazada arriba conserva
+el estado y el check que tenía el PR en ese momento.
 
 La ejecución anterior #86 en `main`, commit
 [`f648ba7`](https://github.com/DilanStiven/Ingenieria-de-software/commit/f648ba77d36b8876d35c377cef766529538a1f82),
-terminó correctamente el 19/10/2026 usando Java 17; no validaba Java 25. Las capturas de
+terminó correctamente el 19/10/2026 usando Java 17. Las capturas de
 configuración verifican que tanto `main` como `develop` exigen Pull Request, una aprobación y el
 check `Build, Checkstyle & JaCoCo Coverage`; en ambas se muestran desactivados force push y
 eliminación.
 
 ### Pendiente para la entrega formal
 
-- Configurar el depurador con JDK 25 y volver a realizar la prueba HTTP de persistencia contra una
+- Configurar el depurador con JDK 17 y volver a realizar la prueba HTTP de persistencia contra una
   base desechable.
-- Obtener la aprobación requerida y completar la integración del Pull Request #56 a `develop`;
-  el run verde de Java 25 acredita la rama del PR, no todavía `main`.
+- Esperar la aprobación e integración del [PR #60](https://github.com/DilanStiven/Ingenieria-de-software/pull/60),
+  cuya ejecución CI pasó con Java 17.
 - Realizar el Planning real del Sprint 2, confirmar o cambiar HU-06, tomar decisiones pendientes,
   y completar Review/retrospectiva con fechas y resultados reales. Las tres revisiones adicionales
   de avance reportadas por el equipo se consignan sin inventar sus fechas.
