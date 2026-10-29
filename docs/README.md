@@ -17,6 +17,7 @@ representan la implementación actual.
 | [`kanban-policies.md`](kanban-policies.md) | Políticas de flujo y métricas; incluye las limitaciones de evidencia. |
 | [`sprint-2-planning.md`](sprint-2-planning.md) | Propuesta de selección HU-06 para el Sprint 2; requiere decisiones y aprobación del equipo. |
 | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | Estado ejecutivo del avance técnico verificable y pendientes; no inventa resultados de un Sprint no documentado. |
+| [`evidencias/reporte-jacoco-java25-run-89.md`](evidencias/reporte-jacoco-java25-run-89.md) | Cobertura del reporte JaCoCo descargado del CI Java 25, con acceso al HTML completo y contadores agregados. |
 | [`sprint-2-review-template.md`](sprint-2-review-template.md) | Plantilla vacía para documentar la Review real del Sprint 2. |
 | [`sprint-2-retrospective-template.md`](sprint-2-retrospective-template.md) | Plantilla vacía para documentar la retrospectiva real del Sprint 2. |
 | [`diseno/Documento_de_arquitectura.md`](diseno/Documento_de_arquitectura.md) | Arquitectura propuesta y contraste con el código actual. |
@@ -35,6 +36,7 @@ reproducible disponible aquí. La carpeta [`evidencias/`](evidencias/) contiene 
 verificaciones realizadas el 22/10/2026 y el 28/10/2026, no evidencia histórica del Sprint 1:
 
 - [Resumen de pruebas y cobertura](evidencias/validacion-pruebas-y-cobertura-2026-10-22.png).
+- [Reporte JaCoCo completo de la ejecución CI #89](evidencias/reporte-jacoco-java25-run-89.md) ([ZIP descargable](evidencias/jacoco-java25-run-89.zip)).
 - [Build exitoso y Checkstyle](evidencias/validacion-build-checkstyle-2026-10-22.png).
 - [Pull Request #56 con CI Java 25 aprobado y revisión pendiente](evidencias/ci-java25-pr-56-2026-10-28.png).
 - [Restricción única para la cédula en PostgreSQL](evidencias/pgadmin-restriccion-2026-10-28.png).
@@ -94,10 +96,11 @@ no se ejecutan automáticamente porque Flyway no está incluido como dependencia
 cinco entidades y las pantallas web se conservan como propuestas académicas, separadas del
 modelo JPA actualmente implementado.
 
-La ejecución remota #88 de GitHub Actions para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56)
+La ejecución remota #89 de GitHub Actions para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56)
 finalizó correctamente el 28/10/2026: el workflow configuró Java 25 Temurin y pasaron compilación,
-Checkstyle y JaCoCo. La [ejecución #88](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40809487990)
-corresponde al commit `0be248a`. El PR sigue abierto contra `develop` y GitHub indica que falta
+Checkstyle y JaCoCo. La [ejecución #89](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40809926102)
+corresponde al commit `d9ad23c`; el reporte descargado midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas.
+El PR sigue abierto contra `develop` y GitHub indica que falta
 al menos una aprobación; por tanto, el CI está verde, pero los cambios todavía no se han integrado.
 La captura enlazada arriba conserva la vista del PR y su check exitoso.
 

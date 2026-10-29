@@ -15,7 +15,7 @@ AgroValle Connect cuenta con una API REST para el registro de agricultores, aute
 
 - Se verificó el esquema PostgreSQL de productos y una inserción SQL temporal dentro de una transacción revertida. La comprobación final dejó cero productos persistidos. La persistencia de productos mediante una petición HTTP continúa pendiente de verificación.
 - En la validación local con Java 25, `clean verify checkstyle:check` terminó correctamente: 26 pruebas, cero fallos, cero errores y una omitida. Checkstyle reportó cero infracciones. JaCoCo midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas; se configuró un mínimo de 60 % para cada contador.
-- El [workflow de GitHub Actions #88](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40809487990), ejecutado con Temurin Java 25 para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56), aprobó compilación, Checkstyle y JaCoCo y publicó el reporte de cobertura como artefacto.
+- El [workflow de GitHub Actions #89](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40809926102), ejecutado con Temurin Java 25 para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56), aprobó compilación, Checkstyle y JaCoCo. Su reporte real registra 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas. El [informe legible](evidencias/reporte-jacoco-java25-run-89.md) enlaza el ZIP completo descargado del artefacto de Actions.
 - Las reglas de protección de `main` y `develop` muestran Pull Request obligatorio, una aprobación requerida y el check de CI; las opciones mostradas también desactivan force push y eliminación. El tablero reporta límites WIP de 3 en *In Progress* y 2 en *Code Review*, aunque no se conservó una captura de esa configuración.
 
 ## Pendientes y conclusión
@@ -29,4 +29,5 @@ El PR #56 sigue abierto hacia `develop` y requiere la aprobación configurada; p
 - [Repositorio AgroValle Connect](https://github.com/DilanStiven/Ingenieria-de-software)
 - [Tablero GitHub Projects](https://github.com/users/DilanStiven/projects/2)
 - [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56)
-- [GitHub Actions #88 — Java 25](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40809487990)
+- [GitHub Actions #89 — Java 25](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40809926102)
+- [Reporte JaCoCo de la ejecución #89](evidencias/reporte-jacoco-java25-run-89.md)
