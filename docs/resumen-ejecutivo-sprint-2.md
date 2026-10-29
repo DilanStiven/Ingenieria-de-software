@@ -20,9 +20,17 @@ AgroValle Connect cuenta con una API REST para el registro de agricultores, aute
 
 ## Pendientes y conclusión
 
-El PR #56 sigue abierto hacia `develop` y requiere la aprobación configurada; por tanto, el CI verde valida la rama del PR, no una integración en `main`. La selección del Sprint Goal y las historias, las fechas, los puntos comprometidos/completados, la retroalimentación y los resultados de una Review/retrospectiva reales deben confirmarse con el equipo antes de reportarlos como hechos. La validación HTTP de productos continúa pendiente.
+Al corte de este resumen, el PR #56 seguía abierto hacia `develop`; posteriormente se integró en `develop` y los cambios llegaron a `main` mediante el PR #58. La selección del Sprint Goal y las historias, las fechas, los puntos comprometidos/completados, la retroalimentación y los resultados de una Review/retrospectiva reales deben confirmarse con el equipo antes de reportarlos como hechos. La validación HTTP de productos continúa pendiente.
 
 **Conclusión:** el proyecto tiene evidencia técnica favorable de compilación, pruebas, estilo y cobertura con Java 25. Para cerrar un informe de Sprint 2 como Sprint ejecutado, falta incorporar los acuerdos y resultados reales del equipo; este documento mantiene explícita esa limitación y evita inventar métricas o decisiones.
+
+### Actualización de configuración — 29 de octubre de 2026
+
+La guía académica establece Java 17, así que el `pom.xml`, GitHub Actions y la documentación
+vigente se alinearon a esa versión. En la copia local basada en `main`, `clean verify
+checkstyle:check` terminó con `BUILD SUCCESS`: 26 pruebas, cero fallos, cero errores y una
+omitida; Checkstyle reportó cero infracciones. El resultado JaCoCo de Java 25 citado arriba es
+histórico y no sustituye una nueva ejecución del CI remoto con Java 17.
 
 ## Enlaces
 
