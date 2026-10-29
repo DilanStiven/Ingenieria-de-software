@@ -35,6 +35,7 @@ verificaciones realizadas el 22/10/2026 y el 28/10/2026, no evidencia histórica
 
 - [Resumen de pruebas y cobertura](evidencias/validacion-pruebas-y-cobertura-2026-10-22.png).
 - [Build exitoso y Checkstyle](evidencias/validacion-build-checkstyle-2026-10-22.png).
+- [Pull Request #56 con CI Java 25 aprobado y revisión pendiente](evidencias/ci-java25-pr-56-2026-10-28.png).
 - [Restricción única para la cédula en PostgreSQL](evidencias/pgadmin-restriccion-2026-10-28.png).
 - [Tablas de `agrovalle_db` antes de crear `productos`](evidencias/pgadmin-tablas-2026-10-28.png).
 - [Listado de reglas de protección para `main` y `develop`](evidencias/proteccion-ramas-main-develop-2026-10-28.png).
@@ -92,20 +93,26 @@ no se ejecutan automáticamente porque Flyway no está incluido como dependencia
 cinco entidades y las pantallas web se conservan como propuestas académicas, separadas del
 modelo JPA actualmente implementado.
 
-La última ejecución remota de GitHub Actions que se pudo verificar corresponde al commit
-[`f648ba7`](https://github.com/DilanStiven/Ingenieria-de-software/commit/f648ba77d36b8876d35c377cef766529538a1f82)
-en `main` (19/10/2026): compilación, Checkstyle y JaCoCo finalizaron correctamente. Esa
-ejecución configuró Java 17 y, por tanto, no verifica los cambios locales recientes que elevan el
-proyecto a Java 25. Las capturas de configuración verifican que tanto `main` como `develop`
-exigen Pull Request, una aprobación y el check `Build, Checkstyle & JaCoCo Coverage`; en ambas se
-muestran desactivados force push y eliminación.
+La ejecución remota #87 de GitHub Actions para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56)
+finalizó correctamente el 28/10/2026: el workflow configuró Java 25 Temurin y pasaron compilación,
+Checkstyle y JaCoCo. La [ejecución #87](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40808738392)
+corresponde al commit `849ba3a`. El PR sigue abierto contra `develop` y GitHub indica que falta
+al menos una aprobación; por tanto, el CI está verde, pero los cambios todavía no se han integrado.
+La captura enlazada arriba conserva la vista del PR y su check exitoso.
+
+La ejecución anterior #86 en `main`, commit
+[`f648ba7`](https://github.com/DilanStiven/Ingenieria-de-software/commit/f648ba77d36b8876d35c377cef766529538a1f82),
+terminó correctamente el 19/10/2026 usando Java 17; no validaba Java 25. Las capturas de
+configuración verifican que tanto `main` como `develop` exigen Pull Request, una aprobación y el
+check `Build, Checkstyle & JaCoCo Coverage`; en ambas se muestran desactivados force push y
+eliminación.
 
 ### Pendiente para la entrega formal
 
 - Configurar el depurador con JDK 25 y volver a realizar la prueba HTTP de persistencia contra una
   base desechable.
-- Integrar estos cambios locales en GitHub y confirmar un run verde de CI con Java 25; el último
-  run remoto comprobado todavía ejecuta Java 17.
+- Obtener la aprobación requerida y completar la integración del Pull Request #56 a `develop`;
+  el run verde de Java 25 acredita la rama del PR, no todavía `main`.
 - Realizar el Planning real del Sprint 2, confirmar o cambiar HU-06, tomar decisiones pendientes,
   y completar Review/retrospectiva con fechas y resultados reales. Las tres revisiones adicionales
   de avance reportadas por el equipo se consignan sin inventar sus fechas.
