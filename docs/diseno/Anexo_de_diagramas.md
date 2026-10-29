@@ -4,14 +4,22 @@ Sprint de diseño: modelo de datos, arquitectura y prototipado
 
 Ingeniería de Software II \| Proyecto AgroValle \| Estudiante(s): Grupo 5
 
+> **Nota de alcance:** estos diagramas son artefactos del diseño académico inicial. El modelo
+> físico, el MER y el modelo de dominio representan cinco entidades (`Municipio`, `Agricultor`,
+> `Producto`, `Cosecha` y `Oferta`) que no corresponden literalmente al modelo JPA actual. El
+> diagrama de despliegue y las capturas son referencias de diseño, no fuente de verdad para el
+> esquema vigente. El modelo JPA implementado actualmente tiene `Agricultor` y `Producto` y usa
+> Java 25. La vista actual y su DDL están documentados en
+> [`Documento_de_normalizacion.md`](Documento_de_normalizacion.md) y [`schema.sql`](schema.sql).
+
 ## Índice de diagramas
 
 | **N.º** | **Diagrama**                | **Qué representa**                                             | **Origen**         |
 |---------|-----------------------------|----------------------------------------------------------------|--------------------|
-| 1       | Captura de pgAdmin (ERD)    | Las 5 tablas creadas en PostgreSQL con sus llaves y relaciones | Captura del equipo |
-| 2       | Modelo físico (referencia)  | Las mismas tablas con tipos de dato, PK, FK y UK               | Generado           |
-| 3       | MER conceptual              | Entidades, atributos y relaciones, sin llaves foráneas         | Generado           |
-| 4       | Modelo de dominio UML       | Las entidades como clases Java con sus asociaciones            | Generado           |
+| 1       | Captura de pgAdmin (ERD)    | Referencia histórica del modelo académico de cinco tablas; no acredita el esquema actual | Captura del equipo |
+| 2       | Modelo físico (referencia)  | Diseño propuesto de cinco tablas con tipos, PK, FK y UK        | Generado           |
+| 3       | MER conceptual              | Diseño académico propuesto, previo a implementación            | Generado           |
+| 4       | Modelo de dominio UML       | Diseño académico propuesto; no son cinco entidades JPA vigentes | Generado           |
 | 5       | Secuencia: Registrar oferta | Recorrido de una petición por las capas del sistema            | Generado           |
 | 6       | Componentes                 | Paquetes del sistema y sus dependencias                        | Generado           |
 | 7       | Despliegue                  | Nodos físicos donde corre el sistema                           | Generado           |
@@ -22,9 +30,13 @@ Ingeniería de Software II \| Proyecto AgroValle \| Estudiante(s): Grupo 5
 
 ### Diagrama 1. Captura de pgAdmin (ERD de la base de datos)
 
-**Qué es:** diagrama entidad-relación generado por pgAdmin 4 a partir de las tablas creadas en la base de datos agrovalle (PostgreSQL 18).
+**Qué es:** captura de referencia compartida por el equipo, identificada como PostgreSQL 18.
+Representa el modelo académico de cinco tablas; no demuestra el esquema de la aplicación
+actualmente configurada en el repositorio.
 
-**Para qué sirve:** demostrar que el script SQL se ejecutó correctamente y que las tablas municipio, agricultor, producto, cosecha y oferta quedaron relacionadas mediante llaves foráneas.
+**Uso y limitación:** sirve como referencia visual del diseño propuesto. No se presenta como
+evidencia de que el script se ejecutó correctamente ni de que esas cinco tablas existan en la
+base desplegada.
 
 ![Figura 1. Captura de pgAdmin (ERD de la base de datos)](images/diagrama-01-pgadmin-erd.png)
 
@@ -59,6 +71,33 @@ Ingeniería de Software II \| Proyecto AgroValle \| Estudiante(s): Grupo 5
 ![Figura 4. Modelo de dominio UML](images/diagrama-04-modelo-dominio-uml.png)
 
 *Figura 4. Modelo de dominio UML*
+
+### Modelo relacional actualmente implementado
+
+Este DER representa las dos entidades JPA vigentes y la relación de propiedad de los productos.
+Las cinco entidades de los diagramas anteriores se conservan como propuesta académica.
+
+```mermaid
+erDiagram
+    AGRICULTOR ||--o{ PRODUCTOS : publica
+    AGRICULTOR {
+        bigint id PK
+        varchar nombre
+        varchar ubicacion_valle
+        varchar cedula UK
+    }
+    PRODUCTOS {
+        bigint id PK
+        varchar nombre
+        varchar categoria
+        varchar municipio
+        numeric cantidad
+        numeric precio_unitario
+        date fecha_cosecha
+        varchar estado
+        bigint agricultor_id FK
+    }
+```
 
 ## Punto 2. Arquitectura de software
 

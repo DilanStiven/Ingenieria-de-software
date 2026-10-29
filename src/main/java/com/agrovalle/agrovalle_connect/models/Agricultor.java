@@ -1,15 +1,23 @@
 package com.agrovalle.agrovalle_connect.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 /**
  * Entidad que representa un agricultor registrado en AgroValle Connect.
  */
 @Entity
+@Table(name = "agricultor", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_agricultor_cedula", columnNames = "cedula")
+})
 public class Agricultor {
+
+    private static final int CEDULA_LONGITUD_MAXIMA = 20;
 
     /**
      * Identificador único del agricultor.
@@ -21,16 +29,19 @@ public class Agricultor {
     /**
      * Nombre del agricultor.
      */
+    @Column(nullable = false)
     private String nombre;
 
     /**
      * Ubicación del agricultor en el Valle.
      */
+    @Column(name = "ubicacion_valle", nullable = false)
     private String ubicacionValle;
 
     /**
      * Número de cédula del agricultor.
      */
+    @Column(nullable = false, length = CEDULA_LONGITUD_MAXIMA)
     private String cedula;
 
     /**

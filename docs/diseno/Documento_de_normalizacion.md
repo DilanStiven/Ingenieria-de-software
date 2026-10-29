@@ -1,16 +1,59 @@
-# Documento de normalización
+# Documento de normalización y persistencia implementada
 
-Modelo de datos relacional hasta la Tercera Forma Normal (3FN)
+Diseño académico propuesto y contraste con el modelo JPA vigente
+
+> **Alcance:** este documento y su modelo de cinco entidades describen el diseño académico
+> inicial, no la persistencia implementada actualmente. El código vigente modela `Agricultor` y
+> `Producto`; la entidad `Producto` guarda directamente municipio, categoría, cantidad, precio,
+> fecha y estado. No debe usarse este documento como descripción del esquema desplegado.
 
 Ingeniería de Software II \| Proyecto AgroValle \| Grupo 5
 
-## 1. Objetivo
+## 1. Persistencia implementada actualmente
 
-Este documento describe el proceso de normalización aplicado al modelo de datos del proyecto, partiendo de una estructura sin normalizar y llegando a un diseño en Tercera Forma Normal (3FN). El objetivo es eliminar la redundancia, evitar anomalías de inserción, actualización y borrado, y garantizar la integridad de los datos en PostgreSQL.
+La aplicación vigente tiene dos entidades JPA y dos tablas relacionales. La tabla `productos`
+guarda los datos de publicación, incluidos municipio y categoría, y referencia al agricultor
+propietario. La categoría no es una entidad JPA independiente. El DDL reproducible para una
+base vacía está en [`schema.sql`](schema.sql); no es un mecanismo de migración y no debe
+ejecutarse sin revisión sobre una base existente.
 
-## 2. Entidades identificadas
+```mermaid
+erDiagram
+    AGRICULTOR ||--o{ PRODUCTOS : publica
+    AGRICULTOR {
+        bigint id PK
+        varchar nombre
+        varchar ubicacion_valle
+        varchar cedula UK
+    }
+    PRODUCTOS {
+        bigint id PK
+        varchar nombre
+        varchar categoria
+        varchar municipio
+        numeric cantidad
+        numeric precio_unitario
+        date fecha_cosecha
+        varchar estado
+        bigint agricultor_id FK
+    }
+```
 
-A partir de los requerimientos del proyecto se identificaron cinco entidades principales:
+La base PostgreSQL local consultada el 28/10/2026 confirmó ambas tablas, la restricción única
+`uk_agricultor_cedula`, la FK de `productos.agricultor_id` y el índice
+`idx_productos_filtro`. La base tenía un agricultor y cero productos al finalizar la validación.
+El modelo relacional académico de cinco entidades que sigue se conserva como propuesta de diseño,
+no como un inventario del esquema desplegado.
+
+## 2. Objetivo
+
+Esta sección describe el proceso de normalización del modelo académico propuesto, partiendo de
+una estructura sin normalizar y llegando a un diseño en Tercera Forma Normal (3FN). No afirma que
+las cinco entidades estén implementadas o desplegadas.
+
+## 3. Entidades identificadas
+
+En el diseño propuesto se identificaron cinco entidades principales:
 
 - **Municipio:** lugar de origen de los agricultores.
 
@@ -22,7 +65,7 @@ A partir de los requerimientos del proyecto se identificaron cinco entidades pri
 
 - **Oferta:** publicación de una cosecha para su venta, con precio y cantidad disponible.
 
-## 3. Punto de partida: datos sin normalizar
+## 4. Punto de partida: datos sin normalizar
 
 Si toda la información se guardara en una sola tabla, los datos de cada agricultor quedarían agrupados con sus productos en una misma celda:
 
@@ -43,7 +86,7 @@ Este diseño presenta los siguientes problemas:
 
 - **Anomalía de borrado:** al eliminar la única cosecha de un producto se pierde también la información del producto.
 
-## 4. Primera Forma Normal (1FN)
+## 5. Primera Forma Normal (1FN)
 
 **Regla:** todos los atributos deben contener valores atómicos (indivisibles), no puede haber grupos repetidos y cada fila debe identificarse con una llave primaria.
 
@@ -57,7 +100,7 @@ Se separa cada producto cosechado en su propia fila, de modo que cada celda cont
 
 **Resultado:** la tabla cumple la 1FN. Aún persiste redundancia, que se resuelve en la siguiente forma normal.
 
-## 5. Segunda Forma Normal (2FN)
+## 6. Segunda Forma Normal (2FN)
 
 **Regla:** debe cumplir la 1FN y todo atributo que no es parte de la llave debe depender de toda la llave primaria, no solo de una parte de ella (sin dependencias parciales).
 
@@ -73,7 +116,7 @@ Para eliminarlas se dividen los datos en tres tablas, cada una con los atributos
 
 **Resultado:** los datos del agricultor y del producto se guardan una sola vez, y desaparecen las anomalías de actualización asociadas a ellos.
 
-## 6. Tercera Forma Normal (3FN)
+## 7. Tercera Forma Normal (3FN)
 
 **Regla:** debe cumplir la 2FN y ningún atributo que no es llave puede depender de otro atributo que tampoco es llave (sin dependencias transitivas). En resumen, cada atributo depende "de la llave, de toda la llave y nada más que de la llave".
 
@@ -90,7 +133,7 @@ Se aplicaron las siguientes decisiones de diseño:
 | **Tabla**  | **Dependencias funcionales**                                               |
 |------------|----------------------------------------------------------------------------|
 | municipio  | id → nombre                                                                |
-| agricultor | id → nombre, correo, municipio_id                                          |
+| agricultor | id → nombre, correo, cedula, municipio_id, fecha_registro                    |
 | producto   | id → nombre, categoria                                                     |
 | cosecha    | id → agricultor_id, producto_id, cantidad_kg, fecha_cosecha                |
 | oferta     | id → cosecha_id, precio_kg, cantidad_disponible, estado, fecha_publicacion |
@@ -99,12 +142,12 @@ En todas las tablas los únicos determinantes son la llave primaria, por lo que 
 
 Observación: el campo categoria se mantiene como texto en la tabla PRODUCTO porque depende directamente del producto. Si en el futuro la categoría necesitara atributos propios, podría convertirse en una tabla independiente.
 
-## 7. Modelo relacional resultante
+## 8. Modelo relacional propuesto
 
 | **Tabla**  | **Llave primaria** | **Atributos**                                             | **Llaves foráneas**                                        |
 |------------|--------------------|-----------------------------------------------------------|------------------------------------------------------------|
 | municipio  | id                 | nombre                                                    | —                                                          |
-| agricultor | id                 | nombre, correo (único)                                    | municipio_id → municipio(id)                               |
+| agricultor | id | nombre, correo (único), cedula (única), fecha_registro     | municipio_id → municipio(id)                               |
 | producto   | id                 | nombre, categoria                                         | —                                                          |
 | cosecha    | id                 | cantidad_kg, fecha_cosecha                                | agricultor_id → agricultor(id); producto_id → producto(id) |
 | oferta     | id                 | precio_kg, cantidad_disponible, estado, fecha_publicacion | cosecha_id → cosecha(id)                                   |
@@ -118,7 +161,7 @@ Observación: el campo categoria se mantiene como texto en la tabla PRODUCTO por
 | Producto           | Cosecha             | 1 : N            | Un producto aparece en muchas cosechas |
 | Cosecha            | Oferta              | 1 : N            | Una cosecha puede tener varias ofertas |
 
-## 8. Conclusiones
+## 9. Conclusiones del diseño propuesto
 
 - El modelo final cumple la 3FN: cada dato se almacena en un único lugar y cada tabla describe una sola entidad.
 
@@ -128,41 +171,7 @@ Observación: el campo categoria se mantiene como texto en la tabla PRODUCTO por
 
 - El diseño facilita el mapeo a entidades JPA y futuras ampliaciones del sistema.
 
-## Anexo: script de creación de tablas (PostgreSQL)
+## Anexo: DDL del modelo académico propuesto
 
-```sql
-CREATE TABLE municipio (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE agricultor (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(120) UNIQUE NOT NULL,
-    municipio_id INT REFERENCES municipio(id)
-);
-
-CREATE TABLE producto (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    categoria VARCHAR(50)
-);
-
-CREATE TABLE cosecha (
-    id SERIAL PRIMARY KEY,
-    agricultor_id INT NOT NULL REFERENCES agricultor(id),
-    producto_id INT NOT NULL REFERENCES producto(id),
-    cantidad_kg NUMERIC(10,2) NOT NULL,
-    fecha_cosecha DATE NOT NULL
-);
-
-CREATE TABLE oferta (
-    id SERIAL PRIMARY KEY,
-    cosecha_id INT NOT NULL REFERENCES cosecha(id),
-    precio_kg NUMERIC(10,2) NOT NULL,
-    cantidad_disponible NUMERIC(10,2) NOT NULL,
-    estado VARCHAR(20) DEFAULT 'ACTIVA',
-    fecha_publicacion DATE DEFAULT CURRENT_DATE
-);
-```
+El script se conserva en [`schema-academico-propuesto.sql`](schema-academico-propuesto.sql).
+No es una migración de Flyway ni debe ejecutarse sobre la base de datos de la aplicación actual.

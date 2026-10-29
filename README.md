@@ -2,14 +2,14 @@
 
 ![build](https://img.shields.io/badge/build-passing-brightgreen)
 ![coverage](https://img.shields.io/badge/coverage-60%25-yellow)
-![java](https://img.shields.io/badge/Java-17-orange)
-![spring](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
+![java](https://img.shields.io/badge/Java-25-orange)
+![spring](https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen)
 
 ## 🌱 Declaración de la Visión del Producto
 
 > **Para** los productores del Valle del Cauca,
 > **Que** necesitan vender directo y sin intermediarios excesivos,
-> **AgroValle Connect** es una plataforma web empresarial en Java 17 / Spring Boot,
+> **AgroValle Connect** es una plataforma web empresarial en Java 25 / Spring Boot,
 > **Que** conecta la oferta agrícola de las fincas del Valle con la demanda comercial urbana de Cali a precio justo,
 > **A diferencia de** los intermediarios tradicionales y las cadenas de comercialización largas,
 > **Nuestro producto** garantiza trazabilidad logística en tiempo real y contratos de API transparentes.
@@ -25,10 +25,10 @@
 
 ## 🧱 Stack Tecnológico
 
-- **Backend:** Java 17 + Spring Boot
+- **Backend:** Java 25 + Spring Boot 4.1.1
 - **Base de datos:** PostgreSQL
-- **Arquitectura:** MVC en capas (`/models`, `/views`, `/controllers`)
-- **Patrones de diseño (GoF):** Repository, Factory, Observer, Singleton
+- **Arquitectura:** API REST en capas (`controllers`, `services`, `repositories`, `models`, `dtos`)
+- **Patrones de diseño (GoF):** Repository, Strategy, Observer y DTO
 - **Calidad:** Checkstyle (Google Java Style), JUnit 5, JaCoCo (≥60% cobertura), Husky (pre-commit hooks)
 - **CI/CD:** GitHub Actions
 
@@ -72,9 +72,27 @@ Ver las 15 Historias de Usuario priorizadas (MoSCoW) y especificadas en BDD en [
 
 ## ⚙️ Configuración local
 
-```bash
-git clone git@github.com:usuario-o-organizacion/agrovalle-connect.git
-cd agrovalle-connect
-mvn clean install
-npx husky-init && npm install
+Requisitos: JDK 25 LTS y PostgreSQL. `JAVA_HOME` debe apuntar a un JDK 25 (no solo a un
+runtime); comprueba la versión activa antes de compilar con `java -version`.
+
+En PowerShell de Windows, configura el JDK 25 para la sesión actual (ajusta la ruta si está
+instalado en otro directorio):
+
+```powershell
+$env:JAVA_HOME = 'C:\Program Files\Eclipse Adoptium\jdk-25'
+$env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
+java -version
 ```
+
+En Linux/macOS, configura `JAVA_HOME` según la ubicación del JDK 25. Usa el Maven Wrapper
+incluido para compilar, ejecutar las pruebas y verificar la cobertura:
+
+```bash
+git clone https://github.com/DilanStiven/Ingenieria-de-software.git
+cd Ingenieria-de-software
+./mvnw clean verify
+```
+
+En Windows PowerShell, ejecuta `.\mvnw.cmd clean verify`. Para revisar Checkstyle por separado:
+`./mvnw checkstyle:check` (Windows: `.\mvnw.cmd checkstyle:check`). El hook de pre-commit
+ejecuta Checkstyle, pruebas y el umbral JaCoCo.
