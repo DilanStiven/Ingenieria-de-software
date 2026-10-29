@@ -28,6 +28,9 @@ class ProductoServiceTest {
     @Mock
     private ProductoRepository productoRepository;
 
+    @Mock
+    private org.springframework.context.ApplicationEventPublisher eventPublisher;
+
     @InjectMocks
     private ProductoService productoService;
 
@@ -63,7 +66,8 @@ class ProductoServiceTest {
     }
 
     /**
-     * Verifica que municipios fuera del catálogo sean rechazados antes de consultar el repositorio.
+     * Verifica que municipios fuera del catálogo sean rechazados antes de consultar
+     * el repositorio.
      */
     @Test
     @DisplayName("Debe rechazar municipios no válidos")
