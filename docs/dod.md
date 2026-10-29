@@ -19,4 +19,4 @@ Al firmar, cada integrante confirma que comprende y se compromete a cumplir este
 | Dilan Stiven Castillo Valencia  | DilanStiven    | 16/09/2026 |
 | Kevin Estiven Lucumi Polo       | Steven-L777    | 16/09/2026 |
 | Carlos Andres Rosales Lara      | adnoireph      | 16/09/2026 |
-| Santiago Edilno Hurtado Cuenu   | santiageao     | 16/09/2026 |
+| Santiago Edilmo Hurtado Cuenu   | santiageao     | 16/09/2026 |
