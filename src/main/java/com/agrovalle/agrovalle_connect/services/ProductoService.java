@@ -2,6 +2,7 @@ package com.agrovalle.agrovalle_connect.services;
 
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,15 @@ public class ProductoService {
                 municipioNormalizado,
                 normalizarFiltro(categoria),
                 normalizarFiltro(estado));
+    }
+
+    /**
+     * Obtiene la lista ordenada de municipios permitidos en los filtros.
+     *
+     * @return municipios disponibles
+     */
+    public List<String> listarMunicipios() {
+        return List.copyOf(new TreeSet<>(MUNICIPIOS_VALIDOS));
     }
 
     private String normalizarFiltro(final String filtro) {
