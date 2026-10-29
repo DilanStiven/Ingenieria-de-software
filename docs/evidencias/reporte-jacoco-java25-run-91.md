@@ -1,5 +1,10 @@
 # Reporte JaCoCo — CI Java 25, ejecución #91
 
+> **Evidencia histórica:** este reporte refleja la ejecución del 28/10/2026 con Java 25.
+> La guía académica exige Java 17; por lo tanto, estas métricas no se presentan como validación
+> de la configuración vigente. La validación CI con Java 17 corresponde al
+> [PR #60](https://github.com/DilanStiven/Ingenieria-de-software/pull/60).
+
 | Dato | Resultado |
 | --- | --- |
 | Repositorio | AgroValle Connect |
@@ -20,5 +25,5 @@
 
 Los valores se calcularon sumando los contadores por clase del `jacoco.csv` incluido en el
 artefacto descargado de la ejecución #91. JaCoCo y el workflow completaron correctamente. El
-Pull Request #56 continúa pendiente de aprobación; el reporte corresponde al commit de su rama,
-no a una integración en `main`.
+reporte corresponde al commit de la rama del PR #56 y documenta esa ejecución; no sustituye la
+evidencia de compilación y CI con Java 17.

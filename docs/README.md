@@ -17,7 +17,7 @@ representan la implementación actual.
 | [`kanban-policies.md`](kanban-policies.md) | Políticas de flujo y métricas; incluye las limitaciones de evidencia. |
 | [`sprint-2-planning.md`](sprint-2-planning.md) | Propuesta de selección HU-06 para el Sprint 2; requiere decisiones y aprobación del equipo. |
 | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | Estado ejecutivo del avance técnico verificable y pendientes; no inventa resultados de un Sprint no documentado. |
-| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Cobertura del reporte JaCoCo descargado del CI Java 25, con acceso al HTML completo y contadores agregados. |
+| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Evidencia histórica de cobertura JaCoCo generada por CI con Java 25; no valida la configuración académica vigente en Java 17. |
 | [`evidencias/anexo-evidencias-jacoco-kanban.pdf`](evidencias/anexo-evidencias-jacoco-kanban.pdf) | Anexo PDF con resultados JaCoCo y captura de los límites WIP visibles en GitHub Projects. |
 | [`sprint-2-review-template.md`](sprint-2-review-template.md) | Plantilla vacía para documentar la Review real del Sprint 2. |
 | [`sprint-2-retrospective-template.md`](sprint-2-retrospective-template.md) | Plantilla vacía para documentar la retrospectiva real del Sprint 2. |
@@ -114,7 +114,7 @@ el estado y el check que tenía el PR en ese momento.
 
 La ejecución anterior #86 en `main`, commit
 [`f648ba7`](https://github.com/DilanStiven/Ingenieria-de-software/commit/f648ba77d36b8876d35c377cef766529538a1f82),
-terminó correctamente el 19/10/2026 usando Java 17; no validaba Java 25. Las capturas de
+terminó correctamente el 19/10/2026 usando Java 17. Las capturas de
 configuración verifican que tanto `main` como `develop` exigen Pull Request, una aprobación y el
 check `Build, Checkstyle & JaCoCo Coverage`; en ambas se muestran desactivados force push y
 eliminación.
@@ -123,8 +123,8 @@ eliminación.
 
 - Configurar el depurador con JDK 17 y volver a realizar la prueba HTTP de persistencia contra una
   base desechable.
-- Ejecutar nuevamente el CI remoto con Java 17 después de integrar la corrección de versión; el
-  run #91 solo acredita la configuración histórica de Java 25.
+- Esperar la aprobación e integración del [PR #60](https://github.com/DilanStiven/Ingenieria-de-software/pull/60),
+  cuya ejecución CI pasó con Java 17.
 - Realizar el Planning real del Sprint 2, confirmar o cambiar HU-06, tomar decisiones pendientes,
   y completar Review/retrospectiva con fechas y resultados reales. Las tres revisiones adicionales
   de avance reportadas por el equipo se consignan sin inventar sus fechas.
