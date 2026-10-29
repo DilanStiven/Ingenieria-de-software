@@ -21,7 +21,7 @@
 | Dilan Stiven Castillo Valencia| Scrum Master     |    DilanStiven    |
 | Kevin Estiven Lucumi Polo     | Developer        |    Steven-L777    |
 | Carlos Andres Rosales Lara    | Developer        |    adnoireph      |
-| Santiago Edilno Hurtado Cuenu | Developer        |    santiageao     |
+| Santiago Edilmo Hurtado Cuenu | Developer        |    santiageao     |
 
 ## 🧱 Stack Tecnológico
 

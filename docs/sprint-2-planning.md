@@ -16,8 +16,9 @@
 
 ## 1. Contexto y selección propuesta
 
-En Sprint 1 el equipo eligió HU-01, HU-02 y HU-04 de manera autónoma; HU-07 no era una historia
-obligatoria de la guía. Para Sprint 2 se propone refinar **HU-06 — Registro de Vehículos de Carga**
+En Sprint 1 el equipo eligió HU-01, HU-02 y HU-04 de manera autónoma; la docente permitió que cada
+equipo eligiera sus propias historias del Product Backlog, por lo que HU-07 del Backlog
+(Programación y Asignación de Ruta) no formó parte del Sprint 1. Para Sprint 2 se propone refinar **HU-06 — Registro de Vehículos de Carga**
 del [Product Backlog](../BACKLOG.md). La estimación de 2 Story Points es la estimación inicial del
 Backlog y debe confirmarse por el equipo antes de comprometer trabajo.
 
@@ -133,5 +134,5 @@ No completar estos campos con fechas, responsables o compromisos reconstruidos a
 - [Product Backlog](../BACKLOG.md)
 - [Definition of Done](dod.md)
 - [Políticas Kanban](kanban-policies.md)
-- [Plantilla de Sprint Review](sprint-2-review-template.md)
-- [Plantilla de retrospectiva](sprint-2-retrospective-template.md)
+- [Plantilla de Sprint Review](sprint-2-review.md)
+- [Plantilla de retrospectiva](sprint-2-retrospective.md)

@@ -17,16 +17,23 @@ representan la implementación actual.
 | [`kanban-policies.md`](kanban-policies.md) | Políticas de flujo y métricas; incluye las limitaciones de evidencia. |
 | [`sprint-2-planning.md`](sprint-2-planning.md) | Propuesta de selección HU-06 para el Sprint 2; requiere decisiones y aprobación del equipo. |
 | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | Estado ejecutivo del avance técnico verificable y pendientes; no inventa resultados de un Sprint no documentado. |
-| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Evidencia histórica de cobertura JaCoCo generada por CI con Java 25; no valida la configuración académica vigente en Java 17. |
+| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Cobertura del reporte JaCoCo descargado del CI Java 25, con acceso al HTML completo y contadores agregados. |
 | [`evidencias/anexo-evidencias-jacoco-kanban.pdf`](evidencias/anexo-evidencias-jacoco-kanban.pdf) | Anexo PDF con resultados JaCoCo y captura de los límites WIP visibles en GitHub Projects. |
-| [`sprint-2-review-template.md`](sprint-2-review-template.md) | Plantilla vacía para documentar la Review real del Sprint 2. |
-| [`sprint-2-retrospective-template.md`](sprint-2-retrospective-template.md) | Plantilla vacía para documentar la retrospectiva real del Sprint 2. |
+| [`sprint-2-review.md`](sprint-2-review.md) | Review del Sprint 2: incremento, evidencia y trabajo pendiente. |
+| [`sprint-2-retrospective.md`](sprint-2-retrospective.md) | Retrospectiva del Sprint 2 (Start / Stop / Continue), en tercera persona. |
 | [`diseno/Documento_de_arquitectura.md`](diseno/Documento_de_arquitectura.md) | Arquitectura propuesta y contraste con el código actual. |
 | [`diseno/Documento_de_normalizacion.md`](diseno/Documento_de_normalizacion.md) | Contrasta el modelo implementado con la propuesta académica normalizada. |
 | [`diseno/Documento_de_prototipado.md`](diseno/Documento_de_prototipado.md) | Wireframes y flujos propuestos; no son pantallas implementadas. |
 | [`diseno/Anexo_de_diagramas.md`](diseno/Anexo_de_diagramas.md) | Catálogo de diagramas y mockups. |
 | [`diseno/schema.sql`](diseno/schema.sql) | DDL de referencia para el modelo JPA vigente, en una base vacía; no es una migración automática. |
 | [`diseno/schema-academico-propuesto.sql`](diseno/schema-academico-propuesto.sql) | DDL separado del diseño académico propuesto de cinco entidades; no corresponde al esquema vigente. |
+| [`diseno/arquitectura-mvc-gof.md`](diseno/arquitectura-mvc-gof.md) | Nombre de la guía para la arquitectura MVC de 4 capas y patrones GoF (mismo contenido que `Documento_de_arquitectura.md`). |
+| [`diseno/modelo-entidad-relacion.png`](diseno/modelo-entidad-relacion.png) | MER conceptual (copia de la Figura 3 del anexo). |
+| [`diseno/modelo-datos-der.png`](diseno/modelo-datos-der.png) | Modelo físico / DER (copia de la Figura 2); el DDL está en `diseno/schema.sql`. |
+| [`diseno/diagrama-despliegue.png`](diseno/diagrama-despliegue.png) | Diagrama de despliegue (Figura 7). |
+| [`diseno/diagrama-secuencia.png`](diseno/diagrama-secuencia.png) | Diagrama de secuencia (Figura 5). |
+| [`diseno/diagrama-componentes.png`](diseno/diagrama-componentes.png) | Diagrama de componentes (Figura 6). |
+| [`diseno/mockups-ui.pdf`](diseno/mockups-ui.pdf) | Flujo de pantallas y mockups reunidos en un PDF (Figuras 8 a 14). |
 
 ## Evidencia y estado
 
@@ -41,7 +48,7 @@ verificaciones realizadas el 22/10/2026 y el 28/10/2026, no evidencia histórica
 - [Anexo PDF: cobertura JaCoCo y captura de WIP](evidencias/anexo-evidencias-jacoco-kanban.pdf).
 - [Captura del tablero con WIP In Progress 3 y Code Review / Testing 2](evidencias/tablero-kanban-limites-wip-2026-10-28.png); muestra la configuración visible en ese momento, no su cumplimiento histórico.
 - [Build exitoso y Checkstyle](evidencias/validacion-build-checkstyle-2026-10-22.png).
-- [Captura histórica del Pull Request #56 con CI Java 25 aprobado y revisión pendiente al momento de la captura](evidencias/ci-java25-pr-56-2026-10-28.png).
+- [Pull Request #56 con CI Java 25 aprobado y revisión pendiente](evidencias/ci-java25-pr-56-2026-10-28.png).
 - [Restricción única para la cédula en PostgreSQL](evidencias/pgadmin-restriccion-2026-10-28.png).
 - [Tablas de `agrovalle_db` antes de crear `productos`](evidencias/pgadmin-tablas-2026-10-28.png).
 - [Listado de reglas de protección para `main` y `develop`](evidencias/proteccion-ramas-main-develop-2026-10-28.png).
@@ -79,16 +86,16 @@ Una primera petición contra una copia desechable no devolvió respuesta HTTP y 
 determinar si llegó a ejecutarse. La copia temporal se eliminó antes de consultar el marcador de
 esa petición, así que su resultado queda indeterminado. En un segundo intento se preparó otra
 base vacía, pero el lanzador Java no inició la aplicación: su compilación Maven usó el JDK
-predeterminado 17.0.12, mientras el proyecto estaba configurado entonces para Java 25
+predeterminado 17.0.12, mientras en ese momento el proyecto estaba configurado para Java 25
 (`release 25`). No se envió ninguna
 petición en este segundo intento. La base y el archivo de configuración temporales se eliminaron,
 y la base real no recibió solicitudes de prueba. Por tanto, el DDL y la inserción SQL reversible
 están verificados; la persistencia mediante HTTP queda pendiente de una ejecución exitosa con la
-versión Java 17 requerida por la guía académica.
+versión Java 17 que ahora exige el proyecto según la guía académica.
 
-El 29/10/2026 se corrigieron el `pom.xml`, el workflow y la documentación para volver a Java 17.
-Los resultados y el reporte JaCoCo obtenidos con Java 25 que se describen a continuación son
-evidencia histórica de esa configuración anterior, no validación de la configuración vigente.
+El 29/10/2026, la configuración vigente se alineó a Java 17 para cumplir la guía académica. Las
+validaciones descritas a continuación y los runs de Java 25 son evidencia histórica de una
+configuración anterior; no sustituyen una nueva ejecución local y de CI con Java 17.
 
 ### Verificación local de calidad — 2026-10-28
 
@@ -108,13 +115,13 @@ La ejecución remota #91 de GitHub Actions para el [Pull Request #56](https://gi
 finalizó correctamente el 28/10/2026: el workflow configuró Java 25 Temurin y pasaron compilación,
 Checkstyle y JaCoCo. La [ejecución #91](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40811041503)
 corresponde al commit `0c9d664`; el reporte descargado midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas.
-Al momento de la captura, el PR esperaba una aprobación. Después se integró en `develop` y luego
-los cambios de `develop` llegaron a `main` mediante el PR #58. La captura enlazada arriba conserva
-el estado y el check que tenía el PR en ese momento.
+El PR sigue abierto contra `develop` y GitHub indica que falta
+al menos una aprobación; por tanto, el CI está verde, pero los cambios todavía no se han integrado.
+La captura enlazada arriba conserva la vista del PR y su check exitoso.
 
 La ejecución anterior #86 en `main`, commit
 [`f648ba7`](https://github.com/DilanStiven/Ingenieria-de-software/commit/f648ba77d36b8876d35c377cef766529538a1f82),
-terminó correctamente el 19/10/2026 usando Java 17. Las capturas de
+terminó correctamente el 19/10/2026 usando Java 17; no validaba Java 25. Las capturas de
 configuración verifican que tanto `main` como `develop` exigen Pull Request, una aprobación y el
 check `Build, Checkstyle & JaCoCo Coverage`; en ambas se muestran desactivados force push y
 eliminación.
@@ -123,8 +130,8 @@ eliminación.
 
 - Configurar el depurador con JDK 17 y volver a realizar la prueba HTTP de persistencia contra una
   base desechable.
-- Esperar la aprobación e integración del [PR #60](https://github.com/DilanStiven/Ingenieria-de-software/pull/60),
-  cuya ejecución CI pasó con Java 17.
+- Obtener la aprobación requerida y completar la integración del Pull Request #56 a `develop`;
+  el run verde de Java 25 acredita la rama del PR, no todavía `main`.
 - Realizar el Planning real del Sprint 2, confirmar o cambiar HU-06, tomar decisiones pendientes,
   y completar Review/retrospectiva con fechas y resultados reales. Las tres revisiones adicionales
   de avance reportadas por el equipo se consignan sin inventar sus fechas.
