@@ -32,6 +32,16 @@
 | 3 | Lunes 28/09/2026 | Los 4 integrantes | Realizada | Ninguno |
 | 4 | Miércoles 30/09/2026 | Los 4 integrantes | Realizada | Conflictos de merge leves al integrar ramas |
 
+> **Nota de trazabilidad (aclaración del equipo, 28/10/2026):** el equipo reporta siete espacios
+> de seguimiento: cuatro reuniones de Sprint con bitácora detallada y tres revisiones adicionales
+> para comprobar qué faltaba y qué estaba completo. Las cuatro entradas conservadas tienen fechas
+> del 24/09 al 30/09, dentro del periodo asignado al Sprint 1 en su Planning; el equipo no recuerda
+> con certeza si en su momento las identificó como Sprint 1 o Sprint 2. Se mantienen aquí por las
+> fechas que quedaron escritas, sin atribuirles más contexto del que respaldan. De los otros tres
+> seguimientos no se conservan fechas ni notas, por lo que no se reconstruyen. Tampoco se guardó
+> una serie de capturas o historial de transiciones del tablero; los estados de las cuatro entradas
+> son fotografías puntuales, no una línea de tiempo ni evidencia para calcular tiempos de ciclo.
+
 ---
 
 ## 3. Asignación y enfoque por historia

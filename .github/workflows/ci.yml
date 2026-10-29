@@ -15,10 +15,10 @@ jobs:
       - name: 1. Checkout del Repositorio
         uses: actions/checkout@v4
 
-      - name: 2. Configurar Java 17 LTS (Eclipse Temurin)
+      - name: 2. Configurar Java 25 LTS (Eclipse Temurin)
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'temurin'
           cache: maven
 
@@ -32,7 +32,7 @@ jobs:
         run: ./mvnw checkstyle:check
 
       - name: 6. Paso 3 — Pruebas Unitarias y Cobertura JaCoCo
-        run: ./mvnw test
+        run: ./mvnw verify
 
       - name: 7. Subir Reporte de Cobertura JaCoCo como Artefacto
         if: always()

@@ -8,6 +8,12 @@ Ingeniería de Software II \| Proyecto AgroValle \| Estudiante(s): Grupo 5
 
 Este documento presenta los prototipos de baja fidelidad (wireframes) de las pantallas principales de AgroValle, junto con el flujo de navegación entre ellas. El propósito es validar la estructura, los campos y el recorrido del usuario con el Product Owner antes de construir las interfaces definitivas, evitando retrabajo en el desarrollo.
 
+> **Estado:** estos mockups representan una propuesta de interfaz web, no funcionalidades
+> implementadas en el repositorio actual. El proyecto disponible expone una API REST; no contiene
+> las pantallas de login, registro con contraseña, cosechas ni ofertas descritas aquí. La tabla de
+> validación al final queda pendiente hasta que exista evidencia de revisión y aprobación del
+> Product Owner.
+
 Los mockups se dibujan en escala de grises, sin colores, tipografías finales ni imágenes, para centrar la discusión en el contenido y el comportamiento y no en la estética. Los campos de cada formulario corresponden a las tablas definidas en el modelo de datos (municipio, agricultor, producto, cosecha y oferta) y a los DTO de la arquitectura.
 
 ## 2. Criterios de diseño

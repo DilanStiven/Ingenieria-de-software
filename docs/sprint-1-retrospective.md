@@ -24,18 +24,18 @@ las auditorías de Checkstyle, lo que elevó la carga en los últimos días.
 
 | # | Observación (tercera persona) | Evidencia |
 | --- | --- | --- |
-| 1 | El equipo realizó las 7 Dailies acordadas y reportó sus avances e impedimentos de forma clara. | Bitácora de Daily Scrums |
+| 1 | El equipo reportó cuatro reuniones de Sprint con bitácora y tres revisiones adicionales para revisar pendientes y avances. | Aclaración del equipo del 28/10/2026; solo cuatro registros conservan fecha y detalle. |
 | 2 | Kevin Lucumi destacó que el uso de Conventional Commits y de un Pull Request por tarea facilitó el seguimiento de los cambios. | Historial de GitHub |
 | 3 | Se observó que la división del trabajo por capas (modelo, repositorio, servicio, controlador) permitió avanzar en paralelo sin bloqueos prolongados. | Tablero de GitHub Projects |
-| 4 | El equipo consideró que los pre-commit hooks de Husky evitaron subir código con errores de estilo. | Evidencia `husky-hook.png` |
+| 4 | El equipo consideró que los pre-commit hooks de Husky evitaron subir código con errores de estilo. | Captura `husky-hook.png` citada en el registro, no incluida en `docs/evidencias/`. |
 
 ## 3. ¿Qué no funcionó? (Stop)
 
 | # | Observación (tercera persona) | Impacto | Evidencia |
 | --- | --- | --- | --- |
-| 1 | El equipo identificó que las pruebas automatizadas y las auditorías de Checkstyle se dejaron para los últimos días del Sprint. | Aumento de la carga y riesgo de cerrar sin margen. | Daily #7: tareas 1.7 y 2.6 en revisión y 1.8, 2.7 y 4.4 en progreso |
+| 1 | El equipo identificó que las pruebas automatizadas y las auditorías de Checkstyle se dejaron para los últimos días del Sprint. | Aumento de la carga y riesgo de cerrar sin margen. | Reporte retrospectivo del equipo; no se conserva el detalle de la reunión #7. |
 | 2 | Kevin Lucumi señaló que la tarea 1.4 (`JwtService`) tomó 3 horas en lugar de las 2 estimadas por la falta de práctica con la API de jjwt. | +1 h en HU-01. | Daily #2 y Review, sección 5 |
-| 3 | Se evidenció que el 05/10 la columna *Code Review* llegó a 3 tarjetas, por encima del límite de 2. | Tareas esperando aprobación. | Daily #6 |
+| 3 | El equipo reportó que el 05/10 había 3 tarjetas en *Code Review*, por encima del límite de 2. | Tareas esperando aprobación. | Reporte retrospectivo del equipo; no se conserva el detalle de la reunión #6 ni un historial del tablero para verificar la transición. |
 
 ## 4. ¿Qué se debería empezar a hacer? (Start)
 
@@ -60,7 +60,7 @@ las auditorías de Checkstyle, lo que elevó la carga en los últimos días.
 | --- | --- |
 | Story Points comprometidos / completados | 10 / 10 |
 | Horas planificadas / reales | 38 / 40 |
-| Dailies realizadas | 7 de 7 |
+| Dailies reportadas | 7 según el cierre del Sprint; 4 cuentan con registro detallado en `docs/bitacora-daily-scrum.md` |
 | Pull Requests fusionados | 20 (uno por tarea) |
 | Veces que se superó un WIP Limit | 1 |
 | Impedimentos reportados / resueltos | 4 / 4 |
@@ -85,3 +85,9 @@ Como cierre, el equipo concluyó que la estandarización técnica del Sprint 0 (
 Conventional Commits) contribuyó al cumplimiento del Sprint Goal. El principal aprendizaje fue la
 necesidad de integrar las pruebas automatizadas en el trabajo diario, y ese será el foco de mejora
 del Sprint 2.
+
+> **Trazabilidad (aclaración del equipo, 28/10/2026):** se reportan cuatro reuniones de Sprint con
+> registro detallado y tres revisiones adicionales de avance para identificar trabajo pendiente y
+> completo. No se conservan fechas ni notas de estas tres revisiones ni una línea de tiempo del
+> tablero. Los cuatro registros disponibles se mantienen con las fechas que ya aparecen en la
+> bitácora; no se atribuyen fechas, transiciones ni contenido a los seguimientos sin respaldo.
