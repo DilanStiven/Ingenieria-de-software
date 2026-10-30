@@ -39,6 +39,23 @@ class ProductoControllerTest {
     private ProductoService productoService;
 
     /**
+     * Verifica que los filtros sean opcionales y la consulta pública responda 200.
+     *
+     * @throws Exception si falla la petición HTTP simulada
+     */
+    @Test
+    @DisplayName("Sin filtros responde 200 con arreglo vacío")
+    void sinFiltros() throws Exception {
+        when(productoService.filtrar(null, null, null)).thenReturn(List.of());
+
+        mockMvc.perform(get(URL).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+
+        verify(productoService).filtrar(null, null, null);
+    }
+
+    /**
      * Verifica la respuesta exitosa y el paso de los filtros opcionales al servicio.
      *
      * @throws Exception si falla la petición HTTP simulada
