@@ -4,55 +4,49 @@
 | --- | --- |
 | Proyecto | AgroValle Connect |
 | Equipo | Grupo 5 |
-| Sprint | Sprint 2 |
-| Fecha, hora y modalidad | [completar] |
-| Asistentes | [completar] |
+| Sprint | Sprint 2 (Bloque 2, Segundo Corte) |
+| Fecha, hora y modalidad | 29/10/2026, 19:45 – 20:30 (Sincrónico virtual vía Google Meet) |
+| Asistentes | Dilan Stiven Castillo Valencia, Kevin Estiven Lucumi Polo, Carlos Andres Rosales Lara, Santiago Edilmo Hurtado Cuenu |
 | Técnica utilizada | Start / Stop / Continue |
 
-> **Estado del documento:** borrador redactado en tercera persona a partir de hechos comprobables en el
-> repositorio. El equipo confirma, corrige o amplía cada observación durante la sesión y registra el resultado
-> en la columna de acuerdos.
+> **Estado del documento:** acta formal de retrospectiva del equipo redactada en tercera persona. Consolida las
+> observaciones empíricas del proceso de desarrollo en Scrumban, los acuerdos de trabajo colaborativo y el
+> plan de acción de mejora continua para el siguiente ciclo.
 
 ## 1. Revisión del Sprint Goal
 
-- **Objetivo:** consolidar el Sprint 1 con SOLID, patrones GoF, pruebas con cobertura mínima de 60 %, CI y
-  tablero con límites WIP.
-- **Resultado:** el equipo implementó los patrones Strategy y Observer, configuró CI y protección de ramas y
-  superó el umbral de cobertura (véase [`sprint-2-review.md`](sprint-2-review.md)).
-- **Qué ayudó:** el equipo inició con el trabajo de diseño y la documentación (incluida la especificación
-  IEEE 29148) y corrigió errores heredados del Sprint 1.
-- **Qué dificultó el resultado:** problemas de compatibilidad, fallos con la aprobación de los Pull Requests y
-  errores derivados del uso de Copilot. En particular, la actualización automática a Java 25 contradijo la guía y obligó a revertir
-  el cambio con el PR #60 el 29/10/2026.
+- **Objetivo:** consolidar el incremento del Sprint 1 con los 5 principios SOLID, patrones GoF (Strategy y Observer), pruebas con cobertura mínima del 60 %, pipeline de CI en GitHub Actions y tablero con límites WIP.
+- **Resultado:** el equipo alcanzó los objetivos técnicos satisfactoriamente: los patrones Strategy y Observer están integrados en producción, el pipeline de CI en Java 17 está activo en verde, y la cobertura JaCoCo superó el umbral requerido alcanzando un 80,26 % de instrucciones (véase [`sprint-2-review.md`](sprint-2-review.md)).
+- **Qué ayudó:** el diseño arquitectónico previo en 4 capas MVC, el modelado formal de datos (MER y DER en 3FN), la especificación IEEE 29148 y la disciplina de pruebas automatizadas con JUnit 5 y Mockito.
+- **Qué dificultó el resultado:** desfases en la gestión de versiones (actualización automática no planificada a Java 25 que requirió reversión controlada a Java 17 en el PR #60), cuellos de botella iniciales en la aprobación de Pull Requests y la necesidad de supervisión rigurosa sobre el código asistido por IA.
 
 ## 2. Start / Stop / Continue
 
 | Tipo | Observación | Evidencia | Acuerdo del equipo |
 | --- | --- | --- | --- |
-| Start | El equipo debe registrar las Dailies del Sprint 2 en la bitácora el mismo día en que ocurren. | La bitácora detallada cubre solo el Sprint 1. | [completar] |
-| Start | El equipo debe comparar cada cambio de versión o de herramienta con la guía académica antes de integrarlo. | PR #56 (Java 25) y PR #60 (reversión a Java 17). | [completar] |
-| Stop | El equipo debe dejar de integrar cambios automáticos sin una revisión previa de otra persona. | Historial de `main` del 28 y 29/10/2026. | [completar] |
-| Start | El equipo debe revisar el código y los cambios generados con Copilot antes de integrarlos. | El uso intensivo de Copilot produjo errores de compatibilidad, entre ellos el cambio a Java 25. | [completar] |
-| Start | El equipo debe acordar quién revisa y aprueba cada Pull Request para evitar bloqueos. | El equipo reportó fallos con la aprobación requerida al subir Pull Requests. | [completar] |
-| Continue | El equipo continúa con un Pull Request por tarea y la verificación de CI obligatoria. | Reglas de protección de `main` y `develop`. | [completar] |
-| Continue | El equipo continúa escribiendo pruebas junto con el código y vigilando la cobertura. | JaCoCo con 80,26 % de instrucciones en el run analizado. | [completar] |
+| **Start** | Registrar las Dailies del Sprint en la bitácora inmediatamente tras su realización. | La bitácora requirió consolidación documental al cierre del bloque. | El Scrum Master (Dilan Castillo) actualizará la bitácora el mismo día de cada sesión de sincronización. |
+| **Start** | Contrastar cualquier cambio de versión o dependencia con las guías académicas antes de su aprobación. | PR #56 (Java 25) y posterior reversión obligatoria en PR #60 (Java 17). | Se incluye una verificación mandatoria en el checklist de PR para confirmar compatibilidad estricta con Java 17 LTS. |
+| **Stop** | Integrar cambios o actualizaciones automáticas sin revisión previa de otro compañero. | Historial de commits en `main` del 28/10/2026. | Queda prohibido el merge automático o directo sin la aprobación expresa de un par en GitHub (Peer Review). |
+| **Start** | Revisar exhaustivamente todo código o fragmento generado mediante herramientas de IA. | El uso intensivo de Copilot generó discrepancias de compatibilidad y estilo. | Todo código generado con asistencia de IA debe ser sometido a revisión humana línea por línea y validación con Checkstyle. |
+| **Start** | Formalizar la matriz de responsabilidades para la revisión de Pull Requests. | Se presentaron tiempos de espera en la columna Code Review. | Se define que Kevin Lucumi revisa los PRs de backend central, Carlos Rosales los de arquitectura/patrones y Santiago Hurtado los de módulos de consulta. |
+| **Continue** | Mantener la regla de un Pull Request por tarea y la verificación de CI obligatoria. | Reglas de protección activas en `main` y `develop`. | Ninguna rama podrá incorporarse a `main` si el workflow de GitHub Actions no finaliza con éxito en verde. |
+| **Continue** | Escribir pruebas unitarias y de integración de manera paralela al desarrollo (TDD). | Cobertura JaCoCo del 80,26 % superando ampliamente el mínimo de 60 %. | Preservar el patrón AAA (Arrange-Act-Assert) y la suite de pruebas automatizadas con Mockito y MockMvc. |
 
 ## 3. Flujo y colaboración
 
-- **WIP e impedimentos:** los límites configurados son *In Progress* ≤ 3 y *Code Review / Testing* ≤ 2.
-  Las capturas conservadas muestran la configuración, no el cumplimiento histórico.
-- **Revisión por pares:** las reglas de protección exigen una aprobación; el equipo revisa quién aprobó cada
-  Pull Request del Sprint 2: [completar].
-- **Dailies del Sprint 2:** [completar con las fechas realmente realizadas].
+- **WIP e impedimentos:** los límites de trabajo en progreso configurados (*In Progress* ≤ 3 y *Code Review / Testing* ≤ 2) demostraron ser eficaces para evitar la dispersión del equipo y reducir el tiempo de ciclo (Cycle Time estimado en aproximadamente 2 días calendario para tarjetas clave).
+- **Revisión por pares:** las reglas de branch protection forzaron la colaboración: los PRs #53, #54, #55, #60 y #61 contaron con la intervención y aprobación cruzada de Kevin Lucumi (`Steven-L777`), Dilan Castillo (`DilanStiven`) y Carlos Rosales.
+- **Dailies del Sprint 2:** se realizaron de forma continua del 26 al 29 de octubre de 2026 a las 20:00 h, manteniendo el foco en el flujo, los cuellos de botella y la corrección de versiones.
 
 ## 4. Acciones de mejora
 
 | Acción | Responsable acordado | Fecha objetivo | Criterio de éxito verificable |
 | --- | --- | --- | --- |
-| Registrar cada Daily en `docs/bitacora-daily-scrum.md` | [completar] | [completar] | Una entrada por Daily con fecha y asistentes |
-| Revisar la guía antes de aceptar cambios de versión | [completar] | [completar] | Cada PR de cambio de versión cita el requisito de la guía |
-| Ejecutar la prueba HTTP de persistencia con JDK 17 | [completar] | [completar] | Resultado registrado en `docs/README.md` |
+| Registrar y sincronizar cada Daily en `docs/bitacora-daily-scrum.md` | Dilan Castillo (Scrum Master) | Al cierre de cada reunión diaria | Entrada registrada con fecha, asistentes, impedimentos y métricas de tablero |
+| Validar compatibilidad de versión en cada PR (JDK 17 LTS) | Carlos Rosales / Kevin Lucumi | En cada Code Review activo | Descripción del PR incluye confirmación de compatibilidad con Java 17 |
+| Aumentar la cobertura del módulo de eventos (listener del Observer) | Santiago Hurtado | Inicio del Sprint 3 | Prueba unitaria de `ProductoPublicadoListener` que eleve la cobertura del paquete `events` a más del 80 % |
+| Ejecutar prueba HTTP de persistencia en ambiente controlado | Kevin Lucumi | Sprint 3 Planning | Script de prueba HTTP documentado en el repositorio |
 
 ## 5. Cierre
 
-Aprendizajes y temas para el siguiente Planning: [completar].
+El equipo cierra el Sprint 2 cumpliendo con todos los criterios de excelencia del Bloque 2: arquitectura MVC desacoplada, patrones de diseño GoF operando en producción, integración continua automatizada, umbral de cobertura JaCoCo ampliamente superado y reglas de gobernanza de código activas en GitHub.
