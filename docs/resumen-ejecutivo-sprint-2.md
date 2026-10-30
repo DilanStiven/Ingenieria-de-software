@@ -22,7 +22,7 @@ AgroValle Connect cuenta con una API REST para el registro de agricultores, aute
 
 El PR #56 sigue abierto hacia `develop` y requiere la aprobación configurada; por tanto, el CI verde valida la rama del PR, no una integración en `main`. La selección del Sprint Goal y las historias, las fechas, los puntos comprometidos/completados, la retroalimentación y los resultados de una Review/retrospectiva reales deben confirmarse con el equipo antes de reportarlos como hechos. La validación HTTP de productos continúa pendiente.
 
-**Conclusión:** el proyecto tiene evidencia técnica favorable de compilación, pruebas, estilo y cobertura con Java 25. Para cerrar un informe de Sprint 2 como Sprint ejecutado, falta incorporar los acuerdos y resultados reales del equipo; este documento mantiene explícita esa limitación y evita inventar métricas o decisiones.
+**Conclusión:** el proyecto tiene evidencia histórica favorable de compilación, pruebas, estilo y cobertura con Java 25. La configuración actual se alineó a Java 17 para cumplir la guía académica, por lo que esa evidencia histórica no valida la configuración vigente; se debe volver a ejecutar CI con Java 17. Para cerrar un informe de Sprint 2 como Sprint ejecutado, falta incorporar los acuerdos y resultados reales del equipo; este documento mantiene explícita esa limitación y evita inventar métricas o decisiones.
 
 ## Enlaces
 

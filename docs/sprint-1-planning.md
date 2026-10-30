@@ -11,7 +11,7 @@
 | **Asignatura** | Ingeniería de Software II — UNIAJC |
 | **Período / Docente** | 2-2026 / Paola Andrea Bedoya Toro |
 | **Equipo Scrum** | Grupo 5 |
-| **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Estiven Castillo CC 1089002055, Santiago Edilmo Cueno Hurtado CC 1089001065|
+| **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065|
 | **Duración del Sprint** | 2 semanas (24/09/2026 – 09/10/2026) |
 | **Archivo** | `docs/sprint-1-planning.md` |
 | **Norma de calidad** | ISO/IEC 25010:2011 |
@@ -47,13 +47,13 @@ Al finalizar el Sprint 1 el sistema permitirá:
 | Reserva para ceremonias e imprevistos | **10 h** (≈ 21 %): Daily Scrums, Sprint Review, Retrospectiva, revisión de PRs y correcciones |
 | Historias seleccionadas | 3 (HU-01, HU-02, HU-04) |
 | Prioridad global | Must Have (MoSCoW) |
-| Stack | Java 25, Spring Boot 4.1.1, Spring Security + JWT, PostgreSQL 15, Flyway, JUnit 5, Mockito, Checkstyle |
+| Stack | Java 17, Spring Boot 4.1.1, Spring Security + JWT, PostgreSQL 15, Flyway, JUnit 5, Mockito, Checkstyle |
 
 Las 38 h planificadas caben en la capacidad de 48 h y dejan margen de seguridad, lo que justifica
 comprometer **10 Story Points** en este Sprint.
 
 > **Trazabilidad del stack:** la tabla registra las tecnologías previstas en el Planning; no
-> certifica que todas se configuraran. En la aplicación vigente Java es 25 y Flyway no está
+> certifica que todas se configuraran. En la aplicación vigente Java es 17 y Flyway no está
 > configurado, por lo que las migraciones SQL del repositorio no se ejecutan automáticamente.
 > La versión PostgreSQL de producción no está fijada por el proyecto; la instancia local verificada
 > el 28/10/2026 es PostgreSQL 17.
@@ -81,8 +81,8 @@ una selección obligatoria ni se renumeró el backlog.
 | --- | --- | --- |
 | Carlos Andres Rosales Lara | 1.1, 1.2, 1.3, 1.7, 1.8, 4.1 | 10 h |
 | Kevin Estiven Lucumi Polo | 1.4, 1.5, 2.3, 2.5, 2.7 | 10 h |
-| Dilan Estiven Castillo | 1.6, 2.1, 2.2, 4.2, 4.3 | 9 h |
-| Santiago Edilmo Cueno Hurtado | 2.4, 2.6, 4.4, 4.5 | 9 h |
+| Dilan Stiven Castillo Valencia | 1.6, 2.1, 2.2, 4.2, 4.3 | 9 h |
+| Santiago Edilmo Hurtado Cuenu | 2.4, 2.6, 4.4, 4.5 | 9 h |
 | **Total** | 20 tareas | **38 h** |
 
 La asignación queda balanceada (≈ 9,5 h por persona frente a 12 h de capacidad individual) y
@@ -196,7 +196,7 @@ public class Productor {
 
 #### Tarea 1.2 — `ProductorRepository` (1 h) — *Carlos*
 
-- **Componente:** Java 25, Spring Data JPA (métodos derivados).
+- **Componente:** Java 17, Spring Data JPA (métodos derivados).
 - **ISO/IEC 25010:** *Adecuación Funcional → Corrección funcional* (la consulta de existencia
   es exacta y se resuelve en la base de datos).
 - **Ubicación:** `src/main/java/com/agrovalle/repositories/ProductorRepository.java`
