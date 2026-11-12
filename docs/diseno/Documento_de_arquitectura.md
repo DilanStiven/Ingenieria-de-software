@@ -6,11 +6,11 @@ Ingeniería de Software II \| Proyecto AgroValle \| Grupo 5
 
 ## 1. Objetivo
 
-Este documento describe la arquitectura de software del proyecto: el estilo arquitectónico elegido (MVC en capas), la organización de paquetes, los diagramas de componentes, secuencia y despliegue, y los patrones de diseño aplicados. La tecnología base es Java 25, Spring Boot 4.1.1, Spring Data JPA y PostgreSQL.
+Este documento describe la arquitectura de software del proyecto: el estilo arquitectónico elegido (MVC en capas), la organización de paquetes, los diagramas de componentes, secuencia y despliegue, y los patrones de diseño aplicados. La tecnología base es Java 17, Spring Boot 4.1.1, Spring Data JPA y PostgreSQL.
 
 > **Estado de los diagramas:** las imágenes de componentes, secuencia y despliegue son artefactos
 > del diseño académico inicial. Las vistas Mermaid de esta sección documentan la arquitectura
-> actual: Java 25 y API REST, sin una interfaz web implementada en este repositorio.
+> actual: Java 17 y API REST, sin una interfaz web implementada en este repositorio.
 
 ## 2. Estilo arquitectónico: MVC en capas
 
@@ -115,12 +115,12 @@ sequenceDiagram
 ## 5. Diagrama de despliegue
 
 La imagen siguiente es una propuesta académica de topología. El despliegue local observado usa
-Java 25, Spring Boot con servidor embebido y PostgreSQL; no hay una interfaz web independiente.
+Java 17, Spring Boot con servidor embebido y PostgreSQL; no hay una interfaz web independiente.
 Los puertos y URL de desarrollo dependen del entorno.
 
 ```mermaid
 flowchart LR
-    Cliente[Cliente HTTP / JSON] -->|HTTP en entorno local| App[Spring Boot / JVM Java 25]
+    Cliente[Cliente HTTP / JSON] -->|HTTP en entorno local| App[Spring Boot / JVM Java 17]
     App -->|JDBC / PostgreSQL| DB[(PostgreSQL en 127.0.0.1:5432)]
 ```
 
@@ -131,7 +131,7 @@ flowchart LR
 | **Nodo**                  | **Software / artefacto**                                       | **Comunicación**                                     |
 |---------------------------|----------------------------------------------------------------|------------------------------------------------------|
 | Equipo del usuario        | Navegador web                                                  | HTTPS (puerto 443) hacia el servidor de aplicaciones |
-| Servidor de aplicaciones  | Java 25 (JVM), agrovalle.jar con Spring Boot y Tomcat embebido | JDBC (puerto 5432) hacia la base de datos            |
+| Servidor de aplicaciones  | Java 17 (JVM), agrovalle.jar con Spring Boot y Tomcat embebido | JDBC (puerto 5432) hacia la base de datos            |
 | Servidor de base de datos | PostgreSQL; la versión no está fijada en la configuración de la aplicación | Recibe conexiones JDBC del servidor de aplicaciones |
 
 ## 6. Patrones de diseño aplicados

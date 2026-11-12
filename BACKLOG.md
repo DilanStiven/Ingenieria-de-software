@@ -12,15 +12,20 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 | HU-06 | Registro de Vehículos de Carga | M | 2 |
 | HU-07 | Programación y Asignación de Ruta | M | 5 |
 | HU-08 | Actualización de Estado de Entrega (Checkpoints) | S | 5 |
-| HU-09 | Pago de Pedido con Pasarela Virtual (PSE/Tarjetas) | M | 8 |
-| HU-10 | Generación de Comprobante de Pago y Factura | S | 3 |
-| HU-11 | Visualización de Saldo (Billetera del Agricultor) | M | 5 |
+| HU-09 | Pago de Pedido con Pasarela Virtual (PSE/Tarjetas) | M | 3 |
+| HU-10 | Generación de Comprobante de Pago y Factura | S | 2 |
+| HU-11 | Visualización de Saldo (Billetera del Agricultor) | M | 2 |
 | HU-12 | Notificación de Pago Rechazado | C | 2 |
-| HU-13 | Calificación del Producto y del Agricultor | M | 3 |
+| HU-13 | Calificación del Producto y del Agricultor | M | 2 |
 | HU-14 | Calificación del Servicio de Transporte | S | 2 |
 | HU-15 | Visualización de Reputación Promedio del Productor | M | 2 |
 
-**Total estimado: 52 Story Points**
+**Total estimado: 42 Story Points**
+
+**Reestimación acordada por el equipo (12/11/2026):** HU-09 = 3 SP, HU-10 = 2 SP,
+HU-11 = 2 SP y HU-13 = 2 SP. El alcance funcional de estas historias no se modifica con
+esta actualización de puntos. El equipo reportó como selección para Sprint 3 HU-08, HU-09
+y HU-12 (10 SP en total); la selección de Sprint 4 queda sujeta a su Planning.
 
 ---
 
@@ -49,9 +54,22 @@ Then el sistema valida que la fecha no sea anterior a hoy y retorna un ID de pro
 **Priorización:** Should Have — **Estimación:** 2 SP
 ```gherkin
 Given que existen 50 transacciones de "Café" en las últimas 24 horas
-When solicito el precio promedio de "Café"
-Then el sistema calcula la media aritmética y despliega el valor exacto en pesos colombianos
+When realizo GET /api/v1/precios/promedio?producto=Café
+Then el sistema calcula la media aritmética por kilogramo y retorna el promedio en COP y el número de transacciones consideradas
 ```
+
+**Contrato implementado:** la consulta es pública, no distingue mayúsculas en el nombre del
+producto y considera transacciones con fecha entre el instante actual y las 24 horas anteriores
+(ambos extremos incluidos). La respuesta contiene `producto`, `precioPromedio`, `moneda` (`COP`),
+`unidadPrecio` (`kg`) y `cantidadTransacciones`. El promedio se expresa con dos decimales usando
+redondeo HALF_UP; si no existen transacciones en la ventana, responde 404.
+
+El origen de datos es la tabla `transaccion_precio`: cada fila debe representar una transacción de
+venta completada, con el nombre del producto, precio unitario por kg y fecha/hora UTC. El código
+no usa publicaciones de catálogo como si fueran ventas ni agrega un endpoint para ingresar precios
+manualmente. La historia no determina qué flujo crea esas transacciones. HU-09 podría ser una
+fuente futura al confirmar un pago, pero la consulta no depende obligatoriamente de HU-09 si se
+acuerda otra fuente de ventas completadas. HU-05 (contacto) no equivale por sí mismo a una venta.
 
 ### HU-04: Filtro de Categorías y Municipios
 **Historia:** Como Comprador, quiero filtrar las cosechas por municipio (Dagua, Palmira, Buga) y categoría, para encontrar productos locales de mi interés rápidamente.
@@ -75,19 +93,50 @@ Then el sistema persiste la interacción en PostgreSQL y retorna status 200 OK c
 **Historia:** Como agricultor o transportista, quiero registrar los vehículos disponibles (placa, tipo de camión y capacidad en kg), para tener una flota lista al momento de despachar los pedidos.
 **Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
-Given que el usuario tiene rol de transportista o agricultor
-When ingresa los datos de su camión (placa "ABC-123", capacidad "1500kg") y guarda
-Then el sistema registra el vehículo y lo deja disponible para futuras programaciones de rutas
+Given que el usuario tiene un token JWT con rol de TRANSPORTISTA o AGRICULTOR
+When envía a POST /api/v1/vehiculos una placa, tipo y capacidad en kg válidos
+Then el sistema registra el vehículo a nombre del usuario, responde 201 Created y lo deja DISPONIBLE
 ```
+
+**Contrato implementado:** `POST /api/v1/vehiculos` recibe `{"placa":"ABC-123","tipo":"Camión","capacidadKg":1500}`.
+Acepta placas colombianas con tres letras y tres dígitos, con guion opcional; las convierte a
+mayúsculas y al formato `ABC-123`, y no permite duplicados. El tipo es texto obligatorio de hasta
+50 caracteres y la capacidad es un entero positivo en kilogramos. La respuesta incluye `id`,
+`placa`, `tipo`, `capacidadKg` y `estado` (`DISPONIBLE`). Solicitudes sin autenticación reciben
+401; campos inválidos reciben 400; placas repetidas reciben 409.
+
+El flujo de transportistas requiere registro básico en `POST
+/api/v1/auth/register-transportista` con `nombre` y `cedula`, y devuelve un JWT con rol
+`TRANSPORTISTA`. La cédula es única entre agricultores y transportistas a nivel de validación de
+servicio. El propietario se obtiene exclusivamente del JWT; no se acepta un ID de propietario en
+el cuerpo.
+
+**Supuestos técnicos pendientes de aprobación del equipo/Product Owner:** registro de
+transportista con nombre y cédula; capacidad como entero estrictamente positivo; tipo libre en vez
+de catálogo; formato de placa; y estado inicial `DISPONIBLE`. No se implementa todavía asignación
+a rutas ni administración/edición de vehículos.
 
 ### HU-07: Programación y Asignación de Ruta
 **Historia:** Como encargado de logística, quiero asignar un pedido preparado a un vehículo específico y fijar la fecha de salida, para organizar el despacho hacia Cali.
 **Priorización:** Must Have — **Estimación:** 5 SP
 ```gherkin
-Given que existe una orden en estado "Alistado"
-When el usuario selecciona un vehículo registrado y confirma la fecha de salida
-Then el pedido cambia a estado "En Ruta" y genera la guía de despacho
+Given que existe una orden logística en estado "ALISTADO"
+When el agricultor propietario o el transportista propietario del vehículo solicita POST /api/v1/ordenes/{id}/ruta con el vehículo y fecha de salida
+Then el sistema valida disponibilidad y capacidad, cambia la orden a "EN_RUTA" y devuelve una guía de despacho única
 ```
+
+**Flujo mínimo implementado:** un agricultor crea una orden logística con producto, peso y destino
+en `POST /api/v1/ordenes`; la orden inicia en `PENDIENTE_ALISTAMIENTO`. El agricultor propietario
+la cambia a `ALISTADO` con `PATCH /api/v1/ordenes/{id}/alistado`. Agricultores autenticados pueden
+asignar ruta a sus órdenes y transportistas autenticados pueden asignar sus propios vehículos a
+órdenes alistadas. `POST /api/v1/ordenes/{id}/ruta` recibe `vehiculoId` y `fechaSalida`.
+
+La fecha no puede ser anterior a hoy, el vehículo debe estar `DISPONIBLE` y su capacidad debe
+igualar o superar el peso de la carga. Si se cumplen las reglas, el sistema marca la orden
+`EN_RUTA`, cambia el vehículo a `EN_RUTA` y genera una guía única. Las órdenes y vehículos se
+bloquean durante la asignación para evitar dobles despachos concurrentes. El vehículo permanece
+ocupado. La liberación del vehículo tras una entrega queda fuera de HU-07 y podrá añadirse como
+alcance futuro si el equipo decide requerir ese ciclo.
 
 ### HU-08: Actualización de Estado de Entrega (Checkpoints)
 **Historia:** Como conductor, quiero actualizar el estado del viaje desde mi celular cuando llego a puntos clave o entrego la carga, para que el comprador sepa dónde está su mercancía.
@@ -100,7 +149,7 @@ Then el sistema actualiza la ubicación y notifica al comprador que su pedido es
 
 ### HU-09: Pago de Pedido con Pasarela Virtual (PSE/Tarjetas)
 **Historia:** Como comerciante, quiero pagar mi carrito de compras utilizando una pasarela de pagos, para asegurar mi pedido de forma rápida y sin usar efectivo.
-**Priorización:** Must Have — **Estimación:** 8 SP
+**Priorización:** Must Have — **Estimación:** 3 SP
 ```gherkin
 Given que el comerciante confirmó su carrito y está en la pantalla de pago
 When ingresa una tarjeta de crédito válida o aprueba la transacción por PSE
@@ -109,7 +158,7 @@ Then el sistema descuenta el dinero, confirma el pago exitoso y genera la orden 
 
 ### HU-10: Generación de Comprobante de Pago y Factura
 **Historia:** Como comerciante, quiero poder descargar un comprobante digital en PDF de mi transacción, para llevar el control contable de mi negocio.
-**Priorización:** Should Have — **Estimación:** 3 SP
+**Priorización:** Should Have — **Estimación:** 2 SP
 ```gherkin
 Given que el sistema procesó un pago exitosamente
 When el comerciante accede al historial de sus pedidos pagados y selecciona "Descargar Recibo"
@@ -118,7 +167,7 @@ Then el sistema genera y descarga un archivo PDF con los detalles de la compra y
 
 ### HU-11: Visualización de Saldo (Billetera del Agricultor)
 **Historia:** Como agricultor, quiero ver el saldo acumulado de las ventas que ya entregué, para poder solicitar el desembolso del dinero a mi cuenta bancaria.
-**Priorización:** Must Have — **Estimación:** 5 SP
+**Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
 Given que el agricultor ha completado entregas pagadas con éxito
 When ingresa a la sección "Mi Billetera" en su perfil
@@ -136,7 +185,7 @@ Then el sistema muestra un mensaje de "Pago Rechazado" y mantiene el carrito act
 
 ### HU-13: Calificación del Producto y del Agricultor
 **Historia:** Como comerciante, quiero calificar de 1 a 5 estrellas la calidad de la cosecha y dejar un comentario, para evaluar al agricultor que me vendió.
-**Priorización:** Must Have — **Estimación:** 3 SP
+**Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
 Given que una orden de compra fue marcada como "Entregada"
 When el comerciante asigna 5 estrellas y escribe "Excelente tomate"

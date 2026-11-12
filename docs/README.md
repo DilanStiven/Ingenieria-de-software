@@ -19,14 +19,21 @@ representan la implementación actual.
 | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | Estado ejecutivo del avance técnico verificable y pendientes; no inventa resultados de un Sprint no documentado. |
 | [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Cobertura del reporte JaCoCo descargado del CI Java 25, con acceso al HTML completo y contadores agregados. |
 | [`evidencias/anexo-evidencias-jacoco-kanban.pdf`](evidencias/anexo-evidencias-jacoco-kanban.pdf) | Anexo PDF con resultados JaCoCo y captura de los límites WIP visibles en GitHub Projects. |
-| [`sprint-2-review-template.md`](sprint-2-review-template.md) | Plantilla vacía para documentar la Review real del Sprint 2. |
-| [`sprint-2-retrospective-template.md`](sprint-2-retrospective-template.md) | Plantilla vacía para documentar la retrospectiva real del Sprint 2. |
+| [`sprint-2-review.md`](sprint-2-review.md) | Review del Sprint 2: incremento, evidencia y trabajo pendiente. |
+| [`sprint-2-retrospective.md`](sprint-2-retrospective.md) | Retrospectiva del Sprint 2 (Start / Stop / Continue), en tercera persona. |
 | [`diseno/Documento_de_arquitectura.md`](diseno/Documento_de_arquitectura.md) | Arquitectura propuesta y contraste con el código actual. |
 | [`diseno/Documento_de_normalizacion.md`](diseno/Documento_de_normalizacion.md) | Contrasta el modelo implementado con la propuesta académica normalizada. |
 | [`diseno/Documento_de_prototipado.md`](diseno/Documento_de_prototipado.md) | Wireframes y flujos propuestos; no son pantallas implementadas. |
 | [`diseno/Anexo_de_diagramas.md`](diseno/Anexo_de_diagramas.md) | Catálogo de diagramas y mockups. |
 | [`diseno/schema.sql`](diseno/schema.sql) | DDL de referencia para el modelo JPA vigente, en una base vacía; no es una migración automática. |
 | [`diseno/schema-academico-propuesto.sql`](diseno/schema-academico-propuesto.sql) | DDL separado del diseño académico propuesto de cinco entidades; no corresponde al esquema vigente. |
+| [`diseno/arquitectura-mvc-gof.md`](diseno/arquitectura-mvc-gof.md) | Nombre de la guía para la arquitectura MVC de 4 capas y patrones GoF (mismo contenido que `Documento_de_arquitectura.md`). |
+| [`diseno/modelo-entidad-relacion.png`](diseno/modelo-entidad-relacion.png) | MER conceptual (copia de la Figura 3 del anexo). |
+| [`diseno/modelo-datos-der.png`](diseno/modelo-datos-der.png) | Modelo físico / DER (copia de la Figura 2); el DDL está en `diseno/schema.sql`. |
+| [`diseno/diagrama-despliegue.png`](diseno/diagrama-despliegue.png) | Diagrama de despliegue (Figura 7). |
+| [`diseno/diagrama-secuencia.png`](diseno/diagrama-secuencia.png) | Diagrama de secuencia (Figura 5). |
+| [`diseno/diagrama-componentes.png`](diseno/diagrama-componentes.png) | Diagrama de componentes (Figura 6). |
+| [`diseno/mockups-ui.pdf`](diseno/mockups-ui.pdf) | Flujo de pantallas y mockups reunidos en un PDF (Figuras 8 a 14). |
 
 ## Evidencia y estado
 
@@ -79,11 +86,16 @@ Una primera petición contra una copia desechable no devolvió respuesta HTTP y 
 determinar si llegó a ejecutarse. La copia temporal se eliminó antes de consultar el marcador de
 esa petición, así que su resultado queda indeterminado. En un segundo intento se preparó otra
 base vacía, pero el lanzador Java no inició la aplicación: su compilación Maven usó el JDK
-predeterminado 17.0.12, mientras el proyecto requiere Java 25 (`release 25`). No se envió ninguna
+predeterminado 17.0.12, mientras en ese momento el proyecto estaba configurado para Java 25
+(`release 25`). No se envió ninguna
 petición en este segundo intento. La base y el archivo de configuración temporales se eliminaron,
 y la base real no recibió solicitudes de prueba. Por tanto, el DDL y la inserción SQL reversible
-están verificados; la persistencia mediante HTTP queda pendiente hasta configurar el depurador con
-el JDK 25 y obtener una ejecución exitosa.
+están verificados; la persistencia mediante HTTP queda pendiente de una ejecución exitosa con la
+versión Java 17 que ahora exige el proyecto según la guía académica.
+
+El 29/10/2026, la configuración vigente se alineó a Java 17 para cumplir la guía académica. Las
+validaciones descritas a continuación y los runs de Java 25 son evidencia histórica de una
+configuración anterior; no sustituyen una nueva ejecución local y de CI con Java 17.
 
 ### Verificación local de calidad — 2026-10-28
 
@@ -116,7 +128,7 @@ eliminación.
 
 ### Pendiente para la entrega formal
 
-- Configurar el depurador con JDK 25 y volver a realizar la prueba HTTP de persistencia contra una
+- Configurar el depurador con JDK 17 y volver a realizar la prueba HTTP de persistencia contra una
   base desechable.
 - Obtener la aprobación requerida y completar la integración del Pull Request #56 a `develop`;
   el run verde de Java 25 acredita la rama del PR, no todavía `main`.

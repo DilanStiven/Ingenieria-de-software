@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import com.agrovalle.agrovalle_connect.security.RolUsuario;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * Servicio que emite y valida tokens JWT de acceso para los agricultores.
+ * Servicio que emite y valida tokens JWT de acceso para los usuarios.
  */
 @Service
 public class JwtService {
@@ -38,10 +39,21 @@ public class JwtService {
      * @return token JWT
      */
     public String generarToken(final Long agricultorId) {
+        return generarToken(agricultorId, RolUsuario.AGRICULTOR);
+    }
+
+    /**
+     * Genera un token firmado para el usuario y rol indicados.
+     *
+     * @param usuarioId identificador del usuario
+     * @param rol rol del usuario
+     * @return token JWT
+     */
+    public String generarToken(final Long usuarioId, final RolUsuario rol) {
         Date ahora = new Date();
         return Jwts.builder()
-                .subject(String.valueOf(agricultorId))
-                .claim("rol", "AGRICULTOR")
+                .subject(String.valueOf(usuarioId))
+                .claim("rol", rol.name())
                 .issuedAt(ahora)
                 .expiration(new Date(ahora.getTime() + expiracionMs))
                 .signWith(clave)
@@ -56,7 +68,14 @@ public class JwtService {
      */
     public boolean esValido(final String token) {
         try {
-            leerClaims(token);
+            Claims claims = leerClaims(token);
+            String subject = claims.getSubject();
+            String rol = claims.get("rol", String.class);
+            if (subject == null || rol == null) {
+                return false;
+            }
+            Long.parseLong(subject);
+            RolUsuario.valueOf(rol);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -70,7 +89,27 @@ public class JwtService {
      * @return id del agricultor
      */
     public Long obtenerAgricultorId(final String token) {
+        return obtenerUsuarioId(token);
+    }
+
+    /**
+     * Obtiene el identificador guardado en un token válido.
+     *
+     * @param token token JWT válido
+     * @return id del usuario
+     */
+    public Long obtenerUsuarioId(final String token) {
         return Long.valueOf(leerClaims(token).getSubject());
+    }
+
+    /**
+     * Obtiene el rol guardado en un token válido.
+     *
+     * @param token token JWT válido
+     * @return rol del usuario
+     */
+    public RolUsuario obtenerRol(final String token) {
+        return RolUsuario.valueOf(leerClaims(token).get("rol", String.class));
     }
 
     private Claims leerClaims(final String token) {

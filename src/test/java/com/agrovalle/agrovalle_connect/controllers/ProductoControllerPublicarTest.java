@@ -62,7 +62,7 @@ class ProductoControllerPublicarTest {
                 .willReturn(new ProductoResponseDTO(PRODUCTO_ID, "Producto publicado exitosamente"));
 
         mockMvc.perform(post(URL)
-                .with(user("1"))
+                .with(user("1").authorities(() -> "ROLE_AGRICULTOR"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(BODY_VALIDO))
                 .andExpect(status().isCreated())
@@ -95,7 +95,7 @@ class ProductoControllerPublicarTest {
                         "La fecha de cosecha no puede ser anterior a hoy"));
 
         mockMvc.perform(post(URL)
-                .with(user("1"))
+                .with(user("1").authorities(() -> "ROLE_AGRICULTOR"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(bodyFechaPasada))
                 .andExpect(status().isBadRequest())

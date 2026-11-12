@@ -4,7 +4,7 @@
 | --- | --- |
 | **Proyecto** | AgroValle Connect |
 | **Equipo Scrum** | Grupo 5 |
-| **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Estiven Castillo CC 1089002055, Santiago Edilmo Cueno Hurtado CC 1089001065 |
+| **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065 |
 | **Sprint** | Sprint 1 (24/09/2026 – 09/10/2026) |
 | **Fecha de la Retrospectiva** | 09/10/2026 — 17:00 (Discord) |
 | **Técnica utilizada** | Start / Stop / Continue |
@@ -42,7 +42,7 @@ las auditorías de Checkstyle, lo que elevó la carga en los últimos días.
 | # | Propuesta (tercera persona) | Motivación |
 | --- | --- | --- |
 | 1 | El equipo propuso escribir las pruebas junto con cada tarea (enfoque cercano a TDD) en lugar de dejarlas al final. | Repartir la carga y detectar errores antes. |
-| 2 | Santiago Cueno sugirió trabajar en pareja las tareas de Spring Security en el Sprint 2. | Reducir la curva de aprendizaje y el riesgo de estimaciones cortas. |
+| 2 | Santiago Hurtado sugirió trabajar en pareja las tareas de Spring Security en el Sprint 2. | Reducir la curva de aprendizaje y el riesgo de estimaciones cortas. |
 
 ## 5. Análisis de los riesgos identificados en el Planning
 

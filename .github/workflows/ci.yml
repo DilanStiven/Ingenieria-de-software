@@ -15,10 +15,10 @@ jobs:
       - name: 1. Checkout del Repositorio
         uses: actions/checkout@v4
 
-      - name: 2. Configurar Java 25 LTS (Eclipse Temurin)
+      - name: 2. Configurar Java 17 (Eclipse Temurin)
         uses: actions/setup-java@v4
         with:
-          java-version: '25'
+          java-version: '17'
           distribution: 'temurin'
           cache: maven
 

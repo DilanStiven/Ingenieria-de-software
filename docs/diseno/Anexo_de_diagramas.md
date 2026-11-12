@@ -9,7 +9,7 @@ Ingeniería de Software II \| Proyecto AgroValle \| Estudiante(s): Grupo 5
 > `Producto`, `Cosecha` y `Oferta`) que no corresponden literalmente al modelo JPA actual. El
 > diagrama de despliegue y las capturas son referencias de diseño, no fuente de verdad para el
 > esquema vigente. El modelo JPA implementado actualmente tiene `Agricultor` y `Producto` y usa
-> Java 25. La vista actual y su DDL están documentados en
+> Java 17. La vista actual y su DDL están documentados en
 > [`Documento_de_normalizacion.md`](Documento_de_normalizacion.md) y [`schema.sql`](schema.sql).
 
 ## Índice de diagramas
