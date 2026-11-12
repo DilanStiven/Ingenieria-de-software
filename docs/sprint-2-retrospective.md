@@ -50,3 +50,30 @@
 ## 5. Cierre
 
 El equipo cierra el Sprint 2 cumpliendo con todos los criterios de excelencia del Bloque 2: arquitectura MVC desacoplada, patrones de diseño GoF operando en producción, integración continua automatizada, umbral de cobertura JaCoCo ampliamente superado y reglas de gobernanza de código activas en GitHub.
+
+## 6. Aclaración posterior (registrada el 9/11/2026)
+
+Dilan Castillo informó después del cierre que en el Planning del Sprint 2 se eligieron HU-03 y
+HU-06, y que él realizó individualmente el trabajo de implementación de ambas. Esta nota deja
+constancia de su declaración sin alterar las observaciones, acuerdos ni asistentes de la
+retrospectiva celebrada el 29/10/2026.
+
+El trabajo y la atribución se anotan como seguimiento posterior; esta aclaración no acredita que
+las historias fueran terminadas durante el Sprint 2, que se integraran mediante Pull Request o que
+hubieran sido revisadas por pares antes de la fecha de cierre.
+
+El 9/11/2026 se añadió también HU-07 con asistencia de IA a solicitud de Dilan: orden logística
+mínima, cambio a `ALISTADO`, asignación de vehículo y fecha, validación de capacidad/disponibilidad
+y guía única. La verificación local posterior pasó con 71 pruebas, cero fallos, una omitida y
+Checkstyle limpio; no se conectó a PostgreSQL real. Quedan como trabajo futuro la integración de
+transacciones reales de ventas para HU-03, la confirmación de las reglas asumidas de HU-06 y la
+definición, si el equipo la necesita, de cómo liberar un vehículo al completar una entrega. Esa
+liberación no es un prerrequisito de HU-06 ni de la asignación de ruta de HU-07.
+
+Como seguimiento posterior, Dilan informó el 9/11/2026 que el equipo seleccionó para Sprint 3
+HU-08 (5 SP), HU-09 (3 SP) y HU-12 (2 SP), para un total de 10 SP. También informó el acuerdo de
+reestimar HU-10 en 2 SP, HU-11 en 2 SP y HU-13 en 2 SP; HU-15 permanece en 2 SP. La combinación
+HU-10, HU-11, HU-13 y HU-15 suma 8 SP y se deja como candidata para el Planning de Sprint 4, no
+como compromiso definitivo. HU-14 permanece en el Product Backlog con 2 SP y no fue incluida en
+la selección reportada. Estas precisiones registran decisiones posteriores y no alteran el acta
+ni los resultados de la retrospectiva del 29/10/2026.

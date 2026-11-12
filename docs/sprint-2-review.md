@@ -55,5 +55,31 @@
 
 | Elemento | Motivo | Decisión para el backlog |
 | --- | --- | --- |
-| HU-06 — Registro de Vehículos de Carga | No superó la Definition of Ready: se identificó la necesidad de definir previamente tipos de vehículos y tarifas de transporte asociadas. | Se mantiene priorizada en el Product Backlog para el Sprint 3. |
+| HU-06 — Registro de Vehículos de Carga | No superó la Definition of Ready: se identificó la necesidad de definir previamente tipos de vehículos y tarifas de transporte asociadas. | Al cierre se mantenía como candidata para Sprint 3, pendiente de confirmación en su Planning. |
 | Prueba HTTP de persistencia de productos | Requiere inicialización de contenedor o instancia dedicada de PostgreSQL para pruebas end-to-end con datos transaccionales reales. | Se programa como tarea técnica al inicio del Sprint 3. |
+
+## 6. Aclaración posterior (registrada el 9/11/2026)
+
+Dilan Castillo informó en esta fecha que durante el Planning se eligieron HU-03 y HU-06, y que él
+realizó individualmente el trabajo de implementación de ambas. Esta atribución se registra como
+declaración posterior y no modifica el resultado observado en la Review del 29/10/2026: al cierre,
+HU-06 constaba como no terminada y pendiente para el ciclo siguiente; HU-03 tampoco figura como
+incremento demostrado en esta Review.
+
+El trabajo agregado posteriormente también incluye HU-07, implementada el 9/11/2026 con
+asistencia de IA a solicitud de Dilan; no se presenta como trabajo concluido durante Sprint 2. El
+código actual contiene la consulta HU-03, el registro HU-06 y el flujo de órdenes/rutas HU-07.
+HU-03 aún necesita que el flujo de ventas registre transacciones completadas; HU-06 conserva reglas
+provisionales pendientes de aprobación; HU-07 deja el vehículo `EN_RUTA` tras asignarlo. Liberarlo
+después de una entrega sería una extensión futura y no un requisito para completar HU-06 o la
+asignación definida por HU-07.
+
+La validación local posterior ejecutó `.\mvnw.cmd clean verify checkstyle:check`: 71 pruebas,
+cero fallos, una omitida y cero infracciones de Checkstyle. No se verificó la persistencia contra
+PostgreSQL real ni se afirma integración de estos cambios mediante Pull Request aprobado.
+
+Posteriormente, el equipo informó que seleccionó HU-08, HU-09 y HU-12 para Sprint 3; la selección
+y reestimación de puntos se registran en la aclaración posterior de la
+[`retrospectiva del Sprint 2`](sprint-2-retrospective.md). Esta decisión posterior reemplaza la
+selección candidata de HU-06 para el Sprint 3, sin modificar lo consignado sobre el cierre de
+Sprint 2.

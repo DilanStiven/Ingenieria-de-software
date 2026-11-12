@@ -5,36 +5,36 @@
 | Proyecto | AgroValle Connect |
 | Asignatura | Ingeniería de Software II — UNIAJC |
 | Equipo | Grupo 5 |
-| Estado | Propuesta para revisión del equipo; no confirma que se haya realizado el Planning |
+| Estado | Actualizado el 9/11/2026 con la selección de historias reportada por Dilan; no reemplaza un acta de Planning |
 | Fecha, duración y fechas del Sprint | Pendientes de acordar |
 
-> **Alcance de este documento:** el equipo autorizó seleccionar una historia del Product
-> Backlog para proponerla al Sprint 2. La selección que sigue es una propuesta para discutir, no
-> un compromiso Scrum ni evidencia de que el Sprint se haya ejecutado. Fechas, capacidad,
-> asistentes, responsables, estimación y aceptación final se completan únicamente con datos del
-> Planning real.
+> **Alcance de este documento:** actualización posterior basada en la declaración de Dilan
+> Castillo del 9/11/2026. No reconstruye asistentes, fecha, capacidad, responsables ni acuerdos
+> adicionales que no estén documentados.
 
-## 1. Contexto y selección propuesta
+## 1. Contexto y selección reportada
 
 En Sprint 1 el equipo eligió HU-01, HU-02 y HU-04 de manera autónoma; la docente permitió que cada
 equipo eligiera sus propias historias del Product Backlog, por lo que HU-07 del Backlog
-(Programación y Asignación de Ruta) no formó parte del Sprint 1. Para Sprint 2 se propone refinar **HU-06 — Registro de Vehículos de Carga**
-del [Product Backlog](../BACKLOG.md). La estimación de 2 Story Points es la estimación inicial del
-Backlog y debe confirmarse por el equipo antes de comprometer trabajo.
+(Programación y Asignación de Ruta) no formó parte del Sprint 1. Dilan informa que en el Planning
+del Sprint 2 se eligieron **HU-03 — Visualización de Precios Regionales**,
+**HU-06 — Registro de Vehículos de Carga** y **HU-07 — Programación y Asignación de Ruta**,
+del [Product Backlog](../BACKLOG.md). Para esta versión experimental, las tres historias suman
+9 Story Points: HU-03 (2), HU-06 (2) y HU-07 (5).
 
-Se propone HU-06 porque no depende de la implementación de ventas, pagos, pedidos ni entregas. Sin
-embargo, el modelo actual solo autentica agricultores y no representa transportistas ni roles de
-usuario. La historia no está lista para compromiso hasta acordar el alcance de identidad y
-propiedad del vehículo.
+HU-03 requiere acordar el origen de las transacciones de precio. HU-06 requiere resolver la
+identidad y propiedad de los vehículos. HU-07 incluye crear y alistar una orden logística y
+asignarle un vehículo y una fecha de salida. La selección de esta versión experimental no implica
+que los refinamientos, el Sprint Goal o la capacidad del equipo hayan quedado aprobados.
 
 ## 2. Objetivo candidato del Sprint
 
-> **Propuesta:** acordar y, si queda lista, implementar el registro autenticado de vehículos de
-> carga con validaciones de placa y capacidad, persistencia relacional y pruebas automatizadas,
-> respetando el límite de cobertura, Checkstyle y la revisión por Pull Request.
+> **Objetivo candidato:** implementar la consulta de precios promedio recientes (HU-03), el
+> registro autenticado de vehículos de carga (HU-06) y la programación/asignación de rutas
+> logísticas (HU-07), sujeto a resolver los refinamientos pendientes.
 
-La selección final y el Sprint Goal se confirman en la reunión real de Planning. El equipo puede
-seleccionar otra historia si HU-06 no supera la Definition of Ready.
+La selección experimental HU-03/HU-06/HU-07 no atribuye aprobación del Sprint Goal ni de los
+criterios pendientes de refinamiento.
 
 ## 3. HU-06 — Registro de Vehículos de Carga
 
@@ -80,6 +80,19 @@ explícitamente la historia y sus criterios en el Backlog antes de implementar.
 
 Estos criterios son una base de refinamiento; aún no son criterios aprobados por el Product Owner.
 
+### HU-03 — Visualización de Precios Regionales
+
+**Selección reportada:** HU-03 (2 SP iniciales). La historia consulta la media aritmética de los
+precios de transacciones completadas de un producto durante las 24 horas recientes.
+
+**Criterio técnico implementado:** `GET /api/v1/precios/promedio?producto=Café` devuelve el precio
+promedio por kilogramo en COP y el número de transacciones consideradas; si no hay registros
+recientes responde 404. La tabla `transaccion_precio` representa transacciones completadas.
+
+**Dependencia pendiente:** no existe todavía un flujo de pedidos/ventas que escriba transacciones
+completadas en esa tabla. La consulta no trata publicaciones del catálogo como ventas ni se afirma
+que la integración de pagos esté resuelta.
+
 ## 4. Descomposición preliminar del trabajo
 
 Las siguientes actividades se estiman durante el Planning, después de resolver las decisiones de
@@ -123,7 +136,7 @@ ramas y líneas, Checkstyle sin infracciones, revisión por Pull Request y docum
 - Sprint Goal acordado: pendiente.
 - Inicio, fin y duración: pendientes.
 - Capacidad del equipo, ausencias y disponibilidad: pendientes.
-- Historias finalmente seleccionadas y estimaciones confirmadas: pendientes.
+- Historias para esta versión experimental: HU-03 (2 SP), HU-06 (2 SP) y HU-07 (5 SP), 9 SP en total.
 - Responsables, Issues/PRs, dependencias e impedimentos: pendientes.
 - Aprobación del alcance y decisiones de HU-06: pendientes.
 
@@ -136,3 +149,50 @@ No completar estos campos con fechas, responsables o compromisos reconstruidos a
 - [Políticas Kanban](kanban-policies.md)
 - [Plantilla de Sprint Review](sprint-2-review.md)
 - [Plantilla de retrospectiva](sprint-2-retrospective.md)
+
+## 8. Nota técnica posterior sobre HU-06
+
+La implementación posterior de HU-06 agrega `POST /api/v1/vehiculos`, persistencia de vehículos
+con un único propietario (agricultor o transportista), normalización y unicidad de placa, capacidad
+positiva, tipo libre y estado inicial `DISPONIBLE`. Para que ambos perfiles puedan autenticarse,
+se agregó el registro básico `POST /api/v1/auth/register-transportista` (`nombre`, `cedula`) con
+JWT de rol `TRANSPORTISTA`; el flujo JWT existente de agricultores conserva su contrato.
+
+Estas reglas son supuestos de implementación para poder entregar un incremento funcional y deben
+ser confirmadas por el equipo/Product Owner. En esta versión experimental, HU-06 se registra como
+parte del Sprint 2; la nota conserva las fechas ya registradas en el documento.
+
+## 9. Nota técnica posterior sobre HU-03
+
+Se implementó `GET /api/v1/precios/promedio?producto=Café` como consulta pública del promedio de
+transacciones de venta completadas en las últimas 24 horas. La persistencia usa la tabla
+`transaccion_precio`; no reutiliza publicaciones del catálogo como transacciones. El endpoint
+devuelve el promedio en COP/kg con dos decimales, cantidad de registros y HTTP 404 cuando no hay
+datos recientes.
+
+Para mostrar datos reales falta conectar la escritura de `transaccion_precio` a una fuente de
+ventas completadas. HU-09 (pago) podría ser una fuente futura, pero no es una dependencia obligatoria
+de la consulta HU-03 si las transacciones llegan por otro proceso aprobado. HU-05 (contacto) tampoco
+representa por sí mismo una venta completada. En esta versión experimental, HU-03 se registra como
+parte del Sprint 2; la fuente de ventas sigue pendiente y no se afirma que el flujo de pagos esté
+implementado.
+
+## 10. HU-07 — Programación y Asignación de Ruta (versión experimental)
+
+El alcance de HU-07 para este Sprint 2 experimental permite probar la programación de rutas sin un
+módulo de compra/pagos: un agricultor crea una orden con producto, peso y destino, la marca
+`ALISTADO` y asigna un vehículo con fecha de salida. La asignación valida estado del pedido, fecha,
+disponibilidad y capacidad, registra una guía única y marca la orden y el vehículo `EN_RUTA`.
+
+La tarea de alistamiento queda restringida al agricultor propietario; agricultores y transportistas
+pueden consultar órdenes de acuerdo con su relación, y el transportista solo puede asignar su propio
+vehículo. Tras la asignación el vehículo queda `EN_RUTA`; su liberación después de la entrega es una
+función futura opcional del ciclo logístico, no un prerrequisito de HU-06 ni del criterio de
+asignación de HU-07. Esta actualización registra HU-07 en el Sprint 2 de la versión experimental
+del repositorio y conserva las fechas ya registradas en el documento.
+
+La suite completa ejecutada después de estos cambios terminó con 71 pruebas, cero fallos, una
+omitida y Checkstyle sin infracciones (`.\mvnw.cmd clean verify checkstyle:check`). La validación
+no incluyó conexión ni persistencia contra una instancia real de PostgreSQL. Las historias y sus
+pruebas locales no deben interpretarse como evidencia de integración mediante PR o de aceptación
+del Product Owner durante Sprint 2.

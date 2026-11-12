@@ -26,8 +26,17 @@ public class SecurityConfig {
     /** Ruta de productos de la API. */
     private static final String PRODUCTOS_PATH = "/api/v1/productos";
 
+    /** Ruta de consulta de precios regionales. */
+    private static final String PRECIOS_PATH = "/api/v1/precios/**";
+
     /** Ruta antigua de productos (compatibilidad). */
     private static final String PRODUCTOS_LEGACY = "/api/productos/**";
+
+    /** Ruta para registrar vehículos de carga. */
+    private static final String VEHICULOS_PATH = "/api/v1/vehiculos";
+
+    /** Ruta de órdenes logísticas. */
+    private static final String ORDENES_PATH = "/api/v1/ordenes";
 
     private final JwtService jwtService;
 
@@ -56,7 +65,19 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTH_PATH).permitAll()
+                .requestMatchers(HttpMethod.POST, PRODUCTOS_PATH).hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.GET, PRODUCTOS_PATH).permitAll()
+                .requestMatchers(HttpMethod.GET, PRECIOS_PATH).permitAll()
+                .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
+                    .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
+                .requestMatchers(HttpMethod.POST, ORDENES_PATH)
+                    .hasRole("AGRICULTOR")
+                .requestMatchers(HttpMethod.PATCH, ORDENES_PATH + "/*/alistado")
+                    .hasRole("AGRICULTOR")
+                .requestMatchers(HttpMethod.POST, ORDENES_PATH + "/*/ruta")
+                    .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
+                .requestMatchers(HttpMethod.GET, ORDENES_PATH, ORDENES_PATH + "/**")
+                    .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers(PRODUCTOS_LEGACY).authenticated()
                 .anyRequest().authenticated())

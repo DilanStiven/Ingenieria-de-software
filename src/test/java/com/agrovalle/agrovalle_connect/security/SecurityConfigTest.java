@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -79,5 +80,15 @@ class SecurityConfigTest {
     void registroEsPublico() throws Exception {
         mockMvc.perform(get("/api/v1/auth/register"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Transportista autenticado no puede publicar productos")
+    void transportistaNoPuedePublicarProductos() throws Exception {
+        mockMvc.perform(post("/api/v1/productos")
+                .with(user("7").authorities(() -> "ROLE_TRANSPORTISTA"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"nombre\":\"Mango\"}"))
+                .andExpect(status().isForbidden());
     }
 }

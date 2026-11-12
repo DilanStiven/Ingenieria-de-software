@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.agrovalle.agrovalle_connect.security.RolUsuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,20 @@ class JwtServiceTest {
 
         assertTrue(servicio.esValido(token));
         assertEquals(7L, servicio.obtenerAgricultorId(token));
+        assertEquals(RolUsuario.AGRICULTOR, servicio.obtenerRol(token));
+    }
+
+    @Test
+    @DisplayName("Debe conservar el rol de transportista en el token")
+    void debeGenerarTokenDeTransportista() {
+        JwtService servicio = new JwtService(SECRETO, 60_000L);
+
+        String token = servicio.generarToken(9L, RolUsuario.TRANSPORTISTA);
+
+        assertTrue(servicio.esValido(token));
+        assertEquals(9L, servicio.obtenerAgricultorId(token));
+        assertEquals(9L, servicio.obtenerUsuarioId(token));
+        assertEquals(RolUsuario.TRANSPORTISTA, servicio.obtenerRol(token));
     }
 
     /**
