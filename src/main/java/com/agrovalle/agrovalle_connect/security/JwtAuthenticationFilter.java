@@ -1,12 +1,13 @@
 package com.agrovalle.agrovalle_connect.security;
 
 import com.agrovalle.agrovalle_connect.services.JwtService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -49,10 +50,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (jwtService.esValido(jwt)
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Long agricultorId = jwtService.obtenerAgricultorId(jwt);
+            Long usuarioId = jwtService.obtenerUsuarioId(jwt);
+            String rol = jwtService.obtenerRol(jwt).name();
             UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(
-                    String.valueOf(agricultorId), null, Collections.emptyList());
+                    String.valueOf(usuarioId), null,
+                    List.of(new SimpleGrantedAuthority("ROLE_" + rol)));
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

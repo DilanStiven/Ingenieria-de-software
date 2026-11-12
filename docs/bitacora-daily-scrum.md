@@ -234,3 +234,28 @@ Los aportes técnicos de Carlos Rosales se trabajaron de forma colaborativa medi
 * **Acuerdos y acciones:**
   * Dar por cerrado el incremento técnico del Sprint 2 con CI en verde (Run #103) y cobertura del 80,26 %.
   * Realizar las sesiones de Review y Retrospectiva formalmente y anexar el PDF único de entrega.
+
+## 9. Aclaración posterior al cierre (registrada el 12/11/2026)
+
+Esta aclaración se incorpora después de las Dailies registradas; no corresponde a una reunión
+Daily adicional ni modifica sus fechas, asistentes o acuerdos. Según lo informado por Dilan
+Castillo, en el Planning del Sprint 2 se eligieron HU-03 y HU-06, y él realizó individualmente
+el trabajo de implementación de ambas historias.
+
+La atribución anterior es una declaración de Dilan registrada en esta fecha, no una reconstrucción
+de actividad diaria ni una evidencia de que las historias se hubieran terminado antes del cierre
+del Sprint 2. HU-03 aún requiere que el flujo de ventas alimente transacciones reales para mostrar
+precios observados del sistema.
+
+Como seguimiento técnico posterior, el 12/11/2026 se agregó HU-07: creación y alistamiento de
+órdenes logísticas, asignación de vehículos, validación de fecha, capacidad y disponibilidad, y
+generación de guía de despacho. La implementación de HU-07 se realizó con asistencia de IA a
+solicitud de Dilan y no corresponde a una Daily ni a trabajo reportado como terminado durante el
+Sprint 2. La suite completa terminó con 71 pruebas, 0 fallos y 1 omitida; no se ejecutó una prueba
+de persistencia contra PostgreSQL real.
+
+El estado técnico actual también mantiene estos límites: HU-03 no recibe aún transacciones desde
+un flujo de ventas; las reglas de negocio asumidas para HU-06 requieren confirmación del equipo;
+y los vehículos asignados por HU-07 permanecen `EN_RUTA`. Liberarlos tras una entrega es una
+ampliación futura del ciclo logístico y no un requisito para registrar vehículos en HU-06 ni para
+asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
