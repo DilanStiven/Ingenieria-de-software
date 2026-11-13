@@ -26,6 +26,7 @@ esta actualización de puntos. El equipo reportó como selección para Sprint 3 
 y HU-12 (10 SP en total); la selección de Sprint 4 queda sujeta a su Planning.
 
 | Sprints | Nombres | Historias  | costo |
+|----|----|:---:|:---:|
 | 1 | Cimientos del Marketplace | HU-01, HU-02, HU-04  | 10 |
 | 2 | Mercado y Logística Base | HU-03, HU-06, HU-07 | 9 |
 | 3 | Pedido y Pago | HU-05, HU-09, HU-10, HU-11 | 10 |
