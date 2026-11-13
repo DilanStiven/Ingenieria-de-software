@@ -1,4 +1,4 @@
-# Product Backlog — AgroValle Connect
+<img width="808" height="752" alt="{78136C6B-030D-4765-A711-B0B8E31643BB}" src="https://github.com/user-attachments/assets/31094f78-61c9-4742-8c28-509ea2c22287" /># Product Backlog — AgroValle Connect
 
 Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3, 5, 8, 13) y priorización **MoSCoW** (M = Must Have, S = Should Have, C = Could Have, W = Won't Have).
 
@@ -8,24 +8,30 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 | HU-02 | Publicación de Productos | M | 5 |
 | HU-03 | Visualización de Precios Regionales | S | 2 |
 | HU-04 | Filtro de Categorías y Municipios | M | 2 |
-| HU-05 | Contacto Directo / Intención de Compra | S | 3 |
+| HU-05 | Contacto Directo / Intención y Compra | M | 3 |
 | HU-06 | Registro de Vehículos de Carga | M | 2 |
 | HU-07 | Programación y Asignación de Ruta | M | 5 |
-| HU-08 | Actualización de Estado de Entrega (Checkpoints) | S | 5 |
+| HU-08 | Actualización de Estado de Entrega (Checkpoints) | S | 3 |
 | HU-09 | Pago de Pedido con Pasarela Virtual (PSE/Tarjetas) | M | 3 |
 | HU-10 | Generación de Comprobante de Pago y Factura | S | 2 |
 | HU-11 | Visualización de Saldo (Billetera del Agricultor) | M | 2 |
 | HU-12 | Notificación de Pago Rechazado | C | 2 |
-| HU-13 | Calificación del Producto y del Agricultor | M | 2 |
+| HU-13 | Calificación del Producto y del Agricultor | S | 2 |
 | HU-14 | Calificación del Servicio de Transporte | S | 2 |
-| HU-15 | Visualización de Reputación Promedio del Productor | M | 2 |
+| HU-15 | Visualización de Reputación Promedio del Productor | C | 2 |
 
-**Total estimado: 42 Story Points**
+**Total estimado: 40 Story Points**
 
 **Reestimación acordada por el equipo (12/11/2026):** HU-09 = 3 SP, HU-10 = 2 SP,
 HU-11 = 2 SP y HU-13 = 2 SP. El alcance funcional de estas historias no se modifica con
 esta actualización de puntos. El equipo reportó como selección para Sprint 3 HU-08, HU-09
 y HU-12 (10 SP en total); la selección de Sprint 4 queda sujeta a su Planning.
+
+| Sprints | Nombres | Historias  | costo |
+| 1 | Cimientos del Marketplace | HU-01, HU-02, HU-04  | 10 |
+| 2 | Mercado y Logística Base | HU-03, HU-06, HU-07 | 9 |
+| 3 | Pedido y Pago | HU-05, HU-09, HU-10, HU-11 | 10 |
+| 4 | Entrega y Reputación | HU-08, HU-12, HU-13, HU-14, HU-15, | 11 |
 
 ---
 
