@@ -38,6 +38,9 @@ public class SecurityConfig {
     /** Ruta de órdenes logísticas. */
     private static final String ORDENES_PATH = "/api/v1/ordenes";
 
+    /** Ruta para enviar solicitudes de contacto. */
+    private static final String CONTACTO_PATH = "/api/v1/contacto/mensaje";
+
     private final JwtService jwtService;
 
     /**
@@ -68,6 +71,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, PRODUCTOS_PATH).hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.GET, PRODUCTOS_PATH).permitAll()
                 .requestMatchers(HttpMethod.GET, PRECIOS_PATH).permitAll()
+                .requestMatchers(HttpMethod.POST, CONTACTO_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers(HttpMethod.POST, ORDENES_PATH)
