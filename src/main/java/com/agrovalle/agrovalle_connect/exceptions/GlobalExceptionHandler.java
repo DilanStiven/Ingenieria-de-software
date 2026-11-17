@@ -165,6 +165,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(PedidoNoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> manejarPedidoNoEncontrado(
+            final PedidoNoEncontradoException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PagoInvalidoException.class)
+    public ResponseEntity<Map<String, String>> manejarPagoInvalido(
+            final PagoInvalidoException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
     /**
      * Maneja errores de validación de campos (Bean Validation).
      *
@@ -198,4 +210,3 @@ public class GlobalExceptionHandler {
     }
 
 }
-

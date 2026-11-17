@@ -41,6 +41,9 @@ public class SecurityConfig {
     /** Ruta para enviar solicitudes de contacto. */
     private static final String CONTACTO_PATH = "/api/v1/contacto/mensaje";
 
+    /** Ruta para procesar pagos de pedidos. */
+    private static final String PAGOS_PATH = "/api/v1/pagos";
+
     private final JwtService jwtService;
 
     /**
@@ -72,6 +75,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, PRODUCTOS_PATH).permitAll()
                 .requestMatchers(HttpMethod.GET, PRECIOS_PATH).permitAll()
                 .requestMatchers(HttpMethod.POST, CONTACTO_PATH).authenticated()
+                .requestMatchers(HttpMethod.POST, PAGOS_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers(HttpMethod.POST, ORDENES_PATH)
