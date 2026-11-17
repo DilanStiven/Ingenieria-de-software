@@ -272,3 +272,11 @@ Then  el sistema procesa el pago sobre el mismo pedido
 - Definición de Hecho: [`docs/dod.md`](dod.md)
 - Product Backlog: [`BACKLOG.md`](../BACKLOG.md)
 - Guía de flujo Git/GitHub: ramas `feature/HU-XX-descripcion` → PR → `develop`
+
+---
+
+## 11. Registro de cambios
+
+| Fecha | Cambio |
+| --- | --- |
+| 17/11/2026 | HU-05 y HU-09 completadas y fusionadas en `develop` (PR #112 y PR #118). El plan no cambió: alcance, Story Points, asignación y orden de ejecución siguen vigentes. Resultados en [Sprint 3 Review](sprint-3-review.md). |
