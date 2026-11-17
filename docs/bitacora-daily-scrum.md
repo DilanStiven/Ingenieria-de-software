@@ -259,3 +259,25 @@ un flujo de ventas; las reglas de negocio asumidas para HU-06 requieren confirma
 y los vehículos asignados por HU-07 permanecen `EN_RUTA`. Liberarlos tras una entrega es una
 ampliación futura del ciclo logístico y no un requisito para registrar vehículos en HU-06 ni para
 asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
+
+---
+
+## 10. Sprint 3 — Daily #1 (Martes 17/11/2026)
+
+* **Hora / Duración:** 14:51 / ~15 min
+* **Canal:** Discord (canal de voz del Grupo 5)
+* **Asistentes confirmados:** Kevin Estiven Lucumi, Dilan Stiven Castillo
+* **Ausentes y motivo:** Carlos Andres Rosales, Santiago Edilmo Hurtado — sin registro de asistencia en esta Daily
+
+| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
+| --- | --- | --- | --- |
+| **Kevin Lucumi** | Completó todas las subtareas de HU-05: 5.1 (entidades `ContactoMensaje` y `Pedido` y migración SQL V4), 5.2 (`ContactoService` con validación, persistencia y pedido en estado PENDIENTE_PAGO), 5.3 (`ContactoController` con endpoint `POST /api/v1/contacto/mensaje` protegido por JWT) y 5.4 (pruebas JUnit 5 y MockMvc de los escenarios BDD). PR #112 listo para Code Review. | Estar disponible para apoyar al equipo en las tareas restantes del Sprint. | Ninguno |
+| **Dilan Castillo** | Pendiente | Pendiente | Pendiente |
+| **Carlos Rosales** | Pendiente | Pendiente | Pendiente |
+| **Santiago Hurtado** | Pendiente | Pendiente | Pendiente |
+
+* **Estado del tablero:** To Do: Pendiente · In Progress: Pendiente · Code Review: 1/2 (PR #112) · Done: 1 (HU-05)
+* **Acuerdos y acciones:**
+  * Kevin notificó al equipo que el PR #112 (HU-05) está listo para revisión y fusión.
+  * DalanStiven realizó el Code Review y aprobó el PR #112; fusionado en `develop` el mismo día.
+  * Rama `HU05` eliminada tras el merge.
