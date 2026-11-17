@@ -1,0 +1,102 @@
+package com.agrovalle.agrovalle_connect.controllers;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.agrovalle.agrovalle_connect.dtos.ContactoMensajeResponseDTO;
+import com.agrovalle.agrovalle_connect.exceptions.GlobalExceptionHandler;
+import com.agrovalle.agrovalle_connect.security.RolUsuario;
+import com.agrovalle.agrovalle_connect.security.SecurityConfig;
+import com.agrovalle.agrovalle_connect.services.ContactoService;
+import com.agrovalle.agrovalle_connect.services.JwtService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+@WebMvcTest(ContactoController.class)
+@Import({SecurityConfig.class, GlobalExceptionHandler.class})
+class ContactoControllerTest {
+
+    private static final String URL = "/api/v1/contacto/mensaje";
+    private static final String TOKEN = "token-valido";
+    private static final Long PRODUCTO_ID = 7L;
+    private static final String MENSAJE = "Me interesa el producto";
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private ContactoService contactoService;
+
+    @MockitoBean
+    private JwtService jwtService;
+
+    @Test
+    void solicitaContactoConJwtYRespondeOk() throws Exception {
+        when(jwtService.esValido(TOKEN)).thenReturn(true);
+        when(jwtService.obtenerUsuarioId(TOKEN)).thenReturn(17L);
+        when(jwtService.obtenerRol(TOKEN)).thenReturn(RolUsuario.AGRICULTOR);
+        when(contactoService.enviarMensaje(PRODUCTO_ID, MENSAJE))
+                .thenReturn(new ContactoMensajeResponseDTO(
+                        13L, 11L, "Solicitud confirmada", true));
+
+        mockMvc.perform(post(URL)
+                        .header("Authorization", "Bearer " + TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "id_producto": 7,
+                                  "mensaje": "Me interesa el producto"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.idMensaje").value(13))
+                .andExpect(jsonPath("$.idPedido").value(11))
+                .andExpect(jsonPath("$.mensaje").value("Solicitud confirmada"));
+
+        verify(contactoService).enviarMensaje(PRODUCTO_ID, MENSAJE);
+    }
+
+    @Test
+    void rechazaSolicitudSinJwt() throws Exception {
+        mockMvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "id_producto": 7,
+                                  "mensaje": "Me interesa el producto"
+                                }
+                                """))
+                .andExpect(status().isUnauthorized());
+
+        verifyNoInteractions(contactoService);
+    }
+
+    @Test
+    void rechazaDatosInvalidos() throws Exception {
+        when(jwtService.esValido(TOKEN)).thenReturn(true);
+        when(jwtService.obtenerUsuarioId(TOKEN)).thenReturn(17L);
+        when(jwtService.obtenerRol(TOKEN)).thenReturn(RolUsuario.AGRICULTOR);
+
+        mockMvc.perform(post(URL)
+                        .header("Authorization", "Bearer " + TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "id_producto": 0,
+                                  "mensaje": " "
+                                }
+                                """))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(contactoService);
+    }
+}

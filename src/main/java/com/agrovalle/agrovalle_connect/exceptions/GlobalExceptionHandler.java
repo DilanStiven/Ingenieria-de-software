@@ -45,6 +45,18 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja productos inexistentes o con una oferta inactiva.
+     *
+     * @param ex excepción lanzada por el servicio de contacto
+     * @return respuesta HTTP 404 con el mensaje de error
+     */
+    @ExceptionHandler(OfertaNoDisponibleException.class)
+    public ResponseEntity<Map<String, String>> manejarOfertaNoDisponible(
+            final OfertaNoDisponibleException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Maneja propietarios inexistentes asociados al token JWT.
      *
      * @param ex excepción lanzada por el servicio
