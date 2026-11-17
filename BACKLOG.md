@@ -6,7 +6,7 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 | HU-02 | Publicación de Productos | M | 5 |
 | HU-03 | Visualización de Precios Regionales | S | 2 |
 | HU-04 | Filtro de Categorías y Municipios | M | 2 |
-| HU-05 | Contacto Directo / Intención y Compra | M | 3 |
+| HU-05 | Contacto Directo / Intención y Compra | M | 2 |
 | HU-06 | Registro de Vehículos de Carga | M | 2 |
 | HU-07 | Programación y Asignación de Ruta | M | 5 |
 | HU-08 | Actualización de Estado de Entrega (Checkpoints) | S | 3 |
@@ -14,7 +14,7 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 | HU-10 | Generación de Comprobante de Pago y Factura | S | 2 |
 | HU-11 | Visualización de Saldo (Billetera del Agricultor) | M | 2 |
 | HU-12 | Notificación de Pago Rechazado | C | 2 |
-| HU-13 | Calificación del Producto y del Agricultor | S | 2 |
+| HU-13 | Calificación del Producto y del Agricultor | S | 3 |
 | HU-14 | Calificación del Servicio de Transporte | S | 2 |
 | HU-15 | Visualización de Reputación Promedio del Productor | C | 2 |
 
@@ -22,15 +22,15 @@ Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3,
 
 **Reestimación acordada por el equipo (12/11/2026):** HU-09 = 3 SP, HU-10 = 2 SP,
 HU-11 = 2 SP y HU-13 = 2 SP. El alcance funcional de estas historias no se modifica con
-esta actualización de puntos. El equipo reportó como selección para Sprint 3 HU-08, HU-09
-y HU-12 (10 SP en total); la selección de Sprint 4 queda sujeta a su Planning.
+esta actualización de puntos. El equipo reportó como selección para Sprint 3 HU-05, HU-08
+HU-09 y HU-10 (10 SP en total); la selección de Sprint 4 queda sujeta a su Planning.
 
 | Sprints | Nombres | Historias  | costo |
 |----|----|:---:|:---:|
 | 1 | Cimientos del Marketplace | HU-01, HU-02, HU-04  | 10 |
 | 2 | Mercado y Logística Base | HU-03, HU-06, HU-07 | 9 |
-| 3 | Pedido y Pago | HU-05, HU-09, HU-10, HU-11 | 10 |
-| 4 | Entrega y Reputación | HU-08, HU-12, HU-13, HU-14, HU-15, | 11 |
+| 3 | Pedido y Pago | HU-05, HU-09, HU-10, HU-11, HU-12 | 11 |
+| 4 | Entrega y Reputación | HU-08, HU-13, HU-14, HU-15, | 10 |
 
 ---
 
@@ -71,11 +71,11 @@ When el usuario realiza una petición GET a /api/v1/productos?municipio=Dagua&ca
 Then el sistema responde con status 200 OK y un arreglo JSON con las ofertas activas correspondientes
 ```
 
-### HU-05: Contacto Directo / Intención de Compra
-**Historia:** Como Comprador, quiero enviar una solicitud de contacto directo al agricultor, para acordar condiciones de compra y logística.
+### HU-05: Contacto Directo /Intención y Compra
+**Historia:** Como Comprador, quiero enviar una solicitud de contacto directo al agricultor y generar mi pedido sobre su oferta, para acordar condiciones de compra y logística y dejar la compra lista para pagar.
 **Priorización:** Should Have — **Estimación:** 3 SP
 ```gherkin
-Given un comprador autenticado con token JWT y una oferta activa registrada con id_producto
+Given un comprador autenticado con token JWT y una oferta activa registrada con id_producto, cuya intención de compra genera un pedido en estado PENDIENTE_PAGO
 When envía una petición POST a /api/v1/contacto/mensaje con el id_producto y el mensaje de negociación
 Then el sistema persiste la interacción en PostgreSQL y retorna status 200 OK con la confirmación de notificación enviada
 ```
@@ -124,12 +124,12 @@ Then el sistema genera y descarga un archivo PDF con los detalles de la compra y
 ```
 
 ### HU-11: Visualización de Saldo (Billetera del Agricultor)
-**Historia:** Como agricultor, quiero ver el saldo acumulado de las ventas que ya entregué, para poder solicitar el desembolso del dinero a mi cuenta bancaria.
+**Historia:** Como agricultor, quiero recibir mi pago apenas el comprador paga y ver el saldo acumulado de mis ventas pagadas, para poder solicitar el desembolso del dinero a mi cuenta bancaria.
 **Priorización:** Must Have — **Estimación:** 2 SP
 ```gherkin
-Given que el agricultor ha completado entregas pagadas con éxito
-When ingresa a la sección "Mi Billetera" en su perfil
-Then el sistema suma y muestra el saldo total disponible para retirar
+Given que el comerciante completó el pago de un pedido (HU-09) y se generó su comprobante (HU-10)
+When el agricultor ingresa a la sección "Mi Billetera" en su perfil
+Then el sistema muestra el pago acreditado de inmediato y suma el saldo total disponible para retirar
 ```
 
 ### HU-12: Notificación de Pago Rechazado
@@ -143,7 +143,7 @@ Then el sistema muestra un mensaje de "Pago Rechazado" y mantiene el carrito act
 
 ### HU-13: Calificación del Producto y del Agricultor
 **Historia:** Como comerciante, quiero calificar de 1 a 5 estrellas la calidad de la cosecha y dejar un comentario, para evaluar al agricultor que me vendió.
-**Priorización:** Must Have — **Estimación:** 2 SP
+**Priorización:** Must Have — **Estimación:** 3 SP
 ```gherkin
 Given que una orden de compra fue marcada como "Entregada"
 When el comerciante asigna 5 estrellas y escribe "Excelente tomate"
