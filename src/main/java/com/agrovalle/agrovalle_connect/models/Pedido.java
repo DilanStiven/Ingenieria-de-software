@@ -27,7 +27,9 @@ public class Pedido {
 
     /** Estados de pago disponibles para un pedido. */
     public enum Estado {
-        PENDIENTE_PAGO
+        PENDIENTE_PAGO,
+        PAGADO,
+        RECHAZADO
     }
 
     @Id
