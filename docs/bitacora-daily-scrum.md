@@ -286,13 +286,14 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 
 ## 11. Sprint 3 — Daily #2 (Martes 17/11/2026)
 
-* **Hora / Duración:** 20:30 / duración no informada
+* **Hora / Duración:** 20:30 / 2 horas
 * **Canal:** Discord
-* **Asistentes y ausentes:** Pendiente de confirmar
+* **Asistentes:** Carlos Andres Rosales, Kevin Stiven Lucumi
+* **Ausentes:** No informados
 
 | Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
 | --- | --- | --- | --- |
 | **Carlos Rosales** | Fue el único responsable de implementar HU-09. Completó 9.1: entidades `Pago` y `OrdenCompra`, estados de pedido y migración V5; 9.2: interfaz `PasarelaPago` y adaptador simulado sandbox; 9.3: repositorios, DTOs, excepciones, `PagoService` y endpoint protegido `POST /api/v1/pagos`, que registra el pago, actualiza el pedido y genera una orden solo si se aprueba; 9.4: pruebas JUnit 5 para aprobación, rechazo, autenticación, validación y pedido ya pagado. `mvn test` terminó con 89 pruebas, 0 fallos y 1 omitida; `mvnw checkstyle:check` pasó. Se corrigieron los `@param` faltantes en el JavaDoc de `ResultadoPago` y se subió el arreglo a `historia-9`. | Dar seguimiento a CI y a la revisión del PR #118; atender comentarios si aparecen. | El CI detectó inicialmente el JavaDoc incompleto de `ResultadoPago`; se corrigió y se subió el cambio. Sin impedimentos conocidos al cierre. |
 
 * **Estado del tablero:** HU-09, tareas 9.1–9.4 completadas; seguimiento pendiente al CI y revisión del PR #118. El resto del estado del tablero no fue informado.
-* **Acuerdos y acciones:** Dar seguimiento al PR #118 y confirmar asistentes/ausentes para completar el registro de la reunión.
+* **Acuerdos y acciones:** Dar seguimiento al PR #118 y atender los comentarios de CI o Code Review.
