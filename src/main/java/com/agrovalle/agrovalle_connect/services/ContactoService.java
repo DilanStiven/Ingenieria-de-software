@@ -52,10 +52,12 @@ public class ContactoService {
      *
      * @param productoId identificador del producto solicitado
      * @param mensaje contenido del mensaje de negociación
+     * @param compradorId identificador del usuario autenticado
      * @return confirmación con los identificadores creados
      */
     @Transactional
-    public ContactoMensajeResponseDTO enviarMensaje(final Long productoId, final String mensaje) {
+    public ContactoMensajeResponseDTO enviarMensaje(
+            final Long productoId, final String mensaje, final Long compradorId) {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new OfertaNoDisponibleException(productoId));
         if (!ESTADO_ACTIVO.equals(producto.getEstado())) {
@@ -64,6 +66,7 @@ public class ContactoService {
 
         Pedido pedido = new Pedido();
         pedido.setProducto(producto);
+        pedido.setCompradorId(compradorId);
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
         ContactoMensaje contacto = new ContactoMensaje();

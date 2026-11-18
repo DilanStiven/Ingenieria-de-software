@@ -177,6 +177,13 @@ Then  el sistema no genera el PDF y responde con error
 | 10.2 | Endpoint de historial de pedidos pagados y descarga de recibo | 0,5 | Santiago | Usabilidad → Operabilidad |
 | 10.3 | **[OBLIGATORIA]** Traducción BDD → JUnit 5 | 1 | Santiago | Mantenibilidad → Capacidad de ser probado |
 
+**Implementación HU-10:** Apache PDFBox 3.0.5 genera el archivo PDF. El historial se consulta en
+`GET /api/v1/pedidos/pagados` y el recibo se descarga en
+`GET /api/v1/pedidos/{idPedido}/comprobante`. Ambos endpoints usan el ID del usuario autenticado
+en el JWT; el pedido lo conserva desde su creación (migración `V6__associate_pedido_comprador.sql`).
+Los pagos rechazados o los pedidos de otro usuario responden como no encontrados. La migración
+`V6` deja `V7` para la billetera de HU-11.
+
 ---
 
 ## 6. HU-11 — Visualización de Saldo (Billetera del Agricultor) (2 SP)
@@ -200,7 +207,7 @@ Then  el sistema muestra saldo 0
 
 | Tarea | Descripción | Horas | Responsable | ISO/IEC 25010 |
 | --- | --- | --- | --- | --- |
-| 11.1 | `BilleteraService`: acreditar al agricultor el pago apenas se confirma (HU-09), con migración `V6__create_billetera.sql`, y sumar su saldo | 0,5 | Dilan | Adecuación Funcional → Corrección |
+| 11.1 | `BilleteraService`: acreditar al agricultor el pago apenas se confirma (HU-09), con migración `V7__create_billetera.sql`, y sumar su saldo | 0,5 | Dilan | Adecuación Funcional → Corrección |
 | 11.2 | Endpoint `GET` de saldo protegido con JWT | 0,5 | Dilan | Seguridad → Autenticidad |
 | 11.3 | **[OBLIGATORIA]** Traducción BDD → JUnit 5 | 1 | Dilan | Mantenibilidad → Capacidad de ser probado |
 

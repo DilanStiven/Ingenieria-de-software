@@ -40,6 +40,9 @@ public class Pedido {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
+    @Column(name = "id_comprador")
+    private Long compradorId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = ESTADO_LONGITUD_MAXIMA)
     private Estado estado = Estado.PENDIENTE_PAGO;
@@ -91,6 +94,24 @@ public class Pedido {
      */
     public void setProducto(final Producto productoValue) {
         this.producto = productoValue;
+    }
+
+    /**
+     * Obtiene el identificador del usuario que creó el pedido.
+     *
+     * @return identificador del comprador
+     */
+    public Long getCompradorId() {
+        return compradorId;
+    }
+
+    /**
+     * Establece el identificador del usuario que creó el pedido.
+     *
+     * @param compradorIdValue identificador del comprador
+     */
+    public void setCompradorId(final Long compradorIdValue) {
+        this.compradorId = compradorIdValue;
     }
 
     /**
