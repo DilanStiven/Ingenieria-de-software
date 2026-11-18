@@ -5,6 +5,7 @@ import com.agrovalle.agrovalle_connect.dtos.ContactoMensajeResponseDTO;
 import com.agrovalle.agrovalle_connect.services.ContactoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +37,10 @@ public class ContactoController {
      */
     @PostMapping("/mensaje")
     public ResponseEntity<ContactoMensajeResponseDTO> enviarMensaje(
-            @Valid @RequestBody final ContactoMensajeRequestDTO solicitud) {
+            @Valid @RequestBody final ContactoMensajeRequestDTO solicitud,
+            final Authentication authentication) {
         return ResponseEntity.ok(contactoService.enviarMensaje(
-                solicitud.getIdProducto(), solicitud.getMensaje()));
+                solicitud.getIdProducto(), solicitud.getMensaje(),
+                Long.valueOf(authentication.getName())));
     }
 }

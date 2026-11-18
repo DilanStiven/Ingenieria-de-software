@@ -1,8 +1,8 @@
 # Sprint 3 Review — AgroValle Connect
 
-> **Estado del documento:** actualizado el 17/11/2026 con HU-05 y HU-09 completadas. Los campos
-> **Pendiente** se completan al cierre del Sprint (20/11/2026) con resultados reales; no se registran
-> resultados, pruebas ni capturas que no hayan ocurrido.
+> **Estado del documento:** actualizado el 17/11/2026 con HU-05, HU-09 y HU-10 completadas y validadas.
+> Los campos **Pendiente** se completan al cierre del Sprint (20/11/2026) con resultados reales; no se
+> registran resultados, pruebas ni capturas que no hayan ocurrido.
 
 | Campo | Valor |
 | --- | --- |
@@ -23,7 +23,8 @@
 > comprobante, el agricultor reciba su pago de inmediato y vea su saldo en su billetera, y el comprador
 > reciba un aviso si su pago es rechazado.
 
-**Resultado:** Parcialmente cumplido (al 17/11/2026 se completaron HU-05 y HU-09; las historias HU-10, HU-11 y HU-12 están en curso).
+**Resultado:** Parcialmente cumplido. Al 17/11/2026, HU-05, HU-09 y HU-10 están completadas y
+validadas; HU-11 y HU-12 son las únicas historias pendientes y se trabajarán más adelante.
 
 ## 2. Incremento entregado
 
@@ -31,10 +32,10 @@
 | --- | --- | --- | --- | --- |
 | HU-05 — Contacto Directo / Intención de Compra | 3 | 3 | ✅ Done | PR #112 fusionado en `develop` el 17/11/2026 |
 | HU-09 — Pago con Pasarela Virtual | 3 | 3 | ✅ Done | PR #118 fusionado en `develop` el 17/11/2026 (rama `historia-9`) |
-| HU-10 — Comprobante de Pago y Factura | 2 | Pendiente | 🔄 En curso | Pendiente |
-| HU-11 — Billetera del Agricultor | 2 | Pendiente | 🔄 En curso | Pendiente |
-| HU-12 — Notificación de Pago Rechazado | 1 | Pendiente | 🔄 En curso | Pendiente |
-| **Total** | **11** | **6** | | PR #112, PR #118 |
+| HU-10 — Comprobante de Pago y Factura | 2 | 2 | ✅ Done | `mvn verify` BUILD SUCCESS, Checkstyle sin violaciones y PR cerrado (17/11/2026) |
+| HU-11 — Billetera del Agricultor | 2 | Pendiente | ⏸️ Diferida | Se trabajará más adelante |
+| HU-12 — Notificación de Pago Rechazado | 1 | Pendiente | ⏸️ Diferida | Se trabajará más adelante |
+| **Total** | **11** | **8** | | HU-05, HU-09 y HU-10 completadas |
 
 ## 3. Demo del incremento
 
@@ -67,8 +68,8 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 
 | # | Escenario BDD | Petición | Resultado esperado | Resultado real | Evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Descarga de recibo | «Descargar Recibo» de un pedido pagado | PDF con detalle y monto | Pendiente | Pendiente |
-| 2 | Pago no exitoso (propuesto) | Recibo de pago rechazado | Error, sin PDF | Pendiente | Pendiente |
+| 1 | Descarga de recibo | `GET /api/v1/pedidos/pagados` y `GET /api/v1/pedidos/{idPedido}/comprobante` | Historial propio y PDF adjunto con detalles y monto | Implementado: historial filtrado por usuario autenticado; descarga PDF con datos del producto y pago aprobado | Pruebas `ComprobanteServiceTest` y `ComprobanteControllerTest`; `mvn verify` BUILD SUCCESS (96 pruebas, 0 fallos, 1 omitida; 17/11/2026) |
+| 2 | Pago no exitoso (propuesto) | Solicitar recibo de pedido rechazado o inexistente | Error, sin PDF | Implementado: el servicio rechaza la generación para pagos no aprobados o pedidos ajenos/inexistentes | `ComprobanteServiceTest`; `mvn verify` BUILD SUCCESS (17/11/2026) |
 
 ### 3.4 HU-11 — Billetera del Agricultor
 
@@ -88,14 +89,12 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 
 | Verificación | Comando | Resultado | Evidencia |
 | --- | --- | --- | --- |
-| Pruebas automatizadas (BDD → JUnit 5) | `mvn test` | 89 pruebas ejecutadas, 0 fallos, 0 errores, 1 omitida — BUILD SUCCESS | Captura terminal 17/11/2026 (finalizó 16:38:50) |
-| Estilo de código | `mvn checkstyle:check` | 0 Checkstyle violations — BUILD SUCCESS | Captura terminal 17/11/2026 16:40:42 |
+| Pruebas automatizadas (BDD → JUnit 5) | `mvn verify` | 96 pruebas ejecutadas, 0 fallos, 0 errores, 1 omitida — BUILD SUCCESS | Ejecución local 17/11/2026; incluye pruebas HU-10 |
+| Estilo de código | `mvn checkstyle:check` | 0 Checkstyle violations — BUILD SUCCESS | Ejecución local 17/11/2026 18:54 |
 | Pre-commit hooks (Husky) | Commit de prueba | Pendiente | Pendiente |
 
-> **Nota:** los resultados corresponden a la ejecución del 17/11/2026 sobre el código de HU-09
-> (PR #118), que incluye lo ya fusionado de HU-05. Al cierre de HU-05 se habían registrado 78 pruebas y
-> 0 violaciones (14:10 y 14:11); HU-09 suma 11 pruebas. Las historias restantes se verificarán en sus
-> respectivos PRs.
+> **Nota:** la ejecución más reciente valida HU-10 junto con el resto del código. HU-11 y HU-12 son las
+> únicas historias pendientes y se verificarán cuando se trabajen.
 
 ## 5. Esfuerzo planificado vs. real
 
@@ -103,16 +102,16 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 | --- | --- | --- | --- | --- |
 | HU-05 | 2,5 | 1,5 | −1 h | Completada el 17/11/2026; Carlos reportó 1 h 30 min reales |
 | HU-09 | 2,5 | 2 | −0,5 h | Iniciada y terminada el 17/11/2026 (issue #41: Start date y Target date); Carlos reportó 2 h en el issue |
-| HU-10 | 2 | Pendiente | Pendiente | Pendiente |
+| HU-10 | 2 | 2,5 | +0,5 h | Santiago reportó 2 h 30 min; inicio y finalización el 17/11/2026 (Issue #42) |
 | HU-11 | 2 | Pendiente | Pendiente | Pendiente |
 | HU-12 | 2 | Pendiente | Pendiente | Pendiente |
-| **Total** | **11** | **3,5 (parcial)** | −1,5 h en las historias completadas (5 h planificadas vs 3,5 h reales) | Capacidad disponible: 24 h |
+| **Total** | **11** | **6 (parcial)** | −1 h en HU-05, HU-09 y HU-10 (7 h planificadas vs 6 h reales) | HU-11 y HU-12 (4 h planificadas) se trabajarán más adelante; capacidad disponible: 24 h |
 
 ## 6. Trabajo no completado
 
 | Tarea / Historia | Motivo | Decisión |
 | --- | --- | --- |
-| HU-10, HU-11, HU-12 | Sprint en curso al 17/11/2026; fecha límite 20/11/2026 | Continuar en el Sprint; se completan antes del cierre. Ya no dependen de HU-09, que está en `develop` |
+| HU-11 y HU-12 | No implementadas al registrar esta actualización | Se trabajarán más adelante; no bloquean la entrega de HU-10 |
 
 ## 7. Retroalimentación recibida
 
@@ -122,8 +121,8 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 
 ## 8. Actualización del Product Backlog
 
-HU-05 y HU-09 pasan a **Done**. Las historias HU-10, HU-11 y HU-12 permanecen en **In Progress** hasta el
-cierre del Sprint el 20/11/2026. Referencia: el Sprint 4 «Entrega y Reputación» (HU-08, HU-13, HU-14,
+HU-05, HU-09 y HU-10 pasan a **Done**. HU-11 y HU-12 se trabajarán más adelante. Referencia: el Sprint 4
+«Entrega y Reputación» (HU-08, HU-13, HU-14,
 HU-15) queda sujeto a su Planning. HU-12 se movió a este Sprint desde el Sprint 4.
 
 Ajustes pendientes en el Backlog para HU-09 (issue #41):
@@ -139,6 +138,7 @@ Ajustes pendientes en el Backlog para HU-09 (issue #41):
 - PR #112 (HU-05): [https://github.com/DilanStiven/Ingenieria-de-software/pull/112](https://github.com/DilanStiven/Ingenieria-de-software/pull/112)
 - PR #118 (HU-09): [https://github.com/DilanStiven/Ingenieria-de-software/pull/118](https://github.com/DilanStiven/Ingenieria-de-software/pull/118)
 - Issue #41 (HU-09): [https://github.com/DilanStiven/Ingenieria-de-software/issues/41](https://github.com/DilanStiven/Ingenieria-de-software/issues/41)
+- Issue #42 (HU-10): [https://github.com/DilanStiven/Ingenieria-de-software/issues/42](https://github.com/DilanStiven/Ingenieria-de-software/issues/42)
 - Tablero (GitHub Projects): [https://github.com/users/DilanStiven/projects/2](https://github.com/users/DilanStiven/projects/2)
 - Planning: [`docs/sprint-3-planning.md`](sprint-3-planning.md)
 - Retrospectiva: [`docs/sprint-3-retrospective.md`](sprint-3-retrospective.md)
