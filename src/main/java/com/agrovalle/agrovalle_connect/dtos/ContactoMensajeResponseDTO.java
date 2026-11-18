@@ -56,7 +56,7 @@ public class ContactoMensajeResponseDTO {
     /**
      * Indica si se publicó la notificación interna.
      *
-     * @return true si se notificó al agricultor
+     * @return true si se publicó el evento interno de notificación
      */
     public boolean isNotificacionEnviada() {
         return notificacionEnviada;

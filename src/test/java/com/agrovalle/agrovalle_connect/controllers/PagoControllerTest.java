@@ -45,7 +45,7 @@ class PagoControllerTest {
 
     @Test
     void dadoPedidoPendienteCuandoPagoEsAprobadoEntoncesRetornaPagoPagadoYOrden() throws Exception {
-        when(pagoService.procesar(PEDIDO_ID, Pago.MedioPago.TARJETA))
+        when(pagoService.procesar(PEDIDO_ID, 7L, Pago.MedioPago.TARJETA))
                 .thenReturn(respuesta(Pago.Estado.APROBADO,
                         "SIM-APROBADO", "Pago aprobado", 31L, "OC-TEST"));
 
@@ -65,12 +65,12 @@ class PagoControllerTest {
                 .andExpect(jsonPath("$.numeroOrden").value("OC-TEST"))
                 .andExpect(jsonPath("$.mensaje").value("Pago aprobado"));
 
-        verify(pagoService).procesar(PEDIDO_ID, Pago.MedioPago.TARJETA);
+        verify(pagoService).procesar(PEDIDO_ID, 7L, Pago.MedioPago.TARJETA);
     }
 
     @Test
     void dadoPedidoPendienteCuandoPagoEsRechazadoEntoncesNoRetornaOrden() throws Exception {
-        when(pagoService.procesar(PEDIDO_ID, Pago.MedioPago.PSE))
+        when(pagoService.procesar(PEDIDO_ID, 7L, Pago.MedioPago.PSE))
                 .thenReturn(respuesta(Pago.Estado.RECHAZADO,
                         null, "Pago rechazado", null, null));
 
@@ -89,7 +89,7 @@ class PagoControllerTest {
                 .andExpect(jsonPath("$.numeroOrden").doesNotExist())
                 .andExpect(jsonPath("$.mensaje").value("Pago rechazado"));
 
-        verify(pagoService).procesar(PEDIDO_ID, Pago.MedioPago.PSE);
+        verify(pagoService).procesar(PEDIDO_ID, 7L, Pago.MedioPago.PSE);
     }
 
     @Test
@@ -125,7 +125,7 @@ class PagoControllerTest {
 
     @Test
     void responde409CuandoElPedidoNoPermiteOtroPago() throws Exception {
-        when(pagoService.procesar(PEDIDO_ID, Pago.MedioPago.TARJETA))
+        when(pagoService.procesar(PEDIDO_ID, 7L, Pago.MedioPago.TARJETA))
                 .thenThrow(new PagoInvalidoException(
                         PEDIDO_ID,
                         Pedido.Estado.PAGADO.name()));

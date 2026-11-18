@@ -5,6 +5,7 @@ import com.agrovalle.agrovalle_connect.dtos.PagoResponseDTO;
 import com.agrovalle.agrovalle_connect.services.PagoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +28,16 @@ public class PagoController {
      * Procesa el pago de un pedido pendiente.
      *
      * @param solicitud datos del pago
+     * @param authentication identidad autenticada
      * @return pago aprobado o rechazado
      */
     @PostMapping
     public ResponseEntity<PagoResponseDTO> pagar(
-            @Valid @RequestBody final PagoRequestDTO solicitud) {
+            @Valid @RequestBody final PagoRequestDTO solicitud,
+            final Authentication authentication) {
         return ResponseEntity.ok(pagoService.procesar(
                 solicitud.getIdPedido(),
+                Long.valueOf(authentication.getName()),
                 solicitud.getMedioPago()));
     }
 }

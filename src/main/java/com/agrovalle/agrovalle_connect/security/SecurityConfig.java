@@ -44,6 +44,9 @@ public class SecurityConfig {
     /** Ruta para procesar pagos de pedidos. */
     private static final String PAGOS_PATH = "/api/v1/pagos";
 
+    /** Ruta para consultar la billetera del agricultor. */
+    private static final String BILLETERA_PATH = "/api/v1/billetera";
+
     private final JwtService jwtService;
 
     /**
@@ -76,6 +79,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, PRECIOS_PATH).permitAll()
                 .requestMatchers(HttpMethod.POST, CONTACTO_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, PAGOS_PATH).authenticated()
+                .requestMatchers(HttpMethod.GET, BILLETERA_PATH + "/**")
+                    .hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers(HttpMethod.POST, ORDENES_PATH)

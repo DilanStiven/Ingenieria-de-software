@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.agrovalle.agrovalle_connect.dtos.ContactoMensajeResponseDTO;
 import com.agrovalle.agrovalle_connect.events.SolicitudContactoCreadaEvent;
+import com.agrovalle.agrovalle_connect.exceptions.CantidadNoDisponibleException;
 import com.agrovalle.agrovalle_connect.exceptions.OfertaNoDisponibleException;
 import com.agrovalle.agrovalle_connect.models.Agricultor;
 import com.agrovalle.agrovalle_connect.models.ContactoMensaje;
@@ -18,6 +19,7 @@ import com.agrovalle.agrovalle_connect.models.Producto;
 import com.agrovalle.agrovalle_connect.repositories.ContactoMensajeRepository;
 import com.agrovalle.agrovalle_connect.repositories.PedidoRepository;
 import com.agrovalle.agrovalle_connect.repositories.ProductoRepository;
+import java.math.BigDecimal;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,6 +63,7 @@ class ContactoServiceTest {
         producto = new Producto();
         producto.setId(PRODUCTO_ID);
         producto.setEstado("ACTIVO");
+        producto.setCantidad(new BigDecimal("50.00"));
         producto.setAgricultor(agricultor);
     }
 
@@ -80,7 +83,8 @@ class ContactoServiceTest {
 
         ContactoMensajeResponseDTO respuesta =
                 contactoService.enviarMensaje(
-                        PRODUCTO_ID, "  Me interesa el producto  ", COMPRADOR_ID);
+                        PRODUCTO_ID, new BigDecimal("5.00"),
+                        "  Me interesa el producto  ", COMPRADOR_ID);
 
         assertEquals(MENSAJE_ID, respuesta.getIdMensaje());
         assertEquals(PEDIDO_ID, respuesta.getIdPedido());
@@ -89,6 +93,7 @@ class ContactoServiceTest {
         ArgumentCaptor<Pedido> pedidoCaptor = ArgumentCaptor.forClass(Pedido.class);
         verify(pedidoRepository).save(pedidoCaptor.capture());
         assertEquals(producto, pedidoCaptor.getValue().getProducto());
+        assertEquals(new BigDecimal("5.00"), pedidoCaptor.getValue().getCantidad());
         assertEquals(COMPRADOR_ID, pedidoCaptor.getValue().getCompradorId());
         assertEquals(Pedido.Estado.PENDIENTE_PAGO, pedidoCaptor.getValue().getEstado());
 
@@ -111,7 +116,8 @@ class ContactoServiceTest {
 
         assertThrows(OfertaNoDisponibleException.class,
                 () -> contactoService.enviarMensaje(
-                        PRODUCTO_ID, "Me interesa el producto", COMPRADOR_ID));
+                        PRODUCTO_ID, new BigDecimal("5.00"),
+                        "Me interesa el producto", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));
@@ -124,7 +130,22 @@ class ContactoServiceTest {
 
         assertThrows(OfertaNoDisponibleException.class,
                 () -> contactoService.enviarMensaje(
-                        PRODUCTO_ID, "Me interesa el producto", COMPRADOR_ID));
+                        PRODUCTO_ID, new BigDecimal("5.00"),
+                        "Me interesa el producto", COMPRADOR_ID));
+
+        verify(pedidoRepository, never()).save(any(Pedido.class));
+        verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));
+        verify(eventPublisher, never()).publishEvent(any());
+    }
+
+    @Test
+    void rechazaCantidadMayorALaDisponibleSinPersistirNiNotificar() {
+        when(productoRepository.findById(PRODUCTO_ID)).thenReturn(Optional.of(producto));
+
+        assertThrows(CantidadNoDisponibleException.class,
+                () -> contactoService.enviarMensaje(
+                        PRODUCTO_ID, new BigDecimal("51.00"),
+                        "Me interesa el producto", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));

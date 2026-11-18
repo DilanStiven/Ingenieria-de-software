@@ -171,6 +171,12 @@ public class GlobalExceptionHandler {
         return respuestaDeError(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CantidadNoDisponibleException.class)
+    public ResponseEntity<Map<String, String>> manejarCantidadNoDisponible(
+            final CantidadNoDisponibleException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(PagoInvalidoException.class)
     public ResponseEntity<Map<String, String>> manejarPagoInvalido(
             final PagoInvalidoException ex) {

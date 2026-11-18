@@ -1,6 +1,7 @@
 package com.agrovalle.agrovalle_connect.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -9,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.agrovalle.agrovalle_connect.dtos.PrecioPromedioResponseDTO;
 import com.agrovalle.agrovalle_connect.exceptions.PrecioNoDisponibleException;
+import com.agrovalle.agrovalle_connect.models.Precio;
 import com.agrovalle.agrovalle_connect.repositories.PrecioRepository;
 import com.agrovalle.agrovalle_connect.repositories.PrecioRepository.PromedioPrecio;
 import java.math.BigDecimal;
@@ -66,5 +68,17 @@ class PrecioServiceTest {
 
         assertThrows(PrecioNoDisponibleException.class,
                 () -> precioService.obtenerPromedio("Café"));
+    }
+
+    @Test
+    void registraPrecioUnitarioDeUnaCompraCompletada() {
+        precioService.registrarTransaccion("Maíz dulce", new BigDecimal("25000.00"));
+
+        ArgumentCaptor<Precio> transaccion = ArgumentCaptor.forClass(Precio.class);
+        verify(precioRepository).save(transaccion.capture());
+        assertEquals("Maíz dulce", transaccion.getValue().getProducto());
+        assertEquals(new BigDecimal("25000.00"),
+                transaccion.getValue().getPrecioUnitario());
+        assertNotNull(transaccion.getValue().getFechaTransaccion());
     }
 }
