@@ -265,18 +265,18 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 ## 10. Sprint 3 — Daily #1 (Martes 17/11/2026)
 
 * **Hora / Duración:** 14:51 / ~15 min
-* **Canal:** Discord (canal de voz del Grupo 5)
-* **Asistentes confirmados:** Kevin Estiven Lucumi, Dilan Stiven Castillo
-* **Ausentes y motivo:** Carlos Andres Rosales, Santiago Edilmo Hurtado — sin registro de asistencia en esta Daily
+* **Canal:** Discord (canales de voz y texto del Grupo 5)
+* **Asistentes confirmados:** Kevin Estiven Lucumi, Dilan Stiven Castillo, Santiago Edilmo Hurtado
+* **Ausentes y motivo:** Carlos Andres Rosales — sin registro de asistencia en esta Daily
 
 | Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
 | --- | --- | --- | --- |
 | **Kevin Lucumi** | Completó todas las subtareas de HU-05: 5.1 (entidades `ContactoMensaje` y `Pedido` y migración SQL V4), 5.2 (`ContactoService` con validación, persistencia y pedido en estado PENDIENTE_PAGO), 5.3 (`ContactoController` con endpoint `POST /api/v1/contacto/mensaje` protegido por JWT) y 5.4 (pruebas JUnit 5 y MockMvc de los escenarios BDD). PR #112 listo para Code Review. | Estar disponible para apoyar al equipo en las tareas restantes del Sprint. | Ninguno |
 | **Dilan Castillo** | Pendiente | Pendiente | Pendiente |
 | **Carlos Rosales** | Pendiente | Pendiente | Pendiente |
-| **Santiago Hurtado** | Pendiente | Pendiente | Pendiente |
+| **Santiago Hurtado** | Completó HU-10: 10.1 (PDF con detalles y monto), 10.2 (historial y descarga de recibo) y 10.3 (pruebas JUnit 5 de escenarios BDD). Reportó 2,5 h trabajadas, inicio y finalización el 17/11/2026, y que el PR de HU-10 quedó cerrado (Issue #42). | Estará disponible para ayudar al equipo; HU-11 y HU-12 quedan para trabajo posterior. | Ninguno. |
 
-* **Estado del tablero:** To Do: Pendiente · In Progress: Pendiente · Code Review: 1/2 (PR #112) · Done: 1 (HU-05)
+* **Estado del tablero:** HU-10 reportada como completada y con PR cerrado; HU-11 y HU-12 pendientes. No se registran otros cambios de columnas o contadores.
 * **Acuerdos y acciones:**
   * Kevin notificó al equipo que el PR #112 (HU-05) está listo para revisión y fusión.
   * DalanStiven realizó el Code Review y aprobó el PR #112; fusionado en `develop` el mismo día.

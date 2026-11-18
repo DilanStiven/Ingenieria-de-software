@@ -35,6 +35,7 @@ class ContactoServiceTest {
     private static final Long PEDIDO_ID = 11L;
     private static final Long MENSAJE_ID = 13L;
     private static final Long AGRICULTOR_ID = 17L;
+    private static final Long COMPRADOR_ID = 19L;
 
     @Mock
     private ProductoRepository productoRepository;
@@ -78,7 +79,8 @@ class ContactoServiceTest {
         });
 
         ContactoMensajeResponseDTO respuesta =
-                contactoService.enviarMensaje(PRODUCTO_ID, "  Me interesa el producto  ");
+                contactoService.enviarMensaje(
+                        PRODUCTO_ID, "  Me interesa el producto  ", COMPRADOR_ID);
 
         assertEquals(MENSAJE_ID, respuesta.getIdMensaje());
         assertEquals(PEDIDO_ID, respuesta.getIdPedido());
@@ -87,6 +89,7 @@ class ContactoServiceTest {
         ArgumentCaptor<Pedido> pedidoCaptor = ArgumentCaptor.forClass(Pedido.class);
         verify(pedidoRepository).save(pedidoCaptor.capture());
         assertEquals(producto, pedidoCaptor.getValue().getProducto());
+        assertEquals(COMPRADOR_ID, pedidoCaptor.getValue().getCompradorId());
         assertEquals(Pedido.Estado.PENDIENTE_PAGO, pedidoCaptor.getValue().getEstado());
 
         ArgumentCaptor<ContactoMensaje> mensajeCaptor = ArgumentCaptor.forClass(ContactoMensaje.class);
@@ -107,7 +110,8 @@ class ContactoServiceTest {
         when(productoRepository.findById(PRODUCTO_ID)).thenReturn(Optional.of(producto));
 
         assertThrows(OfertaNoDisponibleException.class,
-                () -> contactoService.enviarMensaje(PRODUCTO_ID, "Me interesa el producto"));
+                () -> contactoService.enviarMensaje(
+                        PRODUCTO_ID, "Me interesa el producto", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));
@@ -119,7 +123,8 @@ class ContactoServiceTest {
         when(productoRepository.findById(PRODUCTO_ID)).thenReturn(Optional.empty());
 
         assertThrows(OfertaNoDisponibleException.class,
-                () -> contactoService.enviarMensaje(PRODUCTO_ID, "Me interesa el producto"));
+                () -> contactoService.enviarMensaje(
+                        PRODUCTO_ID, "Me interesa el producto", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));

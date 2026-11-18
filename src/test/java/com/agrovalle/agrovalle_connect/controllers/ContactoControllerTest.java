@@ -44,7 +44,7 @@ class ContactoControllerTest {
         when(jwtService.esValido(TOKEN)).thenReturn(true);
         when(jwtService.obtenerUsuarioId(TOKEN)).thenReturn(17L);
         when(jwtService.obtenerRol(TOKEN)).thenReturn(RolUsuario.AGRICULTOR);
-        when(contactoService.enviarMensaje(PRODUCTO_ID, MENSAJE))
+        when(contactoService.enviarMensaje(PRODUCTO_ID, MENSAJE, 17L))
                 .thenReturn(new ContactoMensajeResponseDTO(
                         13L, 11L, "Solicitud confirmada", true));
 
@@ -62,7 +62,7 @@ class ContactoControllerTest {
                 .andExpect(jsonPath("$.idPedido").value(11))
                 .andExpect(jsonPath("$.mensaje").value("Solicitud confirmada"));
 
-        verify(contactoService).enviarMensaje(PRODUCTO_ID, MENSAJE);
+        verify(contactoService).enviarMensaje(PRODUCTO_ID, MENSAJE, 17L);
     }
 
     @Test
