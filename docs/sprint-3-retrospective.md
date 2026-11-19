@@ -1,9 +1,9 @@
 # Sprint 3 Retrospectiva — AgroValle Connect
 
 > **Estado del documento:** actualizado el 18/11/2026 con HU-05, HU-09, HU-10, HU-11 y HU-12
-> implementadas y validadas localmente. La fecha corresponde a esta actualización documental; la
+> implementadas; HU-12 fue aprobada y fusionada en `develop` mediante el PR #126. La fecha corresponde a esta actualización documental; la
 > Las reuniones de Planning y Retrospectiva se realizaron el 16/11/2026 y quedaron registradas.
-> El Sprint 3 permanece abierto hasta completar la integración y revisión pendientes.
+> El Sprint 3 permanece abierto; falta confirmar que la issue #44 refleje la integración en el tablero.
 > Los campos **Pendiente** se completan en la reunión de retrospectiva con observaciones reales del
 > equipo; no se atribuyen comentarios ni evidencias que no existan.
 
@@ -23,9 +23,10 @@
 
 El Grupo 5 se comprometió a entregar 12 Story Points distribuidos en cinco historias de usuario
 (HU-05, HU-09, HU-10, HU-11 y HU-12), con una capacidad de 24 horas y 11 horas planificadas.
-Al 18/11/2026, las cinco historias están implementadas y validadas localmente (12/12 SP, según el
-Planning). Las horas reportadas suman 9 h. HU-11 ya está integrada y en Done; HU-12 aún requiere PR,
-revisión e integración. El Sprint permanece abierto.
+Al 18/11/2026, las cinco historias están implementadas (12/12 SP, según el Planning) y las horas
+reportadas suman 9 h. HU-11 está integrada y en Done; HU-12 fue aprobada y fusionada en `develop`
+mediante el PR #126. El estado actual de la issue #44 en el tablero no aparece en la evidencia
+compartida. El Sprint permanece abierto.
 
 ## 2. ¿Qué salió bien? (Continue)
 
@@ -47,13 +48,13 @@ revisión e integración. El Sprint permanece abierto.
 | --- | --- | --- | --- |
 | 1 | El PR #118 se abrió con rama base `main` y se cambió a `develop` poco antes de la aprobación | Riesgo de fusionar en la rama equivocada; se aparta del flujo `feature` → PR → `develop` | PR #118 — línea de tiempo («changed the base branch from main to develop») |
 | 2 | Un commit intermedio de la rama (`8837fab`, «Tareas de la historia 9 realizadas») quedó con el check fallido, aunque el check final del merge pasó | Historial con un commit en rojo; se detecta tarde si no se corre el build local antes de cada push | PR #118 — línea de tiempo (commit `8837fab` con ✗; «1 check passed» al fusionar) |
-| 3 | Las tareas #105–#110 están en Done. El PR #124 de HU-11 fue aprobado y fusionado en `develop`, y la historia #43 aparece en Done; HU-12 (#44) continúa en Code Review sin PR | El cierre formal depende de crear, revisar e integrar el PR de HU-12 | Capturas del PR #124 y de la columna Done compartidas el 18/11/2026 |
+| 3 | HU-11 fue aprobada y fusionada en `develop` mediante el PR #124; luego HU-12 fue aprobada y fusionada mediante el PR #126, con un check exitoso | Mantener actualizado el estado de la issue #44 y sus tareas para que refleje la integración | Capturas de los PR #124 y #126 compartidas el 18/11/2026 |
 
 ## 4. ¿Qué se debería empezar a hacer? (Start)
 
 | # | Propuesta (tercera persona) | Motivación |
 | --- | --- | --- |
-| 1 | Crear y completar el PR de HU-12 y actualizar la historia #44 después de su fusión | Cerrar la historia cuando código, pruebas, revisión y estado del tablero coincidan |
+| 1 | Confirmar que la issue #44 y sus tareas reflejen la fusión del PR #126 | Mantener sincronizados el código integrado y el estado del tablero |
 | 2 | Mantener HU-12 alineada en 2 SP en el Planning y en el issue #44 | Mantener consistentes la estimación del Backlog y las métricas de Sprint |
 
 ## 5. Seguimiento de las acciones del Sprint 1 y de los riesgos del Planning
@@ -64,18 +65,18 @@ revisión e integración. El Sprint permanece abierto.
 | Escribir las pruebas junto con la implementación de cada tarea | ✅ HU-05, HU-09 y HU-10 incluyeron pruebas JUnit 5 en sus PR; HU-11 cubrió acreditación y saldo 0; HU-12 cubrió rechazo, plazo y reintento con JUnit 5 |
 | Revisión diaria del WIP Limit de *Code Review* (máx. 2) | Pendiente |
 | Sprint de 1 semana y estimación de 30 min por tarea con apoyo de Copilot | Verificado parcialmente con las horas reportadas: las cinco historias suman 9 h frente a 11 h planificadas; HU-10 excedió su estimación por 0,5 h y las otras cuatro quedaron por debajo |
-| HU-10, HU-11 y HU-12 dependientes de HU-09 | ✅ Dependencia liberada: HU-09 se fusionó en `develop` el 17/11/2026 (PR #118). HU-11 se fusionó en `develop` mediante PR #124 el 18/11; HU-12 sigue pendiente de PR e integración |
+| HU-10, HU-11 y HU-12 dependientes de HU-09 | ✅ Dependencia liberada: HU-09 se fusionó en `develop` el 17/11/2026 (PR #118). HU-11 se fusionó mediante PR #124 y HU-12 mediante PR #126, ambos el 18/11 |
 | Pago acreditado al agricultor sin esperar la entrega (HU-08 en Sprint 4) | ✅ Implementado en HU-11 al aprobar el pago, sin esperar la entrega |
 
 ## 6. Métricas del proceso
 
 | Métrica | Valor |
 | --- | --- |
-| Story Points comprometidos / implementados | 12 / 12 (HU-05, HU-09, HU-10, HU-11 y HU-12); HU-11 está integrada y HU-12 sigue pendiente de PR |
+| Story Points comprometidos / implementados | 12 / 12 (HU-05, HU-09, HU-10, HU-11 y HU-12); las cinco historias están integradas en `develop` |
 | Horas planificadas / reales reportadas | 11 h / 9 h (HU-05: 1,5 h; HU-09: 2 h; HU-10: 2,5 h; HU-11: 1,5 h; HU-12: 1,5 h) |
 | Dailies registradas | 3 (dos el 17/11/2026 y una el 18/11/2026) |
-| Historias pendientes de implementación local | 0; HU-12 aún requiere PR, revisión e integración |
-| Pull Requests fusionados registrados | 3 (PR #112 — HU-05; PR #118 — HU-09; PR #124 — HU-11) |
+| Historias pendientes de implementación local | 0; las cinco historias están integradas en `develop` |
+| Pull Requests fusionados registrados | 4 (PR #112 — HU-05; PR #118 — HU-09; PR #124 — HU-11; PR #126 — HU-12) |
 | Veces que se superó un WIP Limit | Pendiente |
 | Impedimentos reportados / resueltos | Pendiente |
 
@@ -83,7 +84,7 @@ revisión e integración. El Sprint permanece abierto.
 
 | # | Acción (tercera persona) | Responsable | Fecha límite | Criterio de éxito |
 | --- | --- | --- | --- | --- |
-| 1 | Abrir y completar la revisión/integración de HU-12 cuando se autorice subir los cambios; actualizar issues #44 y #108–#110 | Dilan Stiven Castillo Valencia | Antes del cierre del Sprint, 20/11/2026 | PR revisado, tareas e historia en Done y evidencia enlazada |
+| 1 | Confirmar/actualizar el estado de la issue #44 y las tareas #108–#110 tras la fusión del PR #126 | Dilan Stiven Castillo Valencia | Antes del cierre del Sprint, 20/11/2026 | Tablero actualizado y evidencia del PR #126 enlazada |
 | 2 | Mantener enlazada en la issue #43 la evidencia del PR #124 fusionado | Dilan Stiven Castillo Valencia | Antes del cierre del Sprint, 20/11/2026 | Issue #43 en Done y PR #124 referenciado |
 | 3 | Distinguir la validación local en H2 de una ejecución real en PostgreSQL | Equipo Scrum | Antes del cierre técnico | Evidencia registrada con el entorno utilizado |
 | 4 | Mantener la publicación Git pendiente hasta recibir autorización expresa | Dilan Stiven Castillo Valencia | Cuando el equipo autorice | Commit y push realizados de forma rastreable |
@@ -97,6 +98,6 @@ terminó las tareas de HU-12 en aproximadamente 1,5 h y que no tuvo impedimentos
 
 ## 9. Conclusión
 
-Las cinco historias comprometidas están implementadas y validadas (12/12 SP); HU-11 ya está integrada
-en `develop` y aparece en Done. El cierre formal del Sprint aún requiere crear, revisar e integrar el
-PR de HU-12 y actualizar su estado en el tablero.
+Las cinco historias comprometidas están implementadas (12/12 SP), y HU-11 y HU-12 fueron integradas
+en `develop` mediante los PR #124 y #126. El PR #126 pasó revisión y checks. Antes del cierre del
+Sprint, falta confirmar que la issue #44 y sus tareas reflejen la integración en el tablero.
