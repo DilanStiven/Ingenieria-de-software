@@ -13,6 +13,7 @@ import com.agrovalle.agrovalle_connect.security.RolUsuario;
 import com.agrovalle.agrovalle_connect.security.SecurityConfig;
 import com.agrovalle.agrovalle_connect.services.ContactoService;
 import com.agrovalle.agrovalle_connect.services.JwtService;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -28,6 +29,7 @@ class ContactoControllerTest {
     private static final String URL = "/api/v1/contacto/mensaje";
     private static final String TOKEN = "token-valido";
     private static final Long PRODUCTO_ID = 7L;
+    private static final BigDecimal CANTIDAD = new BigDecimal("5.0");
     private static final String MENSAJE = "Me interesa el producto";
 
     @Autowired
@@ -44,7 +46,7 @@ class ContactoControllerTest {
         when(jwtService.esValido(TOKEN)).thenReturn(true);
         when(jwtService.obtenerUsuarioId(TOKEN)).thenReturn(17L);
         when(jwtService.obtenerRol(TOKEN)).thenReturn(RolUsuario.AGRICULTOR);
-        when(contactoService.enviarMensaje(PRODUCTO_ID, MENSAJE, 17L))
+        when(contactoService.enviarMensaje(PRODUCTO_ID, CANTIDAD, MENSAJE, 17L))
                 .thenReturn(new ContactoMensajeResponseDTO(
                         13L, 11L, "Solicitud confirmada", true));
 
@@ -54,6 +56,7 @@ class ContactoControllerTest {
                         .content("""
                                 {
                                   "id_producto": 7,
+                                  "cantidad": 5.0,
                                   "mensaje": "Me interesa el producto"
                                 }
                                 """))
@@ -62,7 +65,7 @@ class ContactoControllerTest {
                 .andExpect(jsonPath("$.idPedido").value(11))
                 .andExpect(jsonPath("$.mensaje").value("Solicitud confirmada"));
 
-        verify(contactoService).enviarMensaje(PRODUCTO_ID, MENSAJE, 17L);
+        verify(contactoService).enviarMensaje(PRODUCTO_ID, CANTIDAD, MENSAJE, 17L);
     }
 
     @Test
@@ -92,6 +95,7 @@ class ContactoControllerTest {
                         .content("""
                                 {
                                   "id_producto": 0,
+                                  "cantidad": 0,
                                   "mensaje": " "
                                 }
                                 """))
