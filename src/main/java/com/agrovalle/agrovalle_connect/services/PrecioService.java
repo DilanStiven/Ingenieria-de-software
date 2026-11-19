@@ -2,8 +2,10 @@ package com.agrovalle.agrovalle_connect.services;
 
 import com.agrovalle.agrovalle_connect.dtos.PrecioPromedioResponseDTO;
 import com.agrovalle.agrovalle_connect.exceptions.PrecioNoDisponibleException;
+import com.agrovalle.agrovalle_connect.models.Precio;
 import com.agrovalle.agrovalle_connect.repositories.PrecioRepository;
 import com.agrovalle.agrovalle_connect.repositories.PrecioRepository.PromedioPrecio;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
@@ -55,5 +57,21 @@ public class PrecioService {
         return new PrecioPromedioResponseDTO(producto, resultado.getPromedio()
                 .setScale(ESCALA_MONETARIA, RoundingMode.HALF_UP), MONEDA,
                 UNIDAD_PRECIO, resultado.getCantidad());
+    }
+
+    /**
+     * Registra el precio unitario de una compra aprobada.
+     *
+     * @param nombreProducto producto transado
+     * @param precioUnitario precio por kilogramo
+     */
+    @Transactional
+    public void registrarTransaccion(
+            final String nombreProducto, final BigDecimal precioUnitario) {
+        Precio transaccion = new Precio();
+        transaccion.setProducto(nombreProducto);
+        transaccion.setPrecioUnitario(precioUnitario);
+        transaccion.setFechaTransaccion(Instant.now());
+        precioRepository.save(transaccion);
     }
 }

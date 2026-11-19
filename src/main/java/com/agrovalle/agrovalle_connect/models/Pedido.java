@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
@@ -24,6 +25,8 @@ import java.time.Instant;
 public class Pedido {
 
     private static final int ESTADO_LONGITUD_MAXIMA = 30;
+    private static final int PRECISION_CANTIDAD = 10;
+    private static final int ESCALA_CANTIDAD = 2;
 
     /** Estados de pago disponibles para un pedido. */
     public enum Estado {
@@ -39,6 +42,10 @@ public class Pedido {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
+
+    @Column(name = "cantidad", nullable = false,
+            precision = PRECISION_CANTIDAD, scale = ESCALA_CANTIDAD)
+    private BigDecimal cantidad;
 
     @Column(name = "id_comprador")
     private Long compradorId;
@@ -94,6 +101,24 @@ public class Pedido {
      */
     public void setProducto(final Producto productoValue) {
         this.producto = productoValue;
+    }
+
+    /**
+     * Obtiene la cantidad solicitada en kilogramos.
+     *
+     * @return cantidad solicitada
+     */
+    public BigDecimal getCantidad() {
+        return cantidad;
+    }
+
+    /**
+     * Establece la cantidad solicitada en kilogramos.
+     *
+     * @param cantidadValue cantidad solicitada
+     */
+    public void setCantidad(final BigDecimal cantidadValue) {
+        this.cantidad = cantidadValue;
     }
 
     /**

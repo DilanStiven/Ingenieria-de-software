@@ -15,14 +15,14 @@ public class SolicitudContactoCreadaListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolicitudContactoCreadaListener.class);
 
     /**
-     * Registra la notificación dirigida al agricultor.
+     * Registra el evento de notificación interna dirigido al agricultor.
      *
      * @param event solicitud de contacto creada
      */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void notificarAgricultor(final SolicitudContactoCreadaEvent event) {
-        LOGGER.info("Notificación de contacto enviada al agricultor {} por el producto {} "
-                        + "y el pedido {}",
+        LOGGER.info("Evento interno de contacto publicado para el agricultor {} por "
+                        + "el producto {} y el pedido {}",
                 event.getAgricultorId(),
                 event.getProductoId(),
                 event.getPedidoId());

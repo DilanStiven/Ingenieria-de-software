@@ -281,3 +281,50 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
   * Kevin notificó al equipo que el PR #112 (HU-05) está listo para revisión y fusión.
   * DalanStiven realizó el Code Review y aprobó el PR #112; fusionado en `develop` el mismo día.
   * Rama `HU05` eliminada tras el merge.
+
+## 11. Sprint 3 — Daily #2 (Martes 17/11/2026)
+
+* **Hora / Duración:** 20:30 / 2 horas, según el registro compartido por Carlos.
+* **Canal:** Discord (llamada de voz del Grupo 5)
+* **Asistentes confirmados:** Carlos Andres Rosales y Kevin Estiven Lucumi.
+* **Ausentes:** No se documentan ausencias en el registro compartido.
+
+| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
+| --- | --- | --- | --- |
+| **Carlos Rosales** | Completó las tareas 9.1 a 9.4 de HU-09. Reportó 89 pruebas, 0 fallos y 1 omitida; Checkstyle aprobado tras corregir el JavaDoc de `ResultadoPago`, y generación del reporte JaCoCo. El PR #118 de HU-09 se fusionó en `develop`. | Sin reporte individual compartido. | Sin reporte individual compartido. |
+| **Kevin Lucumi** | Asistió a la Daily; no se compartió un reporte individual de avance. | Sin reporte individual compartido. | Sin reporte individual compartido. |
+
+* **Estado del tablero:** HU-09 reportada como completada y PR #118 fusionado en `develop`.
+* **Acuerdos y acciones:**
+  * Registrar en esta bitácora la Daily y el trabajo de HU-09 de Carlos y Kevin.
+
+## 12. Sprint 3 — Daily #3 (Miércoles 18/11/2026)
+
+* **Hora / Duración:** No registradas. Santiago Hurtado se incorporó aproximadamente 10 minutos
+  después de la primera captura, según la aclaración de Dilan.
+* **Canal:** Discord (llamada de voz del Grupo 5)
+* **Asistentes confirmados:** Dilan Stiven Castillo y Kevin Estiven Lucumi (identificables en las
+  capturas por sus indicadores); Santiago Edilmo Hurtado se conectó tarde, aproximadamente 10 minutos
+  después de la primera captura.
+* **Participación no confirmada:** Carlos Andres Rosales no se puede confirmar con las capturas
+  compartidas.
+
+| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
+| --- | --- | --- | --- |
+| **Dilan Castillo** | Reportó que completó las tareas de HU-11: 11.1 (`BilleteraService`), 11.2 (endpoint `GET` de saldo protegido con JWT) y 11.3 (pruebas JUnit 5 de escenarios BDD). Informó una duración aproximada de 1 h 30 min en total. | Revisar pendientes o continuar con el tablero del Sprint. | Ninguno. |
+| **Kevin Lucumi** | Según la aclaración posterior de Dilan, guio y ayudó a Dilan durante la realización de HU-11, explicándole documentación relacionada. | Sin reporte individual compartido para esta Daily. | Sin reporte individual compartido para esta Daily. |
+| **Santiago Hurtado** | Se incorporó aproximadamente 10 minutos después de la primera captura y también ayudó a Dilan explicándole documentación relacionada con las historias. | Sin reporte individual compartido para esta Daily. | Sin reporte individual compartido para esta Daily. |
+| **Carlos Rosales** | Según la aclaración posterior de Dilan, guio y ayudó a Dilan durante la realización de HU-11, explicándole documentación relacionada. | Sin reporte individual compartido para esta Daily. | Sin reporte individual compartido para esta Daily. |
+
+* **Estado del tablero:** La captura compartida posteriormente muestra completadas las tres tareas
+  de HU-11:
+  * #105 — 11.1 `BilleteraService`: acreditar al agricultor el pago al confirmarse (HU-09) y sumar
+    su saldo.
+  * #106 — 11.2 Endpoint `GET` de saldo protegido con JWT.
+  * #107 — 11.3 Pruebas JUnit 5 de los escenarios BDD (obligatoria).
+  La imagen evidencia estas tareas como completadas, pero no permite verificar contadores del Sprint
+  ni el estado actualizado de HU-12. Dilan aclaró posteriormente que Carlos y Kevin lo guiaron y
+  apoyaron explicándole documentación, y que Santiago también le brindó ayuda.
+* **Acuerdos y acciones:**
+  * Dilan revisará los pendientes o continuará con el seguimiento del tablero del Sprint.
+  * Dilan reportó no tener impedimentos; no se registraron impedimentos del resto del equipo.

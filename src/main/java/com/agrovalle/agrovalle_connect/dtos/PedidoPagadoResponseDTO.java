@@ -15,6 +15,7 @@ public class PedidoPagadoResponseDTO {
     private final String nombreProducto;
     private final String categoria;
     private final String municipio;
+    private final BigDecimal cantidad;
     private final BigDecimal monto;
     private final Pago.MedioPago medioPago;
     private final Instant fechaPago;
@@ -25,6 +26,7 @@ public class PedidoPagadoResponseDTO {
         this.nombreProducto = orden.getPedido().getProducto().getNombre();
         this.categoria = orden.getPedido().getProducto().getCategoria();
         this.municipio = orden.getPedido().getProducto().getMunicipio();
+        this.cantidad = orden.getPedido().getCantidad();
         this.monto = orden.getPago().getMonto();
         this.medioPago = orden.getPago().getMedioPago();
         this.fechaPago = orden.getPago().getFechaCreacion();
@@ -48,6 +50,10 @@ public class PedidoPagadoResponseDTO {
 
     public String getMunicipio() {
         return municipio;
+    }
+
+    public BigDecimal getCantidad() {
+        return cantidad;
     }
 
     public BigDecimal getMonto() {

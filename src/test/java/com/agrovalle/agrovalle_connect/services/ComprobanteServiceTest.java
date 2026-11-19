@@ -60,6 +60,8 @@ class ComprobanteServiceTest {
             assertTrue(texto.contains("COMPROBANTE DE PAGO"));
             assertTrue(texto.contains("Orden: OC-TEST"));
             assertTrue(texto.contains("Producto: Maíz dulce"));
+            assertTrue(texto.contains("Cantidad: 5.00 kg"));
+            assertTrue(texto.contains("Precio unitario: COP 2500.00/kg"));
             assertTrue(texto.contains("Monto pagado: COP 12500.00"));
             assertTrue(texto.contains("Medio de pago: TARJETA"));
         }
@@ -79,6 +81,7 @@ class ComprobanteServiceTest {
 
         assertEquals(1, historial.size());
         assertEquals(PEDIDO_ID, historial.get(0).getIdPedido());
+        assertEquals(new BigDecimal("5.00"), historial.get(0).getCantidad());
         assertEquals(MONTO, historial.get(0).getMonto());
         verify(ordenCompraRepository).buscarHistorialPorComprador(COMPRADOR_ID);
     }
@@ -118,11 +121,13 @@ class ComprobanteServiceTest {
         producto.setNombre("Maíz dulce");
         producto.setCategoria("Granos");
         producto.setMunicipio("Buga");
+        producto.setPrecioUnitario(new BigDecimal("2500.00"));
 
         Pedido pedido = new Pedido();
         pedido.setId(PEDIDO_ID);
         pedido.setCompradorId(COMPRADOR_ID);
         pedido.setProducto(producto);
+        pedido.setCantidad(new BigDecimal("5.00"));
         pedido.setEstado(estadoPedido);
 
         Pago pago = new Pago();

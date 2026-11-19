@@ -96,6 +96,12 @@ public class ComprobanteService {
                 posicionY = escribirCampo(contenido, posicionY,
                         "Origen: " + orden.getPedido().getProducto().getMunicipio());
                 posicionY = escribirCampo(contenido, posicionY,
+                        "Cantidad: " + orden.getPedido().getCantidad().toPlainString() + " kg");
+                posicionY = escribirCampo(contenido, posicionY,
+                        "Precio unitario: COP "
+                                + formatoMonto(orden.getPedido().getProducto().getPrecioUnitario())
+                                + "/kg");
+                posicionY = escribirCampo(contenido, posicionY,
                         "Monto pagado: COP " + formatoMonto(orden.getPago().getMonto()));
                 posicionY = escribirCampo(contenido, posicionY,
                         "Medio de pago: " + orden.getPago().getMedioPago());

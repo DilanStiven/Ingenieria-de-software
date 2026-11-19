@@ -32,7 +32,6 @@ public class OrdenLogisticaService {
 
     private static final String GUIA_PREFIX = "GV-";
     private static final String ROL_AGRICULTOR = "agricultor";
-    private static final String ROL_TRANSPORTISTA = "transportista";
 
     private final OrdenLogisticaRepository ordenRepository;
     private final AgricultorRepository agricultorRepository;

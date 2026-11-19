@@ -105,11 +105,14 @@ JaCoCo midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas. E
 ahora exige al menos 60 % en los tres contadores y la verificación Maven pasó.
 
 Para conocer el contrato y la persistencia vigentes, priorizar el código fuente, los DTO y la
-configuración de `src/main`. La aplicación usa Hibernate `ddl-auto=update`; los scripts
-`src/main/resources/db/migration/V2__create_productos.sql` y `V3__index_productos_filtro.sql`
-no se ejecutan automáticamente porque Flyway no está incluido como dependencia. El modelo de
-cinco entidades y las pantallas web se conservan como propuestas académicas, separadas del
-modelo JPA actualmente implementado.
+configuración de `src/main`. Desde el 18/11/2026 la aplicación incluye Flyway, con migraciones en
+`src/main/resources/db/migration`. Una base vacía ejecuta las versiones V1 a V7; una base existente
+sin historial Flyway se marca en V6 y aplica V7. Hibernate conserva `ddl-auto=update` para las
+entidades que aún no tienen migraciones. El modelo de cinco entidades y las pantallas web se
+conservan como propuestas académicas, separadas del modelo JPA actualmente implementado.
+La ejecución local del 18/11/2026 verificó el arranque de Spring Boot con Flyway y ambos caminos de
+migración en H2 2.4 con modo de compatibilidad PostgreSQL; `mvn verify` terminó con 102 pruebas,
+sin fallos y con JaCoCo aprobado. Esto no sustituye una validación contra un servidor PostgreSQL real.
 
 La ejecución remota #91 de GitHub Actions para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56)
 finalizó correctamente el 28/10/2026: el workflow configuró Java 25 Temurin y pasaron compilación,

@@ -40,7 +40,7 @@ public class ContactoController {
             @Valid @RequestBody final ContactoMensajeRequestDTO solicitud,
             final Authentication authentication) {
         return ResponseEntity.ok(contactoService.enviarMensaje(
-                solicitud.getIdProducto(), solicitud.getMensaje(),
+                solicitud.getIdProducto(), solicitud.getCantidad(), solicitud.getMensaje(),
                 Long.valueOf(authentication.getName())));
     }
 }
