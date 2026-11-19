@@ -330,8 +330,9 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
   DilanStiven en `develop` el 18/11/2026; la captura posterior confirma HU-11 (#43) en Done.
   Al momento de esta Daily, HU-12 todavía no tenía PR y permanecía en Code Review. Como actualización
   posterior, el PR #126 de HU-12 fue aprobado por Santiago y fusionado por DilanStiven en `develop`;
-  GitHub mostró 1 check exitoso y la rama `Historia-12` fue eliminada. La captura no confirma si la
-  issue #44 o las tareas #108–#110 ya cambiaron de estado en el tablero. Dilan aclaró
+  GitHub mostró 1 check exitoso y la rama `Historia-12` fue eliminada. Una captura posterior del
+  tablero confirma la issue #44 en Done; las tareas #108–#110 también se reportaron completadas.
+  Dilan aclaró
   posteriormente que Carlos y Kevin lo guiaron durante HU-11 y le explicaron documentación, y que
   Santiago también le brindó ayuda con documentación de las historias.
 * **Acuerdos y acciones:**

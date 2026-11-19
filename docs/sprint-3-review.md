@@ -4,7 +4,7 @@
 > implementadas; HU-12 fue aprobada y fusionada en `develop` mediante el PR #126. La reunión de Planning se realizó el 16/11/2026 y quedó
 > registrada en el documento de Planning con las historias, responsables y tareas acordadas.
 > El Sprint 3 permanece abierto. HU-11 (#43) está en Done tras la fusión del PR #124 en `develop`.
-> El estado actual de la issue HU-12 (#44) en el tablero no se puede confirmar con la evidencia del PR.
+> Una captura posterior del tablero confirma HU-12 (#44) en Done.
 
 | Campo | Valor |
 | --- | --- |
@@ -25,10 +25,10 @@
 > comprobante, el agricultor reciba su pago de inmediato y vea su saldo en su billetera, y el comprador
 > reciba un aviso si su pago es rechazado.
 
-**Resultado:** Las cinco historias comprometidas están implementadas; HU-12 fue aprobada y fusionada
-en `develop` mediante el PR #126. HU-11 (#43) aparece en Done tras la fusión del PR #124. La captura
-del PR #126 confirma una aprobación y un check exitoso, pero no muestra el estado actual de la issue
-HU-12 (#44) ni de las tareas #105–#110 en el tablero.
+**Resultado:** Las cinco historias comprometidas están implementadas e integradas en `develop`.
+HU-12 fue aprobada y fusionada mediante el PR #126, cuya captura muestra un check exitoso. Una
+captura posterior del tablero muestra HU-12 (#44) en Done. Las tareas #105–#110 también se reportaron
+en Done.
 
 ## 2. Incremento entregado
 
@@ -39,7 +39,7 @@ HU-12 (#44) ni de las tareas #105–#110 en el tablero.
 | HU-10 — Comprobante de Pago y Factura | 2 | 2 | ✅ Done | `mvn verify` BUILD SUCCESS, Checkstyle sin violaciones y PR cerrado (17/11/2026) |
 | HU-11 — Billetera del Agricultor | 2 | 2 | ✅ Integrada en `develop` | PR #124 aprobado por Santiago y fusionado por DilanStiven el 18/11/2026; migración V7, acreditación al pago aprobado, endpoint JWT y pruebas JUnit 5 |
 | HU-12 — Notificación de Pago Rechazado | 2 | 2 | Integrada en `develop` | PR #126 aprobado y fusionado; 1 check exitoso |
-| **Total** | **12** | **12** | Sprint abierto | Las cinco historias están integradas; falta confirmar el estado de HU-12 (#44) en el tablero |
+| **Total** | **12** | **12** | Sprint abierto | Las cinco historias están integradas; HU-12 (#44) aparece en Done |
 
 ## 3. Demo del incremento
 
@@ -96,8 +96,9 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 > #108, #109 y #110 estaban completadas según la evidencia anterior. HU-11 (#43) está en Done; su PR
 > #124 fue aprobado por Santiago y fusionado en `develop` por DilanStiven el 18/11/2026. Después,
 > el PR #126 de HU-12 fue aprobado por Santiago y fusionado por DilanStiven en `develop`; GitHub
-> reportó 1 check exitoso y la rama `Historia-12` fue eliminada. La captura no muestra el estado
-> actual de HU-12 (#44) en el tablero. La estimación de HU-12 quedó alineada en 2 SP.
+> reportó 1 check exitoso y la rama `Historia-12` fue eliminada. Una captura posterior del tablero
+> muestra HU-12 (#44) en Done. Las tareas #108–#110 también aparecen completadas según la evidencia
+> compartida anteriormente. La estimación de HU-12 quedó alineada en 2 SP.
 
 ## 4. Calidad del incremento
 
@@ -127,7 +128,6 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 
 | Tarea / Historia | Motivo | Decisión |
 | --- | --- | --- |
-| Estado de HU-12 en el tablero | El PR #126 fue aprobado y fusionado, pero las capturas no muestran la columna actual de la issue #44 ni de las tareas #108–#110 | Confirmar y actualizar el tablero para que refleje la integración |
 | Validación de flujo en PostgreSQL | El arranque compartido reportó el esquema PostgreSQL 17.11 en V15; V16 se validó en H2. El flujo de negocio automatizado se probó en H2, no en PostgreSQL | Si se requiere evidenciar V16 o el flujo en PostgreSQL, volver a iniciar la aplicación y ejecutar los escenarios contra esa base local |
 
 ## 7. Retroalimentación recibida
@@ -138,9 +138,8 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 
 ## 8. Actualización del Product Backlog
 
-HU-05, HU-09, HU-10 y HU-11 están en **Done**; HU-11 se integró en `develop` mediante el PR #124 el
-18/11/2026. HU-12 está implementada y fue aprobada e integrada en `develop` mediante el PR #126.
-La evidencia compartida no confirma si la issue #44 ya fue movida a **Done** en el tablero.
+HU-05, HU-09, HU-10, HU-11 y HU-12 están en **Done**; HU-12 fue aprobada e integrada en `develop`
+mediante el PR #126, y una captura del tablero confirma la issue #44 en Done.
 Referencia: el Sprint 4
 «Entrega y Reputación» (HU-08, HU-13, HU-14,
 HU-15) queda sujeto a su Planning. HU-12 se movió a este Sprint desde el Sprint 4.
