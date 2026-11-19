@@ -27,6 +27,7 @@ public class Pedido {
     private static final int ESTADO_LONGITUD_MAXIMA = 30;
     private static final int PRECISION_CANTIDAD = 10;
     private static final int ESCALA_CANTIDAD = 2;
+    private static final int DESTINO_LONGITUD_MAXIMA = 100;
 
     /** Estados de pago disponibles para un pedido. */
     public enum Estado {
@@ -50,12 +51,18 @@ public class Pedido {
     @Column(name = "id_comprador")
     private Long compradorId;
 
+    @Column(name = "destino_entrega", length = DESTINO_LONGITUD_MAXIMA)
+    private String destinoEntrega;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = ESTADO_LONGITUD_MAXIMA)
     private Estado estado = Estado.PENDIENTE_PAGO;
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private Instant fechaCreacion;
+
+    @Column(name = "fecha_limite_reintento")
+    private Instant fechaLimiteReintento;
 
     /**
      * Asigna la fecha de creación si aún no fue establecida.
@@ -140,6 +147,24 @@ public class Pedido {
     }
 
     /**
+     * Obtiene el destino indicado por el comprador.
+     *
+     * @return destino de entrega, o null en pedidos anteriores a su captura
+     */
+    public String getDestinoEntrega() {
+        return destinoEntrega;
+    }
+
+    /**
+     * Establece el destino de entrega.
+     *
+     * @param destinoEntregaValue destino informado por el comprador
+     */
+    public void setDestinoEntrega(final String destinoEntregaValue) {
+        this.destinoEntrega = destinoEntregaValue;
+    }
+
+    /**
      * Obtiene el estado del pedido.
      *
      * @return estado actual
@@ -173,5 +198,23 @@ public class Pedido {
      */
     public void setFechaCreacion(final Instant fechaCreacionValue) {
         this.fechaCreacion = fechaCreacionValue;
+    }
+
+    /**
+     * Obtiene el plazo máximo para reintentar un pago rechazado.
+     *
+     * @return fecha límite de reintento, o null si aún no hubo rechazo
+     */
+    public Instant getFechaLimiteReintento() {
+        return fechaLimiteReintento;
+    }
+
+    /**
+     * Establece el plazo máximo para reintentar el pago.
+     *
+     * @param fechaLimiteReintentoValue fecha límite
+     */
+    public void setFechaLimiteReintento(final Instant fechaLimiteReintentoValue) {
+        this.fechaLimiteReintento = fechaLimiteReintentoValue;
     }
 }

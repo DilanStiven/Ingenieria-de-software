@@ -16,7 +16,7 @@ public class ContactoMensajeResponseDTO {
      * @param idMensaje identificador del mensaje guardado
      * @param idPedido identificador del pedido generado
      * @param mensaje confirmación para el cliente
-     * @param notificacionEnviada indica si se publicó la notificación interna
+     * @param notificacionEnviada indica si se publicó el evento de notificación
      */
     public ContactoMensajeResponseDTO(final Long idMensaje, final Long idPedido,
             final String mensaje, final boolean notificacionEnviada) {
@@ -54,9 +54,9 @@ public class ContactoMensajeResponseDTO {
     }
 
     /**
-     * Indica si se publicó la notificación interna.
+     * Indica si se publicó el evento que crea la notificación en la bandeja.
      *
-     * @return true si se publicó el evento interno de notificación
+     * @return true si se publicó el evento de notificación
      */
     public boolean isNotificacionEnviada() {
         return notificacionEnviada;

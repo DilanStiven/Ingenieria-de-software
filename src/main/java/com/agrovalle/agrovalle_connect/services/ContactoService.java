@@ -23,7 +23,7 @@ public class ContactoService {
 
     private static final String ESTADO_ACTIVO = "ACTIVO";
     private static final String MENSAJE_CONFIRMACION =
-            "Solicitud guardada; evento interno de notificación publicado";
+            "Solicitud guardada y notificación disponible en la bandeja del agricultor";
 
     private final ProductoRepository productoRepository;
     private final PedidoRepository pedidoRepository;
@@ -50,18 +50,19 @@ public class ContactoService {
 
     /**
      * Guarda un mensaje para una oferta activa, crea el pedido pendiente de pago
-     * y publica una notificación interna al agricultor.
+     * y publica un evento para persistir una notificación en la bandeja del agricultor.
      *
      * @param productoId identificador del producto solicitado
      * @param cantidad cantidad solicitada en kilogramos
      * @param mensaje contenido del mensaje de negociación
+     * @param destino destino de entrega indicado por el comprador
      * @param compradorId identificador del usuario autenticado
      * @return confirmación con los identificadores creados
      */
     @Transactional
     public ContactoMensajeResponseDTO enviarMensaje(
             final Long productoId, final BigDecimal cantidad,
-            final String mensaje, final Long compradorId) {
+            final String mensaje, final String destino, final Long compradorId) {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new OfertaNoDisponibleException(productoId));
         if (!ESTADO_ACTIVO.equals(producto.getEstado())) {
@@ -76,6 +77,7 @@ public class ContactoService {
         pedido.setProducto(producto);
         pedido.setCantidad(cantidad);
         pedido.setCompradorId(compradorId);
+        pedido.setDestinoEntrega(destino.trim());
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
         ContactoMensaje contacto = new ContactoMensaje();
@@ -86,7 +88,8 @@ public class ContactoService {
         eventPublisher.publishEvent(new SolicitudContactoCreadaEvent(
                 pedidoGuardado.getId(),
                 producto.getId(),
-                producto.getAgricultor().getId()));
+                producto.getAgricultor().getId(),
+                mensajeGuardado.getMensaje()));
 
         return new ContactoMensajeResponseDTO(
                 mensajeGuardado.getId(),

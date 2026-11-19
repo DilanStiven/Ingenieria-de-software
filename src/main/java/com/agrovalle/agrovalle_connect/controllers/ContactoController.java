@@ -41,6 +41,6 @@ public class ContactoController {
             final Authentication authentication) {
         return ResponseEntity.ok(contactoService.enviarMensaje(
                 solicitud.getIdProducto(), solicitud.getCantidad(), solicitud.getMensaje(),
-                Long.valueOf(authentication.getName())));
+                solicitud.getDestino(), Long.valueOf(authentication.getName())));
     }
 }

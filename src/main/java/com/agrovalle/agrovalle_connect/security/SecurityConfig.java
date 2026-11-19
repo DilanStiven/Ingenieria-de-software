@@ -47,6 +47,9 @@ public class SecurityConfig {
     /** Ruta para consultar la billetera del agricultor. */
     private static final String BILLETERA_PATH = "/api/v1/billetera";
 
+    /** Ruta para consultar las notificaciones del agricultor. */
+    private static final String NOTIFICACIONES_PATH = "/api/v1/notificaciones";
+
     private final JwtService jwtService;
 
     /**
@@ -80,6 +83,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, CONTACTO_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, PAGOS_PATH).authenticated()
                 .requestMatchers(HttpMethod.GET, BILLETERA_PATH + "/**")
+                    .hasRole("AGRICULTOR")
+                .requestMatchers(HttpMethod.GET, NOTIFICACIONES_PATH)
                     .hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")

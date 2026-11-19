@@ -26,12 +26,22 @@ class BilleteraFlywayApplicationTest {
 
     @Test
     void configuraFlywayYAplicaLaMigracionDeBilleteraAlIniciar() {
-        assertEquals("8", flyway.info().current().getVersion().getVersion());
+        assertEquals("16", flyway.info().current().getVersion().getVersion());
         Integer billeteras = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM information_schema.tables "
                         + "WHERE table_schema = 'PUBLIC' AND table_name = 'BILLETERA'",
                 Integer.class);
+        Integer notificaciones = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables "
+                        + "WHERE table_schema = 'PUBLIC' AND table_name = 'NOTIFICACION'",
+                Integer.class);
+        Integer ordenesLogisticas = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables "
+                        + "WHERE table_schema = 'PUBLIC' AND table_name = 'ORDEN_LOGISTICA'",
+                Integer.class);
 
         assertEquals(1, billeteras);
+        assertEquals(1, notificaciones);
+        assertEquals(1, ordenesLogisticas);
     }
 }

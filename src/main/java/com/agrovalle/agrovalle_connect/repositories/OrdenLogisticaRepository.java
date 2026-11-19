@@ -15,6 +15,14 @@ import org.springframework.data.repository.query.Param;
 public interface OrdenLogisticaRepository extends JpaRepository<OrdenLogistica, Long> {
 
     /**
+     * Busca la orden logística asociada a un pedido.
+     *
+     * @param pedidoId identificador del pedido
+     * @return orden logística asociada, si existe
+     */
+    Optional<OrdenLogistica> findByPedidoId(Long pedidoId);
+
+    /**
      * Obtiene una orden bloqueándola para evitar asignaciones simultáneas.
      *
      * @param id identificador de la orden
