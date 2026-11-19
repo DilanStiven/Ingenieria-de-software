@@ -1,10 +1,10 @@
 # Sprint 3 Review — AgroValle Connect
 
 > **Estado del documento:** actualizado el 18/11/2026 con HU-05, HU-09, HU-10, HU-11 y HU-12
-> implementadas y validadas localmente. La reunión de Planning se realizó el 16/11/2026 y quedó
+> implementadas; HU-12 fue aprobada y fusionada en `develop` mediante el PR #126. La reunión de Planning se realizó el 16/11/2026 y quedó
 > registrada en el documento de Planning con las historias, responsables y tareas acordadas.
 > El Sprint 3 permanece abierto. HU-11 (#43) está en Done tras la fusión del PR #124 en `develop`.
-> HU-12 (#44) continúa en Code Review y está pendiente de PR e integración.
+> Una captura posterior del tablero confirma HU-12 (#44) en Done.
 
 | Campo | Valor |
 | --- | --- |
@@ -25,9 +25,10 @@
 > comprobante, el agricultor reciba su pago de inmediato y vea su saldo en su billetera, y el comprador
 > reciba un aviso si su pago es rechazado.
 
-**Resultado:** El incremento de las cinco historias comprometidas está implementado y validado
-localmente al 18/11/2026. HU-11 (#43) fue aprobada, fusionada en `develop` mediante el PR #124 y
-aparece en Done. HU-12 (#44) sigue en Code Review y aún no tiene PR. Las tareas #105–#110 están en Done.
+**Resultado:** Las cinco historias comprometidas están implementadas e integradas en `develop`.
+HU-12 fue aprobada y fusionada mediante el PR #126, cuya captura muestra un check exitoso. Una
+captura posterior del tablero muestra HU-12 (#44) en Done. Las tareas #105–#110 también se reportaron
+en Done.
 
 ## 2. Incremento entregado
 
@@ -37,8 +38,8 @@ aparece en Done. HU-12 (#44) sigue en Code Review y aún no tiene PR. Las tareas
 | HU-09 — Pago con Pasarela Virtual | 3 | 3 | ✅ Done | PR #118 fusionado en `develop` el 17/11/2026 (rama `historia-9`) |
 | HU-10 — Comprobante de Pago y Factura | 2 | 2 | ✅ Done | `mvn verify` BUILD SUCCESS, Checkstyle sin violaciones y PR cerrado (17/11/2026) |
 | HU-11 — Billetera del Agricultor | 2 | 2 | ✅ Integrada en `develop` | PR #124 aprobado por Santiago y fusionado por DilanStiven el 18/11/2026; migración V7, acreditación al pago aprobado, endpoint JWT y pruebas JUnit 5 |
-| HU-12 — Notificación de Pago Rechazado | 2 | 2 local | En Code Review | Tareas #108–#110 en Done; HU-12 (#44) sin PR |
-| **Total** | **12** | **12** | Sprint abierto | HU-05, HU-09, HU-10 y HU-11 están integradas; HU-12 sigue local, sin PR |
+| HU-12 — Notificación de Pago Rechazado | 2 | 2 | Integrada en `develop` | PR #126 aprobado y fusionado; 1 check exitoso |
+| **Total** | **12** | **12** | Sprint abierto | Las cinco historias están integradas; HU-12 (#44) aparece en Done |
 
 ## 3. Demo del incremento
 
@@ -92,22 +93,25 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 > **Estado de integración y tablero:** el mensaje de Daily compartido el 18/11 indica que Dilan terminó
 > 12.1 (lógica de rechazo), 12.2 (respuesta del endpoint y reintento) y 12.3 (pruebas JUnit 5 BDD),
 > reportó alrededor de 1,5 h y no informó impedimentos. La vista de Done confirma que las tareas
-> #108, #109 y #110 están completadas. HU-11 (#43) está en Done; su PR #124 fue aprobado por
-> Santiago y fusionado en `develop` por DilanStiven el 18/11/2026. HU-12 (#44) sigue en Code Review
-> y aún no tiene PR. La estimación de HU-12 quedó alineada en 2 SP.
+> #108, #109 y #110 estaban completadas según la evidencia anterior. HU-11 (#43) está en Done; su PR
+> #124 fue aprobado por Santiago y fusionado en `develop` por DilanStiven el 18/11/2026. Después,
+> el PR #126 de HU-12 fue aprobado por Santiago y fusionado por DilanStiven en `develop`; GitHub
+> reportó 1 check exitoso y la rama `Historia-12` fue eliminada. Una captura posterior del tablero
+> muestra HU-12 (#44) en Done. Las tareas #108–#110 también aparecen completadas según la evidencia
+> compartida anteriormente. La estimación de HU-12 quedó alineada en 2 SP.
 
 ## 4. Calidad del incremento
 
 | Verificación | Comando | Resultado | Evidencia |
 | --- | --- | --- | --- |
 | Pruebas automatizadas (BDD → JUnit 5) | `mvn verify checkstyle:check` | 118 pruebas ejecutadas, 0 fallos, 0 errores, 1 omitida; 0 violaciones de Checkstyle — BUILD SUCCESS | Ejecución local 18/11/2026; incluye HU-11, HU-12 y las migraciones |
-| Migraciones de billetera, reintento, notificaciones y logística | Arranque local de Spring Boot con Flyway | En el entorno local se aplicaron las migraciones V1–V16 sobre PostgreSQL 17.11, desde una base del Sprint 1 con baseline V3 | Se verificó `flyway_schema_history`, las tablas públicas y el arranque de Spring Boot contra PostgreSQL local. La suite automatizada continúa usando H2 |
+| Migraciones de billetera, reintento, notificaciones y logística | Arranque local de Spring Boot con Flyway | En el arranque compartido, Flyway reportó el esquema PostgreSQL 17.11 en V15; V16 fue validada en la suite automatizada con H2. No hay evidencia de un nuevo arranque PostgreSQL posterior a V16 | Logs compartidos del arranque local y `mvn verify checkstyle:check`; la suite automatizada continúa usando H2 |
 | Estilo de código | `mvn clean verify checkstyle:check` | 0 Checkstyle violations — BUILD SUCCESS | Ejecución local 18/11/2026 |
 | Pre-commit hooks (Husky) | Commit de prueba | Pendiente | Pendiente |
 
-> **Nota:** la suite automatizada valida HU-11 y HU-12 junto con el resto del código en H2. Por
-> separado, el arranque real de Spring Boot aplicó V1–V16 y validó el esquema contra PostgreSQL 17.11
-> local; no se ejecutó contra un servidor PostgreSQL remoto.
+> **Nota:** la suite automatizada valida HU-11 y HU-12 junto con el resto del código en H2. El
+> arranque compartido de Spring Boot contra PostgreSQL 17.11 reportó el esquema en V15; no se volvió
+> a verificar PostgreSQL después de agregar V16. No se ejecutó contra un servidor PostgreSQL remoto.
 
 ## 5. Esfuerzo planificado vs. real
 
@@ -118,15 +122,13 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 | HU-10 | 2 | 2,5 | +0,5 h | Santiago reportó 2 h 30 min; inicio y finalización el 17/11/2026 (Issue #42) |
 | HU-11 | 2 | 1,5 | −0,5 h | Dilan reportó alrededor de 1 h 30 min para las tareas 11.1, 11.2 y 11.3 en la Daily del 18/11/2026 |
 | HU-12 | 2 | 1,5 | −0,5 h | Dilan reportó alrededor de 1 h 30 min; el issue #44 registra el mismo tiempo |
-| **Total** | **11** | **9 (reportadas al 18/11)** | Horas reales reportadas para las cinco historias; quedan 15 h de la capacidad de 24 h | HU-11 integrada; HU-12 pendiente de PR e integración |
+| **Total** | **11** | **9 (reportadas al 18/11)** | Horas reales reportadas para las cinco historias; quedan 15 h de la capacidad de 24 h | HU-11 y HU-12 integradas |
 
 ## 6. Trabajo no completado
 
 | Tarea / Historia | Motivo | Decisión |
 | --- | --- | --- |
-| HU-12 | Código y pruebas validados localmente; las tareas están en Done y la historia está en Code Review, pero todavía no existe PR | Crear el PR, revisarlo y aprobarlo antes de declarar HU-12 cerrada |
-| Validación de flujo en PostgreSQL | Se confirmó el arranque y el esquema/migraciones V1–V16 en PostgreSQL 17.11 local; el flujo de negocio automatizado se probó en H2 | Si se requiere evidencia adicional, ejecutar escenarios funcionales contra PostgreSQL local |
-| Publicación de cambios | Los cambios pendientes y los documentos no han recibido un commit/push autorizado | Hacer commit y push solamente cuando el equipo lo autorice; no forma parte del cierre hasta que exista el historial remoto correspondiente |
+| Validación de flujo en PostgreSQL | El arranque compartido reportó el esquema PostgreSQL 17.11 en V15; V16 se validó en H2. El flujo de negocio automatizado se probó en H2, no en PostgreSQL | Si se requiere evidenciar V16 o el flujo en PostgreSQL, volver a iniciar la aplicación y ejecutar los escenarios contra esa base local |
 
 ## 7. Retroalimentación recibida
 
@@ -136,9 +138,8 @@ validaciones para pedidos inexistentes, pagos inválidos y solicitudes con datos
 
 ## 8. Actualización del Product Backlog
 
-HU-05, HU-09, HU-10 y HU-11 están en **Done**; HU-11 se integró en `develop` mediante el PR #124 el
-18/11/2026. HU-12 está implementada y validada localmente, pero sigue en Code Review y aún requiere
-PR e integración.
+HU-05, HU-09, HU-10, HU-11 y HU-12 están en **Done**; HU-12 fue aprobada e integrada en `develop`
+mediante el PR #126, y una captura del tablero confirma la issue #44 en Done.
 Referencia: el Sprint 4
 «Entrega y Reputación» (HU-08, HU-13, HU-14,
 HU-15) queda sujeto a su Planning. HU-12 se movió a este Sprint desde el Sprint 4.
@@ -156,6 +157,7 @@ Ajustes pendientes en el Backlog para HU-09 (issue #41):
 - PR #112 (HU-05): [https://github.com/DilanStiven/Ingenieria-de-software/pull/112](https://github.com/DilanStiven/Ingenieria-de-software/pull/112)
 - PR #118 (HU-09): [https://github.com/DilanStiven/Ingenieria-de-software/pull/118](https://github.com/DilanStiven/Ingenieria-de-software/pull/118)
 - PR #124 (HU-11): [https://github.com/DilanStiven/Ingenieria-de-software/pull/124](https://github.com/DilanStiven/Ingenieria-de-software/pull/124) — aprobado y fusionado en `develop` el 18/11/2026
+- PR #126 (HU-12): [https://github.com/DilanStiven/Ingenieria-de-software/pull/126](https://github.com/DilanStiven/Ingenieria-de-software/pull/126) — aprobado y fusionado en `develop`; 1 check exitoso
 - Issue #41 (HU-09): [https://github.com/DilanStiven/Ingenieria-de-software/issues/41](https://github.com/DilanStiven/Ingenieria-de-software/issues/41)
 - Issue #42 (HU-10): [https://github.com/DilanStiven/Ingenieria-de-software/issues/42](https://github.com/DilanStiven/Ingenieria-de-software/issues/42)
 - Tablero (GitHub Projects): [https://github.com/users/DilanStiven/projects/2](https://github.com/users/DilanStiven/projects/2)
