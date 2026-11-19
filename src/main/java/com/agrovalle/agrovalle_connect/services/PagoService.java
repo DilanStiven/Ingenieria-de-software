@@ -15,8 +15,11 @@ import com.agrovalle.agrovalle_connect.repositories.PedidoRepository;
 import com.agrovalle.agrovalle_connect.repositories.ProductoRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PagoService {
 
     private static final int ESCALA_MONETARIA = 2;
+    private static final Duration VENTANA_REINTENTO = Duration.ofMinutes(15);
+    private static final String MENSAJE_PAGO_RECHAZADO =
+            "Pago Rechazado. Puedes reintentar hasta la fecha límite indicada.";
 
     private final PedidoRepository pedidoRepository;
     private final PagoRepository pagoRepository;
@@ -35,6 +41,7 @@ public class PagoService {
     private final BilleteraService billeteraService;
     private final PrecioService precioService;
     private final ProductoRepository productoRepository;
+    private OrdenLogisticaService ordenLogisticaService;
 
     public PagoService(final PedidoRepository pedidos,
             final PagoRepository pagos,
@@ -52,6 +59,11 @@ public class PagoService {
         this.productoRepository = productos;
     }
 
+    @Autowired
+    public void setOrdenLogisticaService(final OrdenLogisticaService ordenesLogisticas) {
+        this.ordenLogisticaService = ordenesLogisticas;
+    }
+
     /**
      * Procesa el pago de un pedido pendiente.
      *
@@ -63,25 +75,20 @@ public class PagoService {
     @Transactional
     public PagoResponseDTO procesar(
             final Long pedidoId, final Long compradorId, final Pago.MedioPago medioPago) {
-        Pedido pedido = pedidoRepository.findById(pedidoId)
+        Pedido pedido = pedidoRepository.buscarPorIdConBloqueo(pedidoId)
                 .orElseThrow(() -> new PedidoNoEncontradoException(pedidoId));
         if (!Objects.equals(pedido.getCompradorId(), compradorId)) {
             throw new PedidoNoEncontradoException(pedidoId);
         }
-        if (pedido.getEstado() != Pedido.Estado.PENDIENTE_PAGO) {
-            throw new PagoInvalidoException(pedidoId, pedido.getEstado().name());
+        Instant ahora = Instant.now();
+        validarEstadoYVigencia(pedido, pedidoId, ahora);
+        if (pedido.getDestinoEntrega() == null || pedido.getDestinoEntrega().isBlank()) {
+            throw new PagoInvalidoException(
+                    pedidoId, pedido.getEstado().name(),
+                    "el pedido no tiene un destino de entrega");
         }
 
-        Long productoId = pedido.getProducto().getId();
-        Producto producto = productoRepository.buscarPorIdConBloqueo(productoId)
-                .orElseThrow(() -> new OfertaNoDisponibleException(productoId));
-        if (!"ACTIVO".equals(producto.getEstado())) {
-            throw new OfertaNoDisponibleException(productoId);
-        }
-        if (pedido.getCantidad().compareTo(producto.getCantidad()) > 0) {
-            throw new CantidadNoDisponibleException(
-                    productoId, pedido.getCantidad(), producto.getCantidad());
-        }
+        Producto producto = obtenerProductoDisponible(pedido);
         pedido.setProducto(producto);
         BigDecimal monto = producto.getPrecioUnitario()
                 .multiply(pedido.getCantidad())
@@ -98,6 +105,7 @@ public class PagoService {
 
         if (resultado.estado() == Pago.Estado.APROBADO) {
             pedido.setEstado(Pedido.Estado.PAGADO);
+            pedido.setFechaLimiteReintento(null);
             pedidoRepository.save(pedido);
 
             BigDecimal cantidadRestante = producto.getCantidad().subtract(pedido.getCantidad());
@@ -115,21 +123,60 @@ public class PagoService {
             orden.setNumeroOrden("OC-" + UUID.randomUUID());
             orden.setMontoTotal(monto);
             OrdenCompra ordenGuardada = ordenCompraRepository.save(orden);
+            ordenLogisticaService.crearDesdePedidoPagado(pedido);
             billeteraService.acreditar(pedido, monto);
 
             return new PagoResponseDTO(
                     pagoGuardado,
                     ordenGuardada.getNumeroOrden(),
                     ordenGuardada.getId(),
-                    resultado.mensaje());
+                    resultado.mensaje(),
+                    null);
         }
 
-        pedido.setEstado(Pedido.Estado.RECHAZADO);
+        return registrarRechazo(pedido, pagoGuardado, ahora);
+    }
+
+    private void validarEstadoYVigencia(
+            final Pedido pedido, final Long pedidoId, final Instant ahora) {
+        Instant fechaLimiteReintento = pedido.getFechaLimiteReintento();
+        if (fechaLimiteReintento != null && !ahora.isBefore(fechaLimiteReintento)) {
+            throw new PagoInvalidoException(
+                    pedidoId, pedido.getEstado().name(),
+                    "venció la ventana de 15 minutos para reintentar");
+        }
+        boolean pendienteDePago = pedido.getEstado() == Pedido.Estado.PENDIENTE_PAGO;
+        boolean reintentoPermitido = pedido.getEstado() == Pedido.Estado.RECHAZADO
+                && fechaLimiteReintento != null;
+        if (!pendienteDePago && !reintentoPermitido) {
+            throw new PagoInvalidoException(pedidoId, pedido.getEstado().name());
+        }
+    }
+
+    private Producto obtenerProductoDisponible(final Pedido pedido) {
+        Long productoId = pedido.getProducto().getId();
+        Producto producto = productoRepository.buscarPorIdConBloqueo(productoId)
+                .orElseThrow(() -> new OfertaNoDisponibleException(productoId));
+        if (!"ACTIVO".equals(producto.getEstado())) {
+            throw new OfertaNoDisponibleException(productoId);
+        }
+        if (pedido.getCantidad().compareTo(producto.getCantidad()) > 0) {
+            throw new CantidadNoDisponibleException(
+                    productoId, pedido.getCantidad(), producto.getCantidad());
+        }
+        return producto;
+    }
+
+    private PagoResponseDTO registrarRechazo(
+            final Pedido pedido, final Pago pago, final Instant ahora) {
+        Instant fechaLimiteReintento = pedido.getFechaLimiteReintento();
+        if (fechaLimiteReintento == null) {
+            fechaLimiteReintento = ahora.plus(VENTANA_REINTENTO);
+            pedido.setFechaLimiteReintento(fechaLimiteReintento);
+        }
+        pedido.setEstado(Pedido.Estado.PENDIENTE_PAGO);
         pedidoRepository.save(pedido);
         return new PagoResponseDTO(
-                pagoGuardado,
-                null,
-                null,
-                resultado.mensaje());
+                pago, null, null, MENSAJE_PAGO_RECHAZADO, fechaLimiteReintento);
     }
 }

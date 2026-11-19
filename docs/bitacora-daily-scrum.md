@@ -311,20 +311,30 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 
 | Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
 | --- | --- | --- | --- |
-| **Dilan Castillo** | Reportó que completó las tareas de HU-11: 11.1 (`BilleteraService`), 11.2 (endpoint `GET` de saldo protegido con JWT) y 11.3 (pruebas JUnit 5 de escenarios BDD). Informó una duración aproximada de 1 h 30 min en total. | Revisar pendientes o continuar con el tablero del Sprint. | Ninguno. |
+| **Dilan Castillo** | Reportó que completó HU-11: 11.1 (`BilleteraService`), 11.2 (endpoint `GET` de saldo protegido con JWT) y 11.3 (pruebas JUnit 5), con una duración aproximada de 1 h 30 min. También reportó terminadas las tareas de HU-12: 12.1 (lógica de rechazo), 12.2 (respuesta del endpoint y reintento) y 12.3 (pruebas BDD), con alrededor de 1 h 30 min y sin impedimentos. HU-12 está implementada y validada localmente, pendiente de integración. | No se compartió un plan individual para la siguiente Daily. | Ninguno reportado. |
 | **Kevin Lucumi** | Según la aclaración posterior de Dilan, guio y ayudó a Dilan durante la realización de HU-11, explicándole documentación relacionada. | Sin reporte individual compartido para esta Daily. | Sin reporte individual compartido para esta Daily. |
 | **Santiago Hurtado** | Se incorporó aproximadamente 10 minutos después de la primera captura y también ayudó a Dilan explicándole documentación relacionada con las historias. | Sin reporte individual compartido para esta Daily. | Sin reporte individual compartido para esta Daily. |
 | **Carlos Rosales** | Según la aclaración posterior de Dilan, guio y ayudó a Dilan durante la realización de HU-11, explicándole documentación relacionada. | Sin reporte individual compartido para esta Daily. | Sin reporte individual compartido para esta Daily. |
 
-* **Estado del tablero:** La captura compartida posteriormente muestra completadas las tres tareas
-  de HU-11:
+* **Estado del tablero:** La vista de Done confirma completadas las tareas
+  reportadas de HU-11 y HU-12:
   * #105 — 11.1 `BilleteraService`: acreditar al agricultor el pago al confirmarse (HU-09) y sumar
     su saldo.
   * #106 — 11.2 Endpoint `GET` de saldo protegido con JWT.
   * #107 — 11.3 Pruebas JUnit 5 de los escenarios BDD (obligatoria).
-  La imagen evidencia estas tareas como completadas, pero no permite verificar contadores del Sprint
-  ni el estado actualizado de HU-12. Dilan aclaró posteriormente que Carlos y Kevin lo guiaron y
-  apoyaron explicándole documentación, y que Santiago también le brindó ayuda.
+  * #108 — 12.1 Lógica de rechazo del pago.
+  * #109 — 12.2 Respuesta del endpoint y reintento del pago.
+  * #110 — 12.3 Pruebas BDD de HU-12.
+  En el momento de esta Daily, las historias #43 (HU-11) y #44 (HU-12) aparecían en Code Review.
+  Como actualización posterior, el PR #124 de HU-11 fue aprobado por Santiago y fusionado por
+  DilanStiven en `develop` el 18/11/2026; la captura posterior confirma HU-11 (#43) en Done.
+  Al momento de esta Daily, HU-12 todavía no tenía PR y permanecía en Code Review. Como actualización
+  posterior, el PR #126 de HU-12 fue aprobado por Santiago y fusionado por DilanStiven en `develop`;
+  GitHub mostró 1 check exitoso y la rama `Historia-12` fue eliminada. Una captura posterior del
+  tablero confirma la issue #44 en Done; las tareas #108–#110 también se reportaron completadas.
+  Dilan aclaró
+  posteriormente que Carlos y Kevin lo guiaron durante HU-11 y le explicaron documentación, y que
+  Santiago también le brindó ayuda con documentación de las historias.
 * **Acuerdos y acciones:**
-  * Dilan revisará los pendientes o continuará con el seguimiento del tablero del Sprint.
+  * Confirmar que HU-12 y sus tareas reflejen la integración del PR #126 en el tablero.
   * Dilan reportó no tener impedimentos; no se registraron impedimentos del resto del equipo.
