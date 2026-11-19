@@ -20,6 +20,7 @@ public class OrdenLogisticaResponseDTO {
     private final String guiaDespacho;
     private final Long vehiculoId;
     private final String placaVehiculo;
+    private final Long pedidoId;
 
     /**
      * Crea el DTO a partir de una orden persistida.
@@ -39,6 +40,8 @@ public class OrdenLogisticaResponseDTO {
                 ? null : orden.getVehiculo().getId();
         this.placaVehiculo = orden.getVehiculo() == null
                 ? null : orden.getVehiculo().getPlaca();
+        this.pedidoId = orden.getPedido() == null
+                ? null : orden.getPedido().getId();
     }
 
     /**
@@ -129,5 +132,14 @@ public class OrdenLogisticaResponseDTO {
      */
     public String getPlacaVehiculo() {
         return placaVehiculo;
+    }
+
+    /**
+     * Obtiene el identificador del pedido de compra asociado.
+     *
+     * @return pedido asociado o null para órdenes independientes
+     */
+    public Long getPedidoId() {
+        return pedidoId;
     }
 }

@@ -19,9 +19,11 @@ public class PagoResponseDTO {
     private final String referenciaPasarela;
     private final String mensaje;
     private final Instant fechaCreacion;
+    private final Instant fechaLimiteReintento;
 
     public PagoResponseDTO(final Pago pago, final String numeroOrdenValue,
-            final Long ordenCompraId, final String mensajeValue) {
+            final Long ordenCompraId, final String mensajeValue,
+            final Instant fechaLimiteReintentoValue) {
         this.idPago = pago.getId();
         this.idPedido = pago.getPedido().getId();
         this.idOrdenCompra = ordenCompraId;
@@ -32,6 +34,7 @@ public class PagoResponseDTO {
         this.referenciaPasarela = pago.getReferenciaPasarela();
         this.mensaje = mensajeValue;
         this.fechaCreacion = pago.getFechaCreacion();
+        this.fechaLimiteReintento = fechaLimiteReintentoValue;
     }
 
     public Long getIdPago() {
@@ -72,5 +75,9 @@ public class PagoResponseDTO {
 
     public Instant getFechaCreacion() {
         return fechaCreacion;
+    }
+
+    public Instant getFechaLimiteReintento() {
+        return fechaLimiteReintento;
     }
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -14,6 +15,7 @@ public class ContactoMensajeRequestDTO {
 
     private static final int CANTIDAD_ENTERA_MAXIMA = 8;
     private static final int ESCALA_CANTIDAD = 2;
+    private static final int DESTINO_LONGITUD_MAXIMA = 100;
 
     @JsonProperty("id_producto")
     @NotNull(message = "El identificador del producto es obligatorio")
@@ -29,6 +31,11 @@ public class ContactoMensajeRequestDTO {
 
     @NotBlank(message = "El mensaje es obligatorio")
     private String mensaje;
+
+    @NotBlank(message = "El destino de entrega es obligatorio")
+    @Size(max = DESTINO_LONGITUD_MAXIMA,
+            message = "El destino no puede superar 100 caracteres")
+    private String destino;
 
     /**
      * Obtiene el identificador de la oferta solicitada.
@@ -82,5 +89,23 @@ public class ContactoMensajeRequestDTO {
      */
     public void setMensaje(final String contenido) {
         this.mensaje = contenido;
+    }
+
+    /**
+     * Obtiene el destino de entrega indicado por el comprador.
+     *
+     * @return destino de entrega
+     */
+    public String getDestino() {
+        return destino;
+    }
+
+    /**
+     * Establece el destino de entrega.
+     *
+     * @param destinoValue destino informado por el comprador
+     */
+    public void setDestino(final String destinoValue) {
+        this.destino = destinoValue;
     }
 }

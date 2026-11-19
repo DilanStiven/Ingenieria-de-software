@@ -8,6 +8,7 @@ public class SolicitudContactoCreadaEvent {
     private final Long pedidoId;
     private final Long productoId;
     private final Long agricultorId;
+    private final String mensaje;
 
     /**
      * Crea un evento con los datos necesarios para notificar al agricultor.
@@ -15,12 +16,14 @@ public class SolicitudContactoCreadaEvent {
      * @param pedidoId identificador del pedido
      * @param productoId identificador del producto
      * @param agricultorId identificador del agricultor
+     * @param mensaje mensaje enviado por el comprador
      */
     public SolicitudContactoCreadaEvent(final Long pedidoId,
-            final Long productoId, final Long agricultorId) {
+            final Long productoId, final Long agricultorId, final String mensaje) {
         this.pedidoId = pedidoId;
         this.productoId = productoId;
         this.agricultorId = agricultorId;
+        this.mensaje = mensaje;
     }
 
     /**
@@ -48,5 +51,14 @@ public class SolicitudContactoCreadaEvent {
      */
     public Long getAgricultorId() {
         return agricultorId;
+    }
+
+    /**
+     * Obtiene el mensaje enviado por el comprador.
+     *
+     * @return mensaje de negociación
+     */
+    public String getMensaje() {
+        return mensaje;
     }
 }

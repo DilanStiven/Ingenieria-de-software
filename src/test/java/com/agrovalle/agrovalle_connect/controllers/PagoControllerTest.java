@@ -47,7 +47,7 @@ class PagoControllerTest {
     void dadoPedidoPendienteCuandoPagoEsAprobadoEntoncesRetornaPagoPagadoYOrden() throws Exception {
         when(pagoService.procesar(PEDIDO_ID, 7L, Pago.MedioPago.TARJETA))
                 .thenReturn(respuesta(Pago.Estado.APROBADO,
-                        "SIM-APROBADO", "Pago aprobado", 31L, "OC-TEST"));
+                        "SIM-APROBADO", "Pago aprobado", 31L, "OC-TEST", null));
 
         mockMvc.perform(post(URL)
                         .with(user("7").authorities(() -> "ROLE_AGRICULTOR"))
@@ -72,7 +72,8 @@ class PagoControllerTest {
     void dadoPedidoPendienteCuandoPagoEsRechazadoEntoncesNoRetornaOrden() throws Exception {
         when(pagoService.procesar(PEDIDO_ID, 7L, Pago.MedioPago.PSE))
                 .thenReturn(respuesta(Pago.Estado.RECHAZADO,
-                        null, "Pago rechazado", null, null));
+                        null, "Pago Rechazado. Puedes reintentar hasta la fecha límite indicada.",
+                        null, null, Instant.parse("2026-11-18T21:00:00Z")));
 
         mockMvc.perform(post(URL)
                         .with(user("7").authorities(() -> "ROLE_AGRICULTOR"))
@@ -85,9 +86,12 @@ class PagoControllerTest {
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.estado").value("RECHAZADO"))
+                .andExpect(jsonPath("$.fechaLimiteReintento")
+                        .value("2026-11-18T21:00:00Z"))
                 .andExpect(jsonPath("$.idOrdenCompra").doesNotExist())
                 .andExpect(jsonPath("$.numeroOrden").doesNotExist())
-                .andExpect(jsonPath("$.mensaje").value("Pago rechazado"));
+                .andExpect(jsonPath("$.mensaje")
+                        .value("Pago Rechazado. Puedes reintentar hasta la fecha límite indicada."));
 
         verify(pagoService).procesar(PEDIDO_ID, 7L, Pago.MedioPago.PSE);
     }
@@ -147,7 +151,8 @@ class PagoControllerTest {
             final String referencia,
             final String mensaje,
             final Long ordenCompraId,
-            final String numeroOrden) {
+            final String numeroOrden,
+            final Instant fechaLimiteReintento) {
         Pedido pedido = new Pedido();
         pedido.setId(PEDIDO_ID);
 
@@ -160,6 +165,7 @@ class PagoControllerTest {
         pago.setReferenciaPasarela(referencia);
         pago.setFechaCreacion(Instant.parse("2026-11-17T12:00:00Z"));
 
-        return new PagoResponseDTO(pago, numeroOrden, ordenCompraId, mensaje);
+        return new PagoResponseDTO(
+                pago, numeroOrden, ordenCompraId, mensaje, fechaLimiteReintento);
     }
 }

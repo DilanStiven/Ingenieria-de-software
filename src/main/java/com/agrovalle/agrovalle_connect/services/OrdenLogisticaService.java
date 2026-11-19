@@ -9,6 +9,7 @@ import com.agrovalle.agrovalle_connect.exceptions.PropietarioNoEncontradoExcepti
 import com.agrovalle.agrovalle_connect.exceptions.VehiculoNoEncontradoException;
 import com.agrovalle.agrovalle_connect.models.Agricultor;
 import com.agrovalle.agrovalle_connect.models.OrdenLogistica;
+import com.agrovalle.agrovalle_connect.models.Pedido;
 import com.agrovalle.agrovalle_connect.models.Vehiculo;
 import com.agrovalle.agrovalle_connect.repositories.AgricultorRepository;
 import com.agrovalle.agrovalle_connect.repositories.OrdenLogisticaRepository;
@@ -74,6 +75,24 @@ public class OrdenLogisticaService {
         orden.setFechaCreacion(Instant.now());
         orden.setAgricultor(agricultor);
         return new OrdenLogisticaResponseDTO(ordenRepository.save(orden));
+    }
+
+    /**
+     * Crea la orden logística al confirmarse el pago del pedido.
+     *
+     * @param pedido pedido pagado con destino de entrega
+     */
+    @Transactional
+    public void crearDesdePedidoPagado(final Pedido pedido) {
+        OrdenLogistica orden = new OrdenLogistica();
+        orden.setPedido(pedido);
+        orden.setProducto(pedido.getProducto().getNombre());
+        orden.setPesoKg(pedido.getCantidad());
+        orden.setDestino(pedido.getDestinoEntrega().trim());
+        orden.setEstado(OrdenLogistica.Estado.PENDIENTE_ALISTAMIENTO);
+        orden.setFechaCreacion(Instant.now());
+        orden.setAgricultor(pedido.getProducto().getAgricultor());
+        ordenRepository.save(orden);
     }
 
     /**

@@ -12,6 +12,7 @@
 | **Equipo Scrum** | Grupo 5 |
 | **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065 |
 | **Duración del Sprint** | 13/11/2026 – 20/11/2026 (Sprint 3 «Pedido y Pago») |
+| **Fecha de la reunión de Planning** | 16/11/2026 |
 | **Reparto de historias y tareas** | 16/11/2026 |
 | **Archivo** | `docs/sprint-3-planning.md` |
 | **Norma de calidad** | ISO/IEC 25010:2011 |
@@ -41,7 +42,7 @@ Al finalizar el Sprint 3 el sistema permitirá:
 
 | Métrica | Valor |
 | --- | --- |
-| Velocidad estimada | **11 Story Points** |
+| Velocidad estimada | **12 Story Points** |
 | Integrantes | 4 |
 | Dedicación | 6 h por persona por semana (igual que Sprint 1) |
 | **Capacidad total** | 4 × 6 h × 1 semana = **24 h** |
@@ -58,11 +59,11 @@ Al finalizar el Sprint 3 el sistema permitirá:
 | HU-09 | Pago de Pedido con Pasarela Virtual (PSE/Tarjetas) | Must Have | 3 | 4 | 2,5 h |
 | HU-10 | Generación de Comprobante de Pago y Factura | Should Have | 2 | 3 | 2 h |
 | HU-11 | Visualización de Saldo (Billetera del Agricultor) | Must Have | 2 | 3 | 2 h |
-| HU-12 | Notificación de Pago Rechazado | Could Have | 1 | 3 | 2 h |
-| — | **Total** | | **11** | **17** | **11 h** |
+| HU-12 | Notificación de Pago Rechazado | Could Have | 2 | 3 | 2 h |
+| — | **Total** | | **12** | **17** | **11 h** |
 
-> **Nota:** HU-12 se movió del Sprint 4 a este Sprint y el equipo redujo su estimación de 2 a 1 SP por
-> ser una historia menor; el Sprint 4 queda con HU-08, HU-13, HU-14 y HU-15 (9 SP).
+> **Nota:** HU-12 se movió del Sprint 4 a este Sprint y conserva su estimación de 2 SP.
+> El Sprint 4 queda con HU-08, HU-13, HU-14 y HU-15 (9 SP).
 
 ### 2.3 Asignación de responsables (propuesta, 16/11/2026)
 
@@ -213,7 +214,7 @@ Then  el sistema muestra saldo 0
 
 ---
 
-## 7. HU-12 — Notificación de Pago Rechazado (1 SP)
+## 7. HU-12 — Notificación de Pago Rechazado (2 SP)
 
 **Historia:** Como comerciante, quiero recibir una alerta si mi método de pago falla, para poder intentar
 con otra tarjeta sin perder los productos que había reservado.
@@ -269,7 +270,7 @@ Then  el sistema procesa el pago sobre el mismo pedido
 | Pasarela real (PSE/tarjetas) fuera de alcance | Medio | Adaptador simulado/sandbox, documentado como decisión de diseño |
 | Generación de PDF requiere una librería nueva | Medio | Elegirla en la tarea 10.1 y documentarla |
 | HU-09 original hablaba de «carrito»; ahora el pedido nace en HU-05 | Bajo | Ajustar la redacción del Backlog |
-| HU-12 se movió del Sprint 4 y se redujo a 1 SP | Bajo | Registrar el cambio en el Backlog |
+| HU-12 se movió del Sprint 4 y conserva 2 SP | Bajo | Mantener la estimación alineada en el Backlog |
 | Pruebas y Checkstyle al final del Sprint 1 | Medio | Pruebas en el mismo PR de cada tarea; `mvn test` y `mvn checkstyle:check` antes de cada PR |
 
 ---

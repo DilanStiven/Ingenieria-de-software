@@ -1,10 +1,13 @@
 package com.agrovalle.agrovalle_connect.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -23,6 +26,8 @@ import com.agrovalle.agrovalle_connect.repositories.PagoRepository;
 import com.agrovalle.agrovalle_connect.repositories.PedidoRepository;
 import com.agrovalle.agrovalle_connect.repositories.ProductoRepository;
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +57,8 @@ class PagoServiceTest {
     private PrecioService precioService;
     @Mock
     private ProductoRepository productoRepository;
+    @Mock
+    private OrdenLogisticaService ordenLogisticaService;
 
     private PagoService pagoService;
     private Pedido pedido;
@@ -68,6 +75,7 @@ class PagoServiceTest {
                 billeteraService,
                 precioService,
                 productoRepository);
+        pagoService.setOrdenLogisticaService(ordenLogisticaService);
 
         producto = new Producto();
         producto.setId(PRODUCTO_ID);
@@ -84,12 +92,14 @@ class PagoServiceTest {
         pedido.setProducto(producto);
         pedido.setCantidad(CANTIDAD);
         pedido.setCompradorId(COMPRADOR_ID);
+        pedido.setDestinoEntrega("Cali");
         pedido.setEstado(Pedido.Estado.PENDIENTE_PAGO);
     }
 
     @Test
     void apruebaPagoYGeneraOrdenDeCompra() {
-        when(pedidoRepository.findById(PEDIDO_ID)).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
         when(productoRepository.buscarPorIdConBloqueo(PRODUCTO_ID))
                 .thenReturn(Optional.of(producto));
         when(pasarelaPago.procesarPago(
@@ -120,6 +130,7 @@ class PagoServiceTest {
         assertNotNull(respuesta.getNumeroOrden());
         assertNotNull(respuesta.getIdOrdenCompra());
         verify(billeteraService).acreditar(pedido, MONTO_TOTAL);
+        verify(ordenLogisticaService).crearDesdePedidoPagado(pedido);
         verify(precioService).registrarTransaccion("Maíz dulce", PRECIO_UNITARIO);
         verify(productoRepository).save(producto);
         assertEquals(new BigDecimal("45.00"), producto.getCantidad());
@@ -127,7 +138,9 @@ class PagoServiceTest {
 
     @Test
     void rechazaPagoSinGenerarOrdenDeCompra() {
-        when(pedidoRepository.findById(PEDIDO_ID)).thenReturn(Optional.of(pedido));
+        Instant inicio = Instant.now();
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
         when(productoRepository.buscarPorIdConBloqueo(PRODUCTO_ID))
                 .thenReturn(Optional.of(producto));
         when(pasarelaPago.procesarPago(
@@ -146,12 +159,22 @@ class PagoServiceTest {
                 PEDIDO_ID,
                 COMPRADOR_ID,
                 Pago.MedioPago.PSE);
+        Instant fin = Instant.now();
 
         assertEquals(Pago.Estado.RECHAZADO, respuesta.getEstado());
-        assertEquals(Pedido.Estado.RECHAZADO, pedido.getEstado());
+        assertEquals(Pedido.Estado.PENDIENTE_PAGO, pedido.getEstado());
         assertNull(respuesta.getIdOrdenCompra());
         assertNull(respuesta.getNumeroOrden());
+        assertEquals("Pago Rechazado. Puedes reintentar hasta la fecha límite indicada.",
+                respuesta.getMensaje());
+        assertNotNull(pedido.getFechaLimiteReintento());
+        assertFalse(pedido.getFechaLimiteReintento()
+                .isBefore(inicio.plus(Duration.ofMinutes(15))));
+        assertFalse(pedido.getFechaLimiteReintento()
+                .isAfter(fin.plus(Duration.ofMinutes(15))));
+        assertEquals(pedido.getFechaLimiteReintento(), respuesta.getFechaLimiteReintento());
         verifyNoInteractions(billeteraService);
+        verifyNoInteractions(ordenLogisticaService);
         verifyNoInteractions(precioService);
         assertEquals(new BigDecimal("50.00"), producto.getCantidad());
     }
@@ -159,7 +182,8 @@ class PagoServiceTest {
     @Test
     void rechazaProcesarPedidoQueYaFuePagado() {
         pedido.setEstado(Pedido.Estado.PAGADO);
-        when(pedidoRepository.findById(PEDIDO_ID)).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
 
         assertThrows(PagoInvalidoException.class, () ->
                 pagoService.procesar(
@@ -168,20 +192,22 @@ class PagoServiceTest {
 
     @Test
     void rechazaPagarPedidoDeOtroCompradorSinContactarLaPasarela() {
-        when(pedidoRepository.findById(PEDIDO_ID)).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
 
         assertThrows(PedidoNoEncontradoException.class, () ->
                 pagoService.procesar(PEDIDO_ID, 99L, Pago.MedioPago.TARJETA));
 
         verifyNoInteractions(
                 pasarelaPago, pagoRepository, ordenCompraRepository,
-                billeteraService, precioService, productoRepository);
+                billeteraService, precioService, productoRepository, ordenLogisticaService);
     }
 
     @Test
     void rechazaPagoCuandoYaNoHayExistenciasSuficientes() {
         producto.setCantidad(new BigDecimal("3.00"));
-        when(pedidoRepository.findById(PEDIDO_ID)).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
         when(productoRepository.buscarPorIdConBloqueo(PRODUCTO_ID))
                 .thenReturn(Optional.of(producto));
 
@@ -196,7 +222,8 @@ class PagoServiceTest {
     @Test
     void desactivaOfertaCuandoLaCompraAgotaLasExistencias() {
         producto.setCantidad(CANTIDAD);
-        when(pedidoRepository.findById(PEDIDO_ID)).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
         when(productoRepository.buscarPorIdConBloqueo(PRODUCTO_ID))
                 .thenReturn(Optional.of(producto));
         when(pasarelaPago.procesarPago(
@@ -218,5 +245,84 @@ class PagoServiceTest {
 
         assertEquals(new BigDecimal("0.00"), producto.getCantidad());
         assertEquals("INACTIVO", producto.getEstado());
+    }
+
+    @Test
+    void permiteReintentarElMismoPedidoConOtroMedioDentroDeLosQuinceMinutos() {
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
+        when(productoRepository.buscarPorIdConBloqueo(PRODUCTO_ID))
+                .thenReturn(Optional.of(producto));
+        when(pasarelaPago.procesarPago(MONTO_TOTAL, Pago.MedioPago.PSE))
+                .thenReturn(new ResultadoPago(
+                        Pago.Estado.RECHAZADO, null, "Fondos insuficientes"));
+        when(pasarelaPago.procesarPago(MONTO_TOTAL, Pago.MedioPago.TARJETA))
+                .thenReturn(new ResultadoPago(
+                        Pago.Estado.APROBADO, "SIM-OK", "Pago aprobado"));
+        when(pagoRepository.save(any(Pago.class))).thenAnswer(invocation -> {
+            Pago pago = invocation.getArgument(0);
+            pago.setId(21L);
+            return pago;
+        });
+        when(ordenCompraRepository.save(any(OrdenCompra.class))).thenAnswer(invocation -> {
+            OrdenCompra orden = invocation.getArgument(0);
+            orden.setId(31L);
+            return orden;
+        });
+
+        PagoResponseDTO rechazo = pagoService.procesar(
+                PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.PSE);
+        Instant fechaLimiteOriginal = rechazo.getFechaLimiteReintento();
+
+        PagoResponseDTO aprobado = pagoService.procesar(
+                PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.TARJETA);
+
+        assertEquals(Pago.Estado.APROBADO, aprobado.getEstado());
+        assertEquals(Pedido.Estado.PAGADO, pedido.getEstado());
+        assertNull(pedido.getFechaLimiteReintento());
+        assertNull(aprobado.getFechaLimiteReintento());
+        assertEquals(new BigDecimal("45.00"), producto.getCantidad());
+        verify(pagoRepository, times(2)).save(any(Pago.class));
+        verify(billeteraService).acreditar(pedido, MONTO_TOTAL);
+    }
+
+    @Test
+    void noExtiendeElPlazoCuandoUnReintentoTambienEsRechazado() {
+        Instant fechaLimiteOriginal = Instant.now().plus(Duration.ofMinutes(5));
+        pedido.setFechaLimiteReintento(fechaLimiteOriginal);
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
+        when(productoRepository.buscarPorIdConBloqueo(PRODUCTO_ID))
+                .thenReturn(Optional.of(producto));
+        when(pasarelaPago.procesarPago(MONTO_TOTAL, Pago.MedioPago.PSE))
+                .thenReturn(new ResultadoPago(
+                        Pago.Estado.RECHAZADO, null, "Fondos insuficientes"));
+        when(pagoRepository.save(any(Pago.class))).thenAnswer(invocation -> {
+            Pago pago = invocation.getArgument(0);
+            pago.setId(21L);
+            return pago;
+        });
+
+        PagoResponseDTO respuesta = pagoService.procesar(
+                PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.PSE);
+
+        assertEquals(fechaLimiteOriginal, pedido.getFechaLimiteReintento());
+        assertEquals(fechaLimiteOriginal, respuesta.getFechaLimiteReintento());
+    }
+
+    @Test
+    void rechazaReintentoCuandoVencioLaVentanaDeQuinceMinutos() {
+        pedido.setFechaLimiteReintento(Instant.now().minusSeconds(1));
+        when(pedidoRepository.buscarPorIdConBloqueo(PEDIDO_ID))
+                .thenReturn(Optional.of(pedido));
+
+        PagoInvalidoException excepcion = assertThrows(PagoInvalidoException.class, () ->
+                pagoService.procesar(
+                        PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.TARJETA));
+
+        assertTrue(excepcion.getMessage().contains("venció la ventana de 15 minutos"));
+        verifyNoInteractions(
+                productoRepository, pasarelaPago, pagoRepository,
+                ordenCompraRepository, billeteraService, precioService);
     }
 }

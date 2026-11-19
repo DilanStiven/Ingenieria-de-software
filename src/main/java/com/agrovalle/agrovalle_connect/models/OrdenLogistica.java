@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.math.BigDecimal;
@@ -92,6 +93,10 @@ public class OrdenLogistica {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehiculo_id")
     private Vehiculo vehiculo;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", unique = true)
+    private Pedido pedido;
 
     /**
      * Establece automáticamente la fecha de creación.
@@ -281,5 +286,23 @@ public class OrdenLogistica {
      */
     public void setVehiculo(final Vehiculo vehiculoValue) {
         this.vehiculo = vehiculoValue;
+    }
+
+    /**
+     * Obtiene el pedido de compra asociado, si la orden nació de un pago.
+     *
+     * @return pedido asociado o null para órdenes logísticas antiguas
+     */
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    /**
+     * Asocia el pedido de compra con esta orden logística.
+     *
+     * @param pedidoValue pedido pagado
+     */
+    public void setPedido(final Pedido pedidoValue) {
+        this.pedido = pedidoValue;
     }
 }

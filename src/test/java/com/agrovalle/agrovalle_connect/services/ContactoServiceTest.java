@@ -84,7 +84,7 @@ class ContactoServiceTest {
         ContactoMensajeResponseDTO respuesta =
                 contactoService.enviarMensaje(
                         PRODUCTO_ID, new BigDecimal("5.00"),
-                        "  Me interesa el producto  ", COMPRADOR_ID);
+                        "  Me interesa el producto  ", " Cali ", COMPRADOR_ID);
 
         assertEquals(MENSAJE_ID, respuesta.getIdMensaje());
         assertEquals(PEDIDO_ID, respuesta.getIdPedido());
@@ -95,6 +95,7 @@ class ContactoServiceTest {
         assertEquals(producto, pedidoCaptor.getValue().getProducto());
         assertEquals(new BigDecimal("5.00"), pedidoCaptor.getValue().getCantidad());
         assertEquals(COMPRADOR_ID, pedidoCaptor.getValue().getCompradorId());
+        assertEquals("Cali", pedidoCaptor.getValue().getDestinoEntrega());
         assertEquals(Pedido.Estado.PENDIENTE_PAGO, pedidoCaptor.getValue().getEstado());
 
         ArgumentCaptor<ContactoMensaje> mensajeCaptor = ArgumentCaptor.forClass(ContactoMensaje.class);
@@ -107,6 +108,7 @@ class ContactoServiceTest {
         assertEquals(PEDIDO_ID, eventoCaptor.getValue().getPedidoId());
         assertEquals(PRODUCTO_ID, eventoCaptor.getValue().getProductoId());
         assertEquals(AGRICULTOR_ID, eventoCaptor.getValue().getAgricultorId());
+        assertEquals("Me interesa el producto", eventoCaptor.getValue().getMensaje());
     }
 
     @Test
@@ -117,7 +119,7 @@ class ContactoServiceTest {
         assertThrows(OfertaNoDisponibleException.class,
                 () -> contactoService.enviarMensaje(
                         PRODUCTO_ID, new BigDecimal("5.00"),
-                        "Me interesa el producto", COMPRADOR_ID));
+                        "Me interesa el producto", "Cali", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));
@@ -131,7 +133,7 @@ class ContactoServiceTest {
         assertThrows(OfertaNoDisponibleException.class,
                 () -> contactoService.enviarMensaje(
                         PRODUCTO_ID, new BigDecimal("5.00"),
-                        "Me interesa el producto", COMPRADOR_ID));
+                        "Me interesa el producto", "Cali", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));
@@ -145,7 +147,7 @@ class ContactoServiceTest {
         assertThrows(CantidadNoDisponibleException.class,
                 () -> contactoService.enviarMensaje(
                         PRODUCTO_ID, new BigDecimal("51.00"),
-                        "Me interesa el producto", COMPRADOR_ID));
+                        "Me interesa el producto", "Cali", COMPRADOR_ID));
 
         verify(pedidoRepository, never()).save(any(Pedido.class));
         verify(contactoMensajeRepository, never()).save(any(ContactoMensaje.class));
