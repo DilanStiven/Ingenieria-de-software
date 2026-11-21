@@ -1,282 +1,278 @@
-# Documento Consolidado de Diagramas UML — AgroValle Connect
+# Diagramas UML — AgroValle Connect
 
-**Institución Universitaria Antonio José Camacho**  
-**Facultad de Ingeniería | Programa de Ingeniería de Sistemas**  
-**Asignatura:** Ingeniería de Software II | **Período:** 2-2026  
-**Docente:** Paola Andrea Bedoya Toro  
-**Proyecto Integrador:** AgroValle Connect (Plataforma Agrícola del Valle del Cauca)  
-**Estándar de Trazabilidad:** ISO/IEC/IEEE 29148:2018 & ISO/IEC 25010  
+**Institución Universitaria Antonio José Camacho**
 
----
+**Asignatura:** Ingeniería de Software II | **Período:** 2-2026
 
-## 1. Justificación Técnica y Estándar de Representación
+**Proyecto Integrador:** AgroValle Connect
+**Ubicación:** `docs/diseno/architecture/diagramas-uml.md`
 
-Para garantizar la mantenibilidad, auditabilidad y trazabilidad de los artefactos de software exigidos por el modelo de calidad **ISO/IEC 25010** y el estándar de especificación **ISO/IEC/IEEE 29148:2018**, este documento consolida la vista de diseño estructural e interaccional del sistema AgroValle Connect en sintaxis nativa **Mermaid.js**.
+## Alcance y fuente de verdad
 
-- **Renderizado Nativo en GitHub:** Permite visualizar los diagramas vectoriales sin depender de binarios pesados ni plugins de terceros.
-- **Trazabilidad con el Código Fuente:** Al residir en texto plano dentro del repositorio, los diagramas evolucionan con cada Pull Request y commit del equipo.
-- **Alineación con la Arquitectura en 4 Capas:** Especifica la separación estricta entre capa de presentación REST, seguridad, lógica de negocio y persistencia Spring Data JPA hacia PostgreSQL.
+Estos diagramas describen el código y el despliegue vigentes. Cuando el escenario de la guía no
+coincide con lo implementado, se muestra el flujo real y se deja explícita la brecha; no se presenta
+un diseño futuro como si ya existiera. La guía indica `docs/architecture/`, pero este repositorio
+conserva los artefactos de arquitectura en `docs/diseno/` por indicación de la docente.
 
----
+## 1. Secuencia: autenticación e inicio de sesión JWT (HU-07)
 
-## 2. Diagramas de Secuencia UML (Interacción Cronológica en 4 Capas)
-
-Los diagramas de secuencia especifican el flujo cronológico y los mensajes sincrónicos/asincrónicos intercambiados entre las capas de la arquitectura Spring Boot.
-
-### Diagrama 1: Autenticación e Inicio de Sesión JWT (HU-07)
-
-Especifica el flujo de autenticación, verificación de credenciales con hash BCrypt y generación del token JWT firmado.
+`POST /api/v1/auth/login` normaliza el correo, verifica la contraseña con BCrypt y devuelve el JWT
+en `AgricultorResponseDTO`.
 
 ```mermaid
 sequenceDiagram
- autonumber
- actor Cliente as "Comprador / Agricultor"
- participant Controller as AuthController
- participant Service as AuthService
- participant Repo as UsuarioRepository
- participant DB as "PostgreSQL (BD)"
- Cliente->>Controller: POST /api/v1/auth/login (LoginRequestDTO)
- activate Controller
- Controller->>Service: autenticarUsuario(dto)
- activate Service
- Service->>Repo: findByCorreo(correo)
- activate Repo
- Repo->>DB: SELECT * FROM usuarios_productores WHERE correo = ?
- activate DB
- DB-->>Repo: Registro usuario / Hash BCrypt
- deactivate DB
- Repo-->>Service: Optional<Usuario>
- deactivate Repo
- alt Credenciales inválidas
- Service-->>Controller: throw CredencialesInvalidasException
- Controller-->>Cliente: HTTP 401 Unauthorized
- else Credenciales válidas
- Service->>Service: generarTokenJWT(usuario)
- Service-->>Controller: JwtResponseDTO(tokenJWT)
- deactivate Service
- Controller-->>Cliente: HTTP 200 OK (tokenJWT)
- end
- deactivate Controller
+    actor Cliente
+    participant API as AgricultorController
+    participant Servicio as AgricultorService
+    participant Repo as AgricultorRepository
+    participant DB as PostgreSQL
+    participant BCrypt as PasswordEncoder
+    participant JWT as JwtService
+
+    Cliente->>API: POST /api/v1/auth/login (LoginRequestDTO)
+    API->>Servicio: autenticar(dto)
+    Servicio->>Servicio: normalizarCorreo(correo)
+    Servicio->>Repo: findByCorreoIgnoreCase(correo)
+    Repo->>DB: consultar agricultor
+    DB-->>Repo: agricultor encontrado o vacío
+    Repo-->>Servicio: Optional<Agricultor>
+    Servicio->>BCrypt: matches(password, passwordHash)
+    BCrypt-->>Servicio: true o false
+    alt Credenciales inválidas
+        Servicio-->>API: CredencialesInvalidasException
+        API-->>Cliente: HTTP 401 Unauthorized
+    else Credenciales válidas
+        Servicio->>JWT: generarToken(agricultorId)
+        JWT-->>Servicio: token firmado
+        Servicio-->>API: AgricultorResponseDTO
+        API-->>Cliente: HTTP 200 OK (datos y JWT)
+    end
 ```
 
----
+## 2. Secuencia: publicación de cosecha/producto (HU-02)
 
-### Diagrama 2: Publicación de Oferta de Cosecha (HU-02)
-
-Valida la identidad del agricultor autenticado, verifica la pertenencia de la finca y persiste la oferta de cosecha con control de excepciones de autorización.
+El agricultor se obtiene del principal autenticado; no se consulta `FincaRepository` ni se crea una
+entidad `Oferta`. La publicación crea un `Producto` asociado al agricultor.
 
 ```mermaid
 sequenceDiagram
- autonumber
- actor Cliente as Agricultor
- participant Controller as ProductoController
- participant Service as ProductoService
- participant FincaRepo as FincaRepository
- participant ProdRepo as ProductoRepository
- participant DB as "PostgreSQL (BD)"
- Cliente->>Controller: POST /api/v1/productos (PublicarProductoDTO)
- activate Controller
- Controller->>Service: publicarCosecha(dto, usuarioId)
- activate Service
- Service->>FincaRepo: findByIdAndPropietarioId(fincaId, agricultorId)
- activate FincaRepo
- FincaRepo->>DB: SELECT * FROM fincas WHERE id = ?
- activate DB
- DB-->>FincaRepo: Datos Finca
- deactivate DB
- FincaRepo-->>Service: Optional<Finca>
- deactivate FincaRepo
- alt Finca no pertenece al agricultor
- Service-->>Controller: throw FincaNoAutorizadaException
- Controller-->>Cliente: HTTP 403 Forbidden
- else Datos válidos y propiedad verificada
- Service->>ProdRepo: save(ofertaCosecha)
- activate ProdRepo
- ProdRepo->>DB: INSERT INTO ofertas_cosecha (...)
- activate DB
- DB-->>ProdRepo: OfertaCosecha (ID)
- deactivate DB
- ProdRepo-->>Service: OfertaCosecha
- deactivate ProdRepo
- Service-->>Controller: ProductoResponseDTO
- deactivate Service
- Controller-->>Cliente: HTTP 201 Created (ProductoResponseDTO)
- end
- deactivate Controller
+    actor Agricultor
+    participant Filtro as JwtAuthenticationFilter
+    participant API as ProductoController
+    participant Servicio as ProductoService
+    participant Agricultores as AgricultorRepository
+    participant Productos as ProductoRepository
+    participant DB as PostgreSQL
+    participant Eventos as ApplicationEventPublisher
+    participant Listener as ProductoPublicadoListener
+
+    Agricultor->>Filtro: POST /api/v1/productos + JWT + DTO
+    Filtro->>API: identidad autenticada
+    API->>Servicio: publicar(dto, agricultorId)
+    Servicio->>Servicio: validar fecha de cosecha
+    Servicio->>Agricultores: findById(agricultorId)
+    Agricultores->>DB: consultar agricultor
+    DB-->>Agricultores: agricultor
+    Agricultores-->>Servicio: Agricultor
+    Servicio->>Productos: save(producto)
+    Productos->>DB: INSERT producto
+    DB-->>Productos: producto persistido
+    Productos-->>Servicio: Producto
+    Servicio->>Eventos: publishEvent(ProductoPublicadoEvent)
+    Eventos-->>Listener: entregar evento
+    Listener-->>Listener: registrar evento en log
+    Servicio-->>API: ProductoResponseDTO
+    API-->>Agricultor: HTTP 201 Created
 ```
 
----
+## 3. Secuencia: consulta de precios promedio regionales (HU-03)
 
-### Diagrama 3: Consulta de Precios Promedio Regionales (HU-03)
-
-Ejecuta el cálculo estadístico de precios históricos de mercado en una ventana de 24 horas sobre transacciones reales consolidadas en el Valle del Cauca.
+`GET /api/v1/precios/promedio` calcula el promedio de transacciones de las últimas 24 horas. Si no
+hay datos para ese período, el servicio comunica que el precio no está disponible.
 
 ```mermaid
 sequenceDiagram
- autonumber
- actor Cliente as "Usuario / Comprador"
- participant Controller as PrecioController
- participant Service as PrecioService
- participant Repo as TransaccionRepository
- participant DB as "PostgreSQL (BD)"
- Cliente->>Controller: GET /api/v1/precios/promedio?producto=Cafe
- activate Controller
- Controller->>Service: calcularPrecioPromedio("Cafe")
- activate Service
- Service->>Repo: findTransaccionesEnVentana("Cafe", 24h)
- activate Repo
- Repo->>DB: SELECT precio_unitario FROM transacciones ...
- activate DB
- DB-->>Repo: List<BigDecimal> precios
- deactivate DB
- Repo-->>Service: List<BigDecimal>
- deactivate Repo
- Service->>Service: calcularPromedioBigDecimal(precios)
- Service-->>Controller: PrecioPromedioDTO("Cafe", 2500.00)
- deactivate Service
- Controller-->>Cliente: HTTP 200 OK (2500.00 COP/kg)
- deactivate Controller
+    actor Cliente
+    participant API as PrecioController
+    participant Servicio as PrecioService
+    participant Repo as PrecioRepository
+    participant DB as PostgreSQL
+
+    Cliente->>API: GET /api/v1/precios/promedio?producto=...
+    API->>Servicio: obtenerPromedio(producto)
+    Servicio->>Servicio: definir ventana de 24 horas
+    Servicio->>Repo: calcularPromedio(producto, desde, hasta)
+    Repo->>DB: agregar transacciones del período
+    DB-->>Repo: promedio y cantidad
+    Repo-->>Servicio: PromedioPrecio
+    alt Sin transacciones
+        Servicio-->>API: PrecioNoDisponibleException
+        API-->>Cliente: error de precio no disponible
+    else Con transacciones
+        Servicio->>Servicio: redondear a 2 decimales
+        Servicio-->>API: PrecioPromedioResponseDTO
+        API-->>Cliente: HTTP 200 OK (COP/kg)
+    end
 ```
 
----
+## 4. Colaboración: pago de pedido, inventario y rechazo (HU-09/HU-12)
 
-## 3. Diagramas de Colaboración / Comunicación
-
-Enfatizan la estructura organizativa de los componentes y la numeración secuencial de mensajes entre objetos del dominio.
-
-### Diagrama de Colaboración 1: Confirmación de Orden y Reserva de Inventario (HU-12)
-
-Ilustra la verificación de idempotencia, obtención de ítems del carrito, descuento transaccional de inventario y creación atómica de la orden.
+El flujo de aprobación registra la compra y descuenta inventario (HU-09); la rama de rechazo conserva
+el pedido durante 15 minutos para reintentar (HU-12 del Backlog). El PDF usa HU-12 para un escenario
+distinto de confirmación de orden/carrito. El repositorio procesa un `Pedido` existente y no usa
+carrito ni idempotencia.
 
 ```mermaid
 flowchart TD
- C["1: Cliente (Comprador)"]
- CTRL[":OrdenController"]
- SERV[":OrdenService"]
- INV[":InventarioService"]
- OREPO[":OrdenRepository"]
- CREPO[":CarritoRepository"]
- DB[("PostgreSQL")]
- C -- "1: POST /api/v1/ordenes" --> CTRL
- CTRL -- "2: confirmarOrden(carritoId)" --> SERV
- SERV -- "3: verificarIdempotencia()" --> SERV
- SERV -- "4: obtenerCarrito(carritoId)" --> CREPO
- CREPO -- "5: SELECT * FROM carrito" --> DB
- DB -. "6: datosCarrito" .-> CREPO
- CREPO -. "7: CarritoEntidad" .-> SERV
- SERV -- "8: descontarStock(items)" --> INV
- INV -- "9: UPDATE ofertas_cosecha" --> DB
- SERV -- "10: save(nuevaOrden)" --> OREPO
- OREPO -- "11: INSERT INTO ordenes" --> DB
- DB -. "12: OrdenPersistida" .-> OREPO
- SERV -- "13: vaciarCarrito(carritoId)" --> CREPO
- CREPO -- "14: DELETE FROM carrito_items" --> DB
- SERV -. "15: OrdenResponseDTO" .-> CTRL
- CTRL -. "16: HTTP 201 Created" .-> C
+    Comprador["1: Comprador autenticado"]
+    API["2: PagoController"]
+    Pago["3: PagoService"]
+    PedidoRepo["4: PedidoRepository"]
+    ProductoRepo["5: ProductoRepository"]
+    Pasarela["6: PasarelaPago"]
+    PagoRepo["7: PagoRepository"]
+    OrdenRepo["8: OrdenCompraRepository"]
+    Logistica["9: OrdenLogisticaService"]
+    Billetera["10: BilleteraService"]
+    Precio["11: PrecioService"]
+    DB[("PostgreSQL")]
+    Decision{"Pago aprobado"}
+    Reintento["Pago rechazado; conservar pedido y fecha límite"]
+    Aprobado["Confirmar compra"]
+    Respuesta["Respuesta PagoResponseDTO"]
+
+    Comprador -->|"POST /api/v1/pagos"| API
+    API -->|"procesar(pedidoId, compradorId, medio)"| Pago
+    Pago -->|"buscarPorIdConBloqueo"| PedidoRepo
+    PedidoRepo -->|"cargar pedido"| DB
+    Pago -->|"validar propietario, estado y vigencia"| Pago
+    Pago -->|"buscar producto con bloqueo y validar stock"| ProductoRepo
+    ProductoRepo -->|"cargar producto"| DB
+    Pago -->|"procesarPago(monto, medio)"| Pasarela
+    Pasarela -->|"resultado aprobado o rechazado"| Pago
+    Pago -->|"guardar pago"| PagoRepo
+    PagoRepo -->|"persistir"| DB
+    Pago -->|"evaluar resultado"| Decision
+    Decision -->|"No"| Reintento
+    Reintento -->|"actualizar estado y fecha límite"| PedidoRepo
+    PedidoRepo -->|"persistir pedido"| DB
+    Reintento --> Respuesta
+    Decision -->|"Sí"| Aprobado
+    Aprobado -->|"marcar pedido pagado"| PedidoRepo
+    Aprobado -->|"descontar cantidad y actualizar estado"| ProductoRepo
+    ProductoRepo -->|"persistir producto"| DB
+    Aprobado -->|"registrar transacción"| Precio
+    Precio -->|"guardar precio"| DB
+    Aprobado -->|"crear orden de compra"| OrdenRepo
+    OrdenRepo -->|"persistir"| DB
+    Aprobado -->|"crear orden logística"| Logistica
+    Logistica -->|"persistir orden"| DB
+    Aprobado -->|"acreditar agricultor"| Billetera
+    Billetera -->|"actualizar saldo"| DB
+    Aprobado --> Respuesta
+    Respuesta --> API
+    API -->|"HTTP 200"| Comprador
 ```
 
----
+## 5. Colaboración / Observer vigente: notificación de solicitud de contacto (HU-05)
 
-### Diagrama de Colaboración 2: Cambio de Estado de Despacho y Notificación (Patrón Observer — HU-13)
-
-Modela la transición de estado de una orden logística y la notificación desacoplada al comprador mediante el patrón GoF **Observer** (`ApplicationEventPublisher` y `@EventListener`).
+El PDF asigna HU-13 al cambio de estado de despacho con notificación Observer, pero el Backlog
+aprobado define HU-13 como calificación del producto y del agricultor. También define HU-08 como
+actualización de estado de entrega. Ambas historias están previstas para una etapa posterior y no se
+implementan aquí. Este diagrama muestra únicamente el Observer que sí existe: al registrar una
+solicitud de contacto (HU-05), se persiste una notificación para el agricultor antes del commit.
 
 ```mermaid
 flowchart TD
- A["1: Agricultor"]
- CTRL[":OrdenController"]
- SERV[":OrdenService"]
- OREPO[":OrdenRepository"]
- PUB[":ApplicationEventPublisher"]
- OBS[":NotificacionCompradorListener (Observer)"]
- DB[("PostgreSQL")]
- A -- "1: PATCH /api/v1/ordenes/10/estado" --> CTRL
- CTRL -- "2: actualizarEstado(10, LISTO_PARA_DESPACHO)" --> SERV
- SERV -- "3: findById(10)" --> OREPO
- OREPO -- "4: SELECT * FROM ordenes" --> DB
- DB -. "5: OrdenEntidad" .-> OREPO
- OREPO -. "6: OrdenEntidad" .-> SERV
- SERV -- "7: validarTransicionEstado()" --> SERV
- SERV -- "8: save(ordenActualizada)" --> OREPO
- OREPO -- "9: UPDATE ordenes SET estado = 'LISTO'" --> DB
- SERV -- "10: publishEvent(EstadoOrdenCambiadoEvent)" --> PUB
- PUB -- "11: @EventListener onEstadoOrdenCambiado()" --> OBS
- OBS -- "12: INSERT INTO notificaciones" --> DB
- SERV -. "13: OrdenEstadoDTO" .-> CTRL
- CTRL -. "14: HTTP 200 OK" .-> A
+    Cliente["1: Comprador autenticado"]
+    API["2: ContactoController"]
+    Servicio["3: ContactoService"]
+    ProductoRepo["4: ProductoRepository"]
+    PedidoRepo["5: PedidoRepository"]
+    MensajeRepo["6: ContactoMensajeRepository"]
+    Publicador["7: ApplicationEventPublisher"]
+    Evento["8: SolicitudContactoCreadaEvent"]
+    Listener["9: SolicitudContactoCreadaListener"]
+    Notificacion["10: NotificacionService"]
+    NotificacionRepo["11: NotificacionRepository"]
+    DB[("PostgreSQL")]
+
+    Cliente -->|"POST /api/v1/contacto/mensaje"| API
+    API -->|"enviarMensaje(...)"| Servicio
+    Servicio -->|"validar producto y cantidad"| ProductoRepo
+    ProductoRepo -->|"consultar"| DB
+    Servicio -->|"crear pedido"| PedidoRepo
+    PedidoRepo -->|"persistir"| DB
+    Servicio -->|"guardar mensaje"| MensajeRepo
+    MensajeRepo -->|"persistir"| DB
+    Servicio -->|"publishEvent"| Publicador
+    Publicador -->|"entregar evento antes del commit"| Evento
+    Evento -->|"TransactionalEventListener"| Listener
+    Listener -->|"registrar solicitud"| Notificacion
+    Notificacion -->|"guardar"| NotificacionRepo
+    NotificacionRepo -->|"persistir"| DB
+    Servicio -->|"confirmación"| API
+    API -->|"HTTP 200"| Cliente
 ```
 
----
-
-## 4. Diagrama de Componentes de la Arquitectura MVC en 4 Capas
-
-Representa la estructura física y lógica de los módulos de software, sus interfaces y dependencias cruzadas entre presentación, seguridad/middleware, dominio y persistencia.
+## 6. Componentes de la arquitectura en capas
 
 ```mermaid
-componentDiagram
- package "Capa de Presentacion (REST API)" {
- [AuthController]
- [ProductoController]
- [OrdenController]
- }
- package "Capa de Seguridad & Middleware" {
- [Spring Security Filter]
- [JwtAuthenticationFilter]
- }
- package "Capa de Logica de Negocio (Domain Services)" {
- [AuthService]
- [ProductoService]
- [OrdenService]
- [FleteStrategyContext]
- }
- package "Capa de Acceso a Datos (Spring Data JPA)" {
- [UsuarioRepository]
- [ProductoRepository]
- [OrdenRepository]
- }
- database "PostgreSQL Cloud" {
- [Base de Datos Staging]
- }
- [AuthController] ..> [AuthService]
- [ProductoController] ..> [ProductoService]
- [OrdenController] ..> [OrdenService]
- 
- [Spring Security Filter] --> [JwtAuthenticationFilter]
- [JwtAuthenticationFilter] ..> [AuthController]
- [AuthService] ..> [UsuarioRepository]
- [ProductoService] ..> [ProductoRepository]
- [OrdenService] ..> [OrdenRepository]
- [OrdenService] ..> [FleteStrategyContext]
- [UsuarioRepository] --> [Base de Datos Staging]
- [ProductoRepository] --> [Base de Datos Staging]
- [OrdenRepository] --> [Base de Datos Staging]
+flowchart LR
+    Cliente["Cliente HTTP"]
+    Seguridad["Spring Security / JwtAuthenticationFilter"]
+    Controladores["Presentación: controllers"]
+    DTOs["Contratos REST: dtos"]
+    Servicios["Negocio: services"]
+    Modelos["Dominio y persistencia: models"]
+    Repositorios["Acceso a datos: repositories"]
+    Eventos["ApplicationEventPublisher"]
+    Listeners["Listeners de eventos"]
+    Estrategias["Estrategias de flete"]
+    DB[("PostgreSQL")]
+
+    Cliente -->|"HTTP / JSON"| Seguridad
+    Seguridad --> Controladores
+    Controladores --> DTOs
+    Controladores --> Servicios
+    Servicios --> Modelos
+    Servicios --> Repositorios
+    Repositorios --> DB
+    Servicios --> Eventos
+    Eventos --> Listeners
+    Listeners --> Servicios
+    Servicios --> Estrategias
 ```
 
----
+## 7. Despliegue de staging
 
-## 5. Diagrama de Despliegue Físico de Infraestructura
-
-Mapea la distribución física en la nube, los nodos de cómputo y el flujo automatizado de Entrega y Despliegue Continuo (CD).
+La aplicación y su base de datos de staging están desplegadas en Render. PostgreSQL también está
+alojado en Render; no se usa Neon. El workflow ejecuta las verificaciones antes de invocar el Deploy
+Hook.
 
 ```mermaid
-deploymentDiagram
- node "Cliente Web / Mobile" as client {
- [Navegador Web / Postman]
- }
- node "GitHub Platform" as github {
- [GitHub Repository (main branch)]
- [GitHub Actions Runner (CD Pipeline)]
- }
- node "PaaS Cloud Infrastructure (Render / Railway)" as paas {
- node "Docker Container (Spring Boot App)" {
- [Java 17 Runtime Environment]
- [AgroValle Backend (.jar)]
- }
- }
- node "PostgreSQL Cloud DB (Neon.tech)" as dbnode {
- database "agrovalle_staging" as db
- }
- client -- "HTTP REST (Port 8080 / SSL)" --> paas
- github -- "Webhook Event (DEPLOY_HOOK_URL)" --> paas
- paas -- "JDBC Connection (Port 5432)" --> dbnode
+flowchart LR
+    Cliente["Cliente HTTP / Postman"]
+    Repo["Repositorio GitHub: main"]
+    CI["GitHub Actions: verify-and-test"]
+    CD["GitHub Actions: deploy-to-staging"]
+    Hook["Deploy Hook de Render"]
+    App["Render Web Service: contenedor Docker / Java 17 / Spring Boot"]
+    DB[("Render PostgreSQL")]
+
+    Cliente -->|"HTTPS"| App
+    Repo -->|"push a main"| CI
+    CI -->|"si pasa"| CD
+    CD -->|"DEPLOY_HOOK_URL"| Hook
+    Hook -->|"iniciar despliegue"| App
+    App -->|"JDBC / PostgreSQL"| DB
 ```
+
+## Brechas frente a la guía
+
+- **Ubicación:** la guía especifica `docs/architecture/`; los artefactos se mantienen en
+  `docs/diseno/` por indicación de la docente.
+- **Identificadores HU-12/HU-13:** la guía y el Backlog aprobado asignan historias distintas a esos
+  números. Se mantienen los flujos reales del Backlog: HU-12 es rechazo de pago y HU-13 es
+  calificación; las historias de entrega y reputación se ejecutarán posteriormente.
+- **Despliegue:** se refleja Render con PostgreSQL en Render, no Neon.tech.

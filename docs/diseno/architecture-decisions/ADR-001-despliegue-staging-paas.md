@@ -1,21 +1,21 @@
 # ADR-001: Despliegue de staging en una plataforma PaaS
 
-- **Estado:** Aprobado
+- **Estado:** Aprobado e implementado en staging
 - **Fecha:** 2026-11-21
 - **Autores:** Célula de Desarrollo AgroValle Connect
 - **Contexto Técnico:** Asignatura Ingeniería de Software II - UNIAJC
 
 ## Contexto
 
-AgroValle Connect ejecuta Spring Boot con Java 17 y PostgreSQL. El workflow actual de GitHub Actions compila, ejecuta Checkstyle y verifica pruebas, pero no publica la aplicación. El repositorio no contiene Dockerfile ni configuración de staging.
+AgroValle Connect ejecuta Spring Boot con Java 17 y PostgreSQL. El repositorio contiene un Dockerfile, un perfil de configuración para staging y workflows de GitHub Actions para CI y CD.
 
-Se requiere un entorno de staging separado para validar la aplicación antes de promover cambios. Las opciones discutidas son un PaaS para la aplicación (por ejemplo, Render o Railway) y un servicio PostgreSQL administrado (por ejemplo, Neon o Supabase). El repositorio ahora incluye el perfil `application-staging.yml`, el endpoint público de estado y el workflow CD que espera los controles de CI antes de invocar el webhook.
+Se requiere un entorno de staging separado para validar la aplicación antes de promover cambios. El repositorio incluye el perfil `application-staging.yml`, un endpoint público de estado y un workflow CD que espera los controles de CI antes de invocar el webhook. La aplicación y la base de datos de staging ya están desplegadas en Render.
 
 ## Decisión
 
-Usar una plataforma administrada (PaaS) para la aplicación de staging y una base PostgreSQL administrada, manteniendo el entorno separado de producción y gestionando credenciales mediante variables o secretos del proveedor.
+Usar Render para alojar la aplicación Spring Boot como contenedor Docker y PostgreSQL para los datos de staging. Los dos servicios están en Oregon (US West), separados de producción.
 
-Se aprueba una plataforma PaaS junto con GitHub Actions. El proveedor concreto puede ser Render o Railway y debe seleccionarse según compatibilidad con Java 17 y Spring Boot, conexión PostgreSQL, costos, límites del plan y configuración de secretos. La decisión no sustituye la aprovisionamiento real: el proveedor y el webhook deben existir antes del primer despliegue.
+GitHub Actions ejecuta CI y, cuando pasa, invoca el Deploy Hook de Render. La aplicación recibe la configuración de base de datos y JWT desde las variables de entorno del servicio Render; GitHub Actions almacena únicamente el hook de despliegue como secreto.
 
 ## Alternativas consideradas
 
@@ -26,14 +26,15 @@ Se aprueba una plataforma PaaS junto con GitHub Actions. El proveedor concreto p
 ## Consecuencias
 
 - El staging no debe compartir credenciales ni datos con producción.
-- La aplicación debe recibir URL, usuario, contraseña y secreto JWT desde configuración segura del entorno.
-- El pipeline de despliegue, las migraciones y la política de datos de prueba quedan pendientes de definición e implementación.
-- Hasta que se confirme proveedor y se configure el pipeline, GitHub Actions seguirá siendo únicamente CI.
+- La aplicación recibe URL, usuario, contraseña y secreto JWT desde variables de entorno de Render.
+- El workflow `.github/workflows/cd.yml` ejecuta `clean verify` y despliega mediante el secreto `DEPLOY_HOOK_URL`.
+- El plan gratuito de Render puede suspender la instancia web por inactividad; la base de datos gratuita tiene vencimiento informado para el 21/12/2026. Se debe migrar o actualizar el plan antes de esa fecha si el entorno debe continuar disponible.
 - El diagrama de despliegue de [diagramas-uml.md](../architecture/diagramas-uml.md) diferencia explícitamente la infraestructura actual del destino propuesto.
 
-## Pendientes de implementación
+## Evidencia y operación
 
-- Configurar los secretos `STAGING_DB_URL`, `STAGING_DB_USER`, `STAGING_DB_PASSWORD`, `JWT_SECRET_KEY` y `DEPLOY_HOOK_URL` en GitHub.
-- Mapear las variables del proveedor a `DB_URL_VAR`, `DB_USER_VAR`, `DB_PASS_VAR`, `JWT_SECRET_VAR` y activar `SPRING_PROFILES_ACTIVE=staging`.
-- Elegir el proveedor final de aplicación y PostgreSQL.
-- Configurar el webhook de despliegue y registrar la URL pública para las pruebas end-to-end.
+- Servicio web: `agrovalle-connect` en Render, configurado desde la rama `main` con Docker.
+- Base de datos: `agrovalle-staging-db` en Render PostgreSQL.
+- Health check: `GET https://agrovalle-connect-owri.onrender.com/api/v1/estado`; validado con estado `OK`, perfil `staging` y PostgreSQL conectado.
+- Workflow CD exitoso en `main`, commit `0ad30db`: [ejecución de GitHub Actions](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/44940959390).
+- Las variables de base de datos y JWT se administran en Render; no se copian al repositorio ni a GitHub Actions.

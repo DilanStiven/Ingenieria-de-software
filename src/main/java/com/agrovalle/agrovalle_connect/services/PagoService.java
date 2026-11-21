@@ -9,7 +9,6 @@ import com.agrovalle.agrovalle_connect.models.OrdenCompra;
 import com.agrovalle.agrovalle_connect.models.Pago;
 import com.agrovalle.agrovalle_connect.models.Pedido;
 import com.agrovalle.agrovalle_connect.models.Producto;
-import com.agrovalle.agrovalle_connect.repositories.OrdenCompraRepository;
 import com.agrovalle.agrovalle_connect.repositories.PagoRepository;
 import com.agrovalle.agrovalle_connect.repositories.PedidoRepository;
 import com.agrovalle.agrovalle_connect.repositories.ProductoRepository;
@@ -18,8 +17,6 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,32 +33,26 @@ public class PagoService {
 
     private final PedidoRepository pedidoRepository;
     private final PagoRepository pagoRepository;
-    private final OrdenCompraRepository ordenCompraRepository;
     private final PasarelaPago pasarelaPago;
     private final BilleteraService billeteraService;
     private final PrecioService precioService;
     private final ProductoRepository productoRepository;
-    private OrdenLogisticaService ordenLogisticaService;
+    private final OrdenCompraService ordenCompraService;
 
     public PagoService(final PedidoRepository pedidos,
             final PagoRepository pagos,
-            final OrdenCompraRepository ordenes,
             final PasarelaPago pasarela,
             final BilleteraService billeteras,
             final PrecioService precios,
-            final ProductoRepository productos) {
+            final ProductoRepository productos,
+            final OrdenCompraService ordenesCompra) {
         this.pedidoRepository = pedidos;
         this.pagoRepository = pagos;
-        this.ordenCompraRepository = ordenes;
         this.pasarelaPago = pasarela;
         this.billeteraService = billeteras;
         this.precioService = precios;
         this.productoRepository = productos;
-    }
-
-    @Autowired
-    public void setOrdenLogisticaService(final OrdenLogisticaService ordenesLogisticas) {
-        this.ordenLogisticaService = ordenesLogisticas;
+        this.ordenCompraService = ordenesCompra;
     }
 
     /**
@@ -75,66 +66,77 @@ public class PagoService {
     @Transactional
     public PagoResponseDTO procesar(
             final Long pedidoId, final Long compradorId, final Pago.MedioPago medioPago) {
-        Pedido pedido = pedidoRepository.buscarPorIdConBloqueo(pedidoId)
-                .orElseThrow(() -> new PedidoNoEncontradoException(pedidoId));
-        if (!Objects.equals(pedido.getCompradorId(), compradorId)) {
-            throw new PedidoNoEncontradoException(pedidoId);
-        }
+        Pedido pedido = obtenerPedidoAutorizado(pedidoId, compradorId);
         Instant ahora = Instant.now();
         validarEstadoYVigencia(pedido, pedidoId, ahora);
-        if (pedido.getDestinoEntrega() == null || pedido.getDestinoEntrega().isBlank()) {
-            throw new PagoInvalidoException(
-                    pedidoId, pedido.getEstado().name(),
-                    "el pedido no tiene un destino de entrega");
-        }
-
+        validarDestinoEntrega(pedido, pedidoId);
         Producto producto = obtenerProductoDisponible(pedido);
         pedido.setProducto(producto);
         BigDecimal monto = producto.getPrecioUnitario()
                 .multiply(pedido.getCantidad())
                 .setScale(ESCALA_MONETARIA, RoundingMode.HALF_UP);
         ResultadoPago resultado = pasarelaPago.procesarPago(monto, medioPago);
+        Pago pagoGuardado = guardarPago(pedido, monto, medioPago, resultado);
+        if (resultado.estado() != Pago.Estado.APROBADO) {
+            return registrarRechazo(pedido, pagoGuardado, ahora);
+        }
 
+        return completarPagoAprobado(pedido, producto, monto, pagoGuardado, resultado);
+    }
+
+    private Pedido obtenerPedidoAutorizado(final Long pedidoId, final Long compradorId) {
+        Pedido pedido = pedidoRepository.buscarPorIdConBloqueo(pedidoId)
+                .orElseThrow(() -> new PedidoNoEncontradoException(pedidoId));
+        if (!Objects.equals(pedido.getCompradorId(), compradorId)) {
+            throw new PedidoNoEncontradoException(pedidoId);
+        }
+        return pedido;
+    }
+
+    private void validarDestinoEntrega(final Pedido pedido, final Long pedidoId) {
+        if (pedido.getDestinoEntrega() == null || pedido.getDestinoEntrega().isBlank()) {
+            throw new PagoInvalidoException(
+                    pedidoId, pedido.getEstado().name(),
+                    "el pedido no tiene un destino de entrega");
+        }
+    }
+
+    private Pago guardarPago(final Pedido pedido, final BigDecimal monto,
+            final Pago.MedioPago medioPago, final ResultadoPago resultado) {
         Pago pago = new Pago();
         pago.setPedido(pedido);
         pago.setMonto(monto);
         pago.setMedioPago(medioPago);
         pago.setEstado(resultado.estado());
         pago.setReferenciaPasarela(resultado.referencia());
-        Pago pagoGuardado = pagoRepository.save(pago);
+        return pagoRepository.save(pago);
+    }
 
-        if (resultado.estado() == Pago.Estado.APROBADO) {
-            pedido.setEstado(Pedido.Estado.PAGADO);
-            pedido.setFechaLimiteReintento(null);
-            pedidoRepository.save(pedido);
+    private PagoResponseDTO completarPagoAprobado(final Pedido pedido,
+            final Producto producto, final BigDecimal monto, final Pago pago,
+            final ResultadoPago resultado) {
+        marcarPedidoPagado(pedido);
+        descontarInventario(producto, pedido.getCantidad());
+        precioService.registrarTransaccion(producto.getNombre(), producto.getPrecioUnitario());
+        OrdenCompra orden = ordenCompraService.crearDesdePedidoPagado(pedido, pago, monto);
+        billeteraService.acreditar(pedido, monto);
+        return new PagoResponseDTO(
+                pago, orden.getNumeroOrden(), orden.getId(), resultado.mensaje(), null);
+    }
 
-            BigDecimal cantidadRestante = producto.getCantidad().subtract(pedido.getCantidad());
-            producto.setCantidad(cantidadRestante);
-            if (cantidadRestante.signum() == 0) {
-                producto.setEstado("INACTIVO");
-            }
-            productoRepository.save(producto);
-            precioService.registrarTransaccion(
-                    producto.getNombre(), producto.getPrecioUnitario());
+    private void marcarPedidoPagado(final Pedido pedido) {
+        pedido.setEstado(Pedido.Estado.PAGADO);
+        pedido.setFechaLimiteReintento(null);
+        pedidoRepository.save(pedido);
+    }
 
-            OrdenCompra orden = new OrdenCompra();
-            orden.setPedido(pedido);
-            orden.setPago(pagoGuardado);
-            orden.setNumeroOrden("OC-" + UUID.randomUUID());
-            orden.setMontoTotal(monto);
-            OrdenCompra ordenGuardada = ordenCompraRepository.save(orden);
-            ordenLogisticaService.crearDesdePedidoPagado(pedido);
-            billeteraService.acreditar(pedido, monto);
-
-            return new PagoResponseDTO(
-                    pagoGuardado,
-                    ordenGuardada.getNumeroOrden(),
-                    ordenGuardada.getId(),
-                    resultado.mensaje(),
-                    null);
+    private void descontarInventario(final Producto producto, final BigDecimal cantidad) {
+        BigDecimal cantidadRestante = producto.getCantidad().subtract(cantidad);
+        producto.setCantidad(cantidadRestante);
+        if (cantidadRestante.signum() == 0) {
+            producto.setEstado("INACTIVO");
         }
-
-        return registrarRechazo(pedido, pagoGuardado, ahora);
+        productoRepository.save(producto);
     }
 
     private void validarEstadoYVigencia(

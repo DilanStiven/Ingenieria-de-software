@@ -339,10 +339,9 @@ solicitudes de contacto.
 
 ### Arquitectura y despliegue
 
-El diagrama actualizado de capas y dependencias esta en
-[`architecture-diagram.md`](../../.github/modernize/assessment/engines/facts/architecture-diagram.md).
-El diagrama de componentes está en ese archivo. La topología siguiente distingue el entorno local y
-la integración continua de un despliegue cloud, que todavía no está configurado.
+El documento canónico con los diagramas UML y el flujo de despliegue vigente está en
+[`architecture/diagramas-uml.md`](architecture/diagramas-uml.md). Los diagramas e imágenes de este
+anexo conservan el diseño académico inicial y no deben tomarse como evidencia del estado actual.
 
 <!-- mermaid-checked: no \n, no em-dash/en-dash, no {} in labels, subgraphs are id["label"], arrows are -->|"label"|, all subgraphs closed by end, ids unique -->
 ~~~mermaid
@@ -365,7 +364,8 @@ flowchart LR
     DEPWorkflow -->|"compila y verifica"| DEPBuild
 ~~~
 
-La imagen de despliegue compartida (Render/Railway y Neon/Supabase) es una propuesta. El repositorio
-actual configura Spring Boot con PostgreSQL por variables de entorno y CI en GitHub Actions, pero no
-tiene Dockerfile, perfil de staging ni despliegue cloud configurado. No se debe presentar la nube
-como un entorno ya desplegado.
+El sistema sí cuenta con Dockerfile, perfil de staging, workflow de CD y despliegue activo en Render
+con PostgreSQL administrado por Render. El diagrama de este anexo es histórico; la topología real y
+su evidencia se documentan en [`architecture/diagramas-uml.md`](architecture/diagramas-uml.md),
+[`architecture-decisions/ADR-001-despliegue-staging-paas.md`](architecture-decisions/ADR-001-despliegue-staging-paas.md)
+y [`../sprints/sprint-3/review.md`](../sprints/sprint-3/review.md).

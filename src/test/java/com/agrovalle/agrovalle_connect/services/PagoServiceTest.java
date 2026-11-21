@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -21,7 +22,6 @@ import com.agrovalle.agrovalle_connect.models.Pago;
 import com.agrovalle.agrovalle_connect.models.Pedido;
 import com.agrovalle.agrovalle_connect.models.Producto;
 import com.agrovalle.agrovalle_connect.models.Agricultor;
-import com.agrovalle.agrovalle_connect.repositories.OrdenCompraRepository;
 import com.agrovalle.agrovalle_connect.repositories.PagoRepository;
 import com.agrovalle.agrovalle_connect.repositories.PedidoRepository;
 import com.agrovalle.agrovalle_connect.repositories.ProductoRepository;
@@ -48,8 +48,6 @@ class PagoServiceTest {
     @Mock
     private PagoRepository pagoRepository;
     @Mock
-    private OrdenCompraRepository ordenCompraRepository;
-    @Mock
     private PasarelaPago pasarelaPago;
     @Mock
     private BilleteraService billeteraService;
@@ -58,7 +56,7 @@ class PagoServiceTest {
     @Mock
     private ProductoRepository productoRepository;
     @Mock
-    private OrdenLogisticaService ordenLogisticaService;
+    private OrdenCompraService ordenCompraService;
 
     private PagoService pagoService;
     private Pedido pedido;
@@ -70,12 +68,18 @@ class PagoServiceTest {
         pagoService = new PagoService(
                 pedidoRepository,
                 pagoRepository,
-                ordenCompraRepository,
                 pasarelaPago,
                 billeteraService,
                 precioService,
-                productoRepository);
-        pagoService.setOrdenLogisticaService(ordenLogisticaService);
+                productoRepository,
+                ordenCompraService);
+
+        OrdenCompra orden = new OrdenCompra();
+        orden.setId(31L);
+        orden.setNumeroOrden("OC-TEST");
+        when(ordenCompraService.crearDesdePedidoPagado(
+                any(Pedido.class), any(Pago.class), any(BigDecimal.class)))
+                .thenReturn(orden);
 
         producto = new Producto();
         producto.setId(PRODUCTO_ID);
@@ -113,12 +117,6 @@ class PagoServiceTest {
             pago.setId(21L);
             return pago;
         });
-        when(ordenCompraRepository.save(any(OrdenCompra.class))).thenAnswer(invocation -> {
-            OrdenCompra orden = invocation.getArgument(0);
-            orden.setId(31L);
-            return orden;
-        });
-
         PagoResponseDTO respuesta = pagoService.procesar(
                 PEDIDO_ID,
                 COMPRADOR_ID,
@@ -130,7 +128,8 @@ class PagoServiceTest {
         assertNotNull(respuesta.getNumeroOrden());
         assertNotNull(respuesta.getIdOrdenCompra());
         verify(billeteraService).acreditar(pedido, MONTO_TOTAL);
-        verify(ordenLogisticaService).crearDesdePedidoPagado(pedido);
+        verify(ordenCompraService).crearDesdePedidoPagado(
+                eq(pedido), any(Pago.class), eq(MONTO_TOTAL));
         verify(precioService).registrarTransaccion("Maíz dulce", PRECIO_UNITARIO);
         verify(productoRepository).save(producto);
         assertEquals(new BigDecimal("45.00"), producto.getCantidad());
@@ -174,7 +173,7 @@ class PagoServiceTest {
                 .isAfter(fin.plus(Duration.ofMinutes(15))));
         assertEquals(pedido.getFechaLimiteReintento(), respuesta.getFechaLimiteReintento());
         verifyNoInteractions(billeteraService);
-        verifyNoInteractions(ordenLogisticaService);
+        verifyNoInteractions(ordenCompraService);
         verifyNoInteractions(precioService);
         assertEquals(new BigDecimal("50.00"), producto.getCantidad());
     }
@@ -199,8 +198,8 @@ class PagoServiceTest {
                 pagoService.procesar(PEDIDO_ID, 99L, Pago.MedioPago.TARJETA));
 
         verifyNoInteractions(
-                pasarelaPago, pagoRepository, ordenCompraRepository,
-                billeteraService, precioService, productoRepository, ordenLogisticaService);
+                pasarelaPago, pagoRepository, billeteraService, precioService,
+                productoRepository, ordenCompraService);
     }
 
     @Test
@@ -215,7 +214,7 @@ class PagoServiceTest {
                 pagoService.procesar(
                         PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.TARJETA));
 
-        verifyNoInteractions(pasarelaPago, pagoRepository, ordenCompraRepository);
+        verifyNoInteractions(pasarelaPago, pagoRepository, ordenCompraService);
         assertEquals(new BigDecimal("3.00"), producto.getCantidad());
     }
 
@@ -235,12 +234,6 @@ class PagoServiceTest {
             pago.setId(21L);
             return pago;
         });
-        when(ordenCompraRepository.save(any(OrdenCompra.class))).thenAnswer(invocation -> {
-            OrdenCompra orden = invocation.getArgument(0);
-            orden.setId(31L);
-            return orden;
-        });
-
         pagoService.procesar(PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.TARJETA);
 
         assertEquals(new BigDecimal("0.00"), producto.getCantidad());
@@ -264,12 +257,6 @@ class PagoServiceTest {
             pago.setId(21L);
             return pago;
         });
-        when(ordenCompraRepository.save(any(OrdenCompra.class))).thenAnswer(invocation -> {
-            OrdenCompra orden = invocation.getArgument(0);
-            orden.setId(31L);
-            return orden;
-        });
-
         PagoResponseDTO rechazo = pagoService.procesar(
                 PEDIDO_ID, COMPRADOR_ID, Pago.MedioPago.PSE);
         Instant fechaLimiteOriginal = rechazo.getFechaLimiteReintento();
@@ -323,6 +310,6 @@ class PagoServiceTest {
         assertTrue(excepcion.getMessage().contains("venció la ventana de 15 minutos"));
         verifyNoInteractions(
                 productoRepository, pasarelaPago, pagoRepository,
-                ordenCompraRepository, billeteraService, precioService);
+                billeteraService, precioService, ordenCompraService);
     }
 }
