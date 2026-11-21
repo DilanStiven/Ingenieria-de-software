@@ -144,11 +144,11 @@ No completar estos campos con fechas, responsables o compromisos reconstruidos a
 
 ## 7. Referencias
 
-- [Product Backlog](../BACKLOG.md)
-- [Definition of Done](dod.md)
-- [Políticas Kanban](kanban-policies.md)
-- [Plantilla de Sprint Review](sprint-2-review.md)
-- [Plantilla de retrospectiva](sprint-2-retrospective.md)
+- [Product Backlog](../../requirements/product-backlog-bdd.md)
+- [Definition of Done](../../dod.md)
+- [Políticas Kanban](../../kanban-policies.md)
+- [Plantilla de Sprint Review](review.md)
+- [Plantilla de retrospectiva](retrospective.md)
 
 ## 8. Nota técnica posterior sobre HU-06
 

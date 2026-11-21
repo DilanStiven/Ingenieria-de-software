@@ -1,3 +1,5 @@
+> Versión de referencia con trazabilidad de requerimientos BDD: [Product Backlog BDD](docs/requirements/product-backlog-bdd.md). Ambas versiones contienen las 15 historias HU-01 a HU-15 y sus escenarios Given-When-Then.
+
 Estimación realizada mediante **Planning Poker** (escala de Fibonacci: 1, 2, 3, 5, 8, 13) y priorización **MoSCoW** (M = Must Have, S = Should Have, C = Could Have, W = Won't Have).
 
 | ID | Historia de Usuario | MoSCoW | Story Points |

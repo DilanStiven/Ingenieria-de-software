@@ -2,7 +2,7 @@
 
 > **Alcance de este artefacto:** registra el plan al inicio del Sprint; los nombres de clases, tablas y
 > tareas pueden diferir de la implementación final. Para el resultado reportado, consultar
-> [Sprint 3 Review](sprint-3-review.md).
+> [Sprint 3 Review](review.md).
 
 | Campo | Valor |
 | --- | --- |
@@ -14,7 +14,7 @@
 | **Duración del Sprint** | 13/11/2026 – 20/11/2026 (Sprint 3 «Pedido y Pago») |
 | **Fecha de la reunión de Planning** | 16/11/2026 |
 | **Reparto de historias y tareas** | 16/11/2026 |
-| **Archivo** | `docs/sprint-3-planning.md` |
+| **Archivo** | `docs/sprints/sprint-3/planning.md` |
 | **Norma de calidad** | ISO/IEC 25010:2011 |
 
 ---
@@ -277,8 +277,8 @@ Then  el sistema procesa el pago sobre el mismo pedido
 
 ## 10. Referencias
 
-- Definición de Hecho: [`docs/dod.md`](dod.md)
-- Product Backlog: [`BACKLOG.md`](../BACKLOG.md)
+- Definición de Hecho: [`docs/dod.md`](../../dod.md)
+- Product Backlog: [`product-backlog-bdd.md`](../../requirements/product-backlog-bdd.md)
 - Guía de flujo Git/GitHub: ramas `feature/HU-XX-descripcion` → PR → `develop`
 
 ---
@@ -287,4 +287,4 @@ Then  el sistema procesa el pago sobre el mismo pedido
 
 | Fecha | Cambio |
 | --- | --- |
-| 17/11/2026 | HU-05 y HU-09 completadas y fusionadas en `develop` (PR #112 y PR #118). El plan no cambió: alcance, Story Points, asignación y orden de ejecución siguen vigentes. Resultados en [Sprint 3 Review](sprint-3-review.md). |
+| 17/11/2026 | HU-05 y HU-09 completadas y fusionadas en `develop` (PR #112 y PR #118). El plan no cambió: alcance, Story Points, asignación y orden de ejecución siguen vigentes. Resultados en [Sprint 3 Review](review.md). |

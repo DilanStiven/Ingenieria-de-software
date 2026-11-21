@@ -31,6 +31,30 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja intentos de registro con correo ya utilizado.
+     *
+     * @param ex excepción lanzada por el servicio
+     * @return respuesta HTTP 409
+     */
+    @ExceptionHandler(CorreoDuplicadoException.class)
+    public ResponseEntity<Map<String, String>> manejarCorreoDuplicado(
+            final CorreoDuplicadoException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Maneja credenciales inválidas de inicio de sesión.
+     *
+     * @param ex excepción lanzada por el servicio
+     * @return respuesta HTTP 401
+     */
+    @ExceptionHandler(CredencialesInvalidasException.class)
+    public ResponseEntity<Map<String, String>> manejarCredencialesInvalidas(
+            final CredencialesInvalidasException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
      * Maneja placas de vehículo duplicadas.
      *
      * @param ex excepción lanzada por el servicio

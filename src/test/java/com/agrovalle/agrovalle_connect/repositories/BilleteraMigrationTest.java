@@ -28,10 +28,12 @@ class BilleteraMigrationTest {
 
         flyway.migrate();
 
-        assertEquals("16", flyway.info().current().getVersion().getVersion());
+        assertEquals("17", flyway.info().current().getVersion().getVersion());
         assertEquals(1, contarTabla(DATABASE_FRESH, "BILLETERA"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "NOTIFICACION"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "ORDEN_LOGISTICA"));
+        assertEquals(1, contarColumna(DATABASE_FRESH, "AGRICULTOR", "CORREO"));
+        assertEquals(1, contarColumna(DATABASE_FRESH, "AGRICULTOR", "PASSWORD_HASH"));
     }
 
     @Test
@@ -63,8 +65,9 @@ class BilleteraMigrationTest {
         Flyway flyway = configurarFlyway(DATABASE_EXISTING);
         flyway.migrate();
 
-        assertEquals("16", flyway.info().current().getVersion().getVersion());
+        assertEquals("17", flyway.info().current().getVersion().getVersion());
         assertEquals(1, contarAgricultores(DATABASE_EXISTING));
+        assertEquals(1, contarCredencialesLegadasNulas(DATABASE_EXISTING));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "BILLETERA"));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "NOTIFICACION"));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "ORDEN_LOGISTICA"));
@@ -98,6 +101,32 @@ class BilleteraMigrationTest {
                 Statement sentencia = conexion.createStatement();
                 ResultSet resultado = sentencia.executeQuery(
                         "SELECT COUNT(*) FROM agricultor")) {
+            resultado.next();
+            return resultado.getInt(1);
+        }
+    }
+
+    private int contarColumna(final String url, final String tabla, final String columna)
+            throws Exception {
+        try (Connection conexion = DriverManager.getConnection(
+                url, DATABASE_USER, DATABASE_PASSWORD);
+                Statement sentencia = conexion.createStatement();
+                ResultSet resultado = sentencia.executeQuery(
+                        "SELECT COUNT(*) FROM information_schema.columns "
+                                + "WHERE table_schema = 'PUBLIC' AND table_name = '" + tabla
+                                + "' AND column_name = '" + columna + "'")) {
+            resultado.next();
+            return resultado.getInt(1);
+        }
+    }
+
+    private int contarCredencialesLegadasNulas(final String url) throws Exception {
+        try (Connection conexion = DriverManager.getConnection(
+                url, DATABASE_USER, DATABASE_PASSWORD);
+                Statement sentencia = conexion.createStatement();
+                ResultSet resultado = sentencia.executeQuery(
+                        "SELECT COUNT(*) FROM agricultor "
+                                + "WHERE correo IS NULL AND password_hash IS NULL")) {
             resultado.next();
             return resultado.getInt(1);
         }

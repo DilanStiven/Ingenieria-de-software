@@ -1,0 +1,119 @@
+# Especificación Comparativa de Requerimientos: ISO/IEC/IEEE 29148:2018 frente a BDD
+
+| Información del Proyecto | Detalle |
+| :--- | :--- |
+| **Institución** | Institución Universitaria Antonio José Camacho |
+| **Facultad / Programa** | Facultad de Ingeniería / Ingeniería de Sistemas |
+| **Asignatura** | Ingeniería de Software II |
+| **Docente** | Paola Andrea Bedoya Toro |
+| **Proyecto** | AgroValle Connect |
+| **Equipo** | Grupo 5 |
+| **Artefacto** | `docs/ieee29148-req01.md` |
+
+---
+
+## 1. Introducción y Contexto
+
+El estándar internacional **ISO/IEC/IEEE 29148:2018** (*Systems and software engineering — Life cycle processes — Requirements engineering*) establece procesos y reglas de redacción rigurosas para la ingeniería de requerimientos, enfocándose en la completitud, no ambigüedad y verificabilidad contractual.
+
+Por otra parte, el desarrollo ágil adopta **BDD (Behavior-Driven Development)**, una técnica centrada en el comportamiento del sistema y la conversación continua, expresada mediante el lenguaje ubicuo *Gherkin* (*Given-When-Then*).
+
+Este documento presenta la reescritura prescriptiva de la **HU-01 (Registro de Agricultores)** bajo ambas metodologías y establece su análisis comparativo formal.
+
+---
+
+## 2. Reescritura Formal Prescriptiva: Estándar ISO/IEC/IEEE 29148:2018
+
+### 2.1 Enunciado Normativo del Requerimiento
+
+> **REQ-F-001 (Registro de Agricultores):**
+> *«El sistema AgroValle Connect **deberá** permitir el autoregistro de productores agrícolas de la región del Valle del Cauca a través de un endpoint seguro HTTP POST `/api/v1/auth/register`, validando la unicidad del documento de identidad (cédula), la consistencia de los datos suministrados y retornando un token de acceso criptográfico JWT con código de respuesta HTTP 201 Created.»*
+
+### 2.2 Ficha Técnica del Requerimiento (SyRS)
+
+* **Identificador Único:** REQ-F-001
+* **Nombre:** Autoregistro y Emisión de Credencial para Productores Agrícolas
+* **Prioridad:** Alta / Esencial (MoSCoW: Must Have)
+* **Tipo:** Requerimiento Funcional (RF)
+* **Precondición:** El motor de base de datos relacional PostgreSQL debe estar operativo y el usuario no debe poseer un registro previo con la misma cédula.
+* **Entradas:**
+  * `nombre`: Cadena de texto, obligatoria; la longitud máxima de 150 caracteres es un límite propuesto por el requerimiento.
+  * `ubicacionValle`: Cadena de texto indicando la ubicación en el Valle del Cauca, obligatoria (nombre JSON conforme al DTO actual).
+  * `cedula`: Cadena numérica de 6 a 10 dígitos, obligatoria. La unicidad es una regla funcional prevista por este requerimiento.
+* **Flujo Normal:**
+  1. El sistema recibe una solicitud HTTP POST con cuerpo JSON válido.
+  2. El sistema valida sintácticamente los campos requeridos mediante Bean Validation.
+  3. El sistema comprueba que el valor `cedula` no exista previamente.
+  4. El sistema persiste el agricultor con identificador autogenerado.
+  5. El sistema emite un token de acceso firmado mediante HMAC-SHA256 (JWT).
+  6. El sistema responde con HTTP `201 Created` y un cuerpo JSON con los datos del agricultor y el `token`.
+* **Flujos de Excepción:**
+  * **E1 (Cédula Existente):** Si la cédula ya se encuentra registrada, el sistema cancela la transacción y responde con código HTTP `409 Conflict`.
+  * **E2 (Datos Inválidos):** Si falta algún campo obligatorio o la cédula contiene caracteres no numéricos, el sistema responde con código HTTP `400 Bad Request`.
+* **Criterio de Verificación:** Inspección formal mediante ejecución automatizada de pruebas de integración web (MockMvc) y verificación de aislamiento en base de datos.
+
+---
+
+## 3. Especificación Ágil y Escenarios BDD (Gherkin)
+
+### 3.1 Historia de Usuario
+* **ID:** HU-01
+* **Rol:** Agricultor / Productor
+* **Historia:** Como agricultor del Valle del Cauca, quiero registrarme en la plataforma para ofrecer mis cosechas y acceder a servicios de comercialización directa.
+
+### 3.2 Escenarios BDD (Given-When-Then)
+
+```gherkin
+Feature: Registro de Agricultores en la Plataforma
+
+  Scenario: Registro exitoso de un nuevo agricultor
+    Given que el usuario accede a POST /api/v1/auth/register
+    When envía un JSON con nombre, ubicacionValle y cedula válida
+    Then el sistema responde 201 Created, el registro persiste en PostgreSQL
+    And la respuesta incluye un token JWT de acceso válido
+
+  Scenario: Intento de registro con cédula duplicada
+    Given que ya existe un productor registrado con la cédula "1234567890"
+    When se intenta registrar otro productor con la misma cédula "1234567890"
+    Then el sistema responde con status 409 Conflict
+    And no inserta ningún registro adicional en la base de datos
+
+  Scenario: Intento de registro con formato de datos inválido
+    Given que el usuario accede a POST /api/v1/auth/register
+    When envía un JSON con nombre vacío o cédula alfabética
+    Then el sistema responde con status 400 Bad Request detallando los campos erróneos
+```
+
+### 3.3 Correspondencia con la implementación
+
+El contrato JSON actual de registro utiliza `nombre`, `ubicacionValle` y `cedula`; la cédula se
+valida con una expresión de 6 a 10 dígitos. El DTO no solicita correo ni contraseña ni limita la
+longitud de `nombre` a 150 caracteres. La respuesta actual contiene `id`, `nombre`,
+`ubicacionValle`, `cedula` y `token`; no contiene un campo `mensaje`.
+
+La entidad JPA asigna `Agricultor` a la tabla `agricultor` y declara única y obligatoria la
+columna `cedula`; el chequeo de aplicación también rechaza cédulas ya registradas. La migración
+`V2__create_productos.sql` referencia esa misma tabla.
+
+La aplicación configura Flyway para ejecutar las migraciones SQL de
+`src/main/resources/db/migration`. En una base nueva se aplican V1 a V7; en una base no vacía sin
+historial Flyway, la configuración establece una línea base en V6 y aplica V7. Hibernate mantiene
+`ddl-auto=update` para las entidades que aún no cuentan con migraciones. La migración V1 declara la
+restricción única `uk_agricultor_cedula`.
+
+
+---
+
+## 4. Cuadro Comparativo: Norma ISO/IEC/IEEE 29148:2018 frente a Historias de Usuario BDD
+
+Para profundizar en la ingeniería de requerimientos formal y contrastarla con la agilidad ejecutable, se presenta la siguiente matriz comparativa entre ambos enfoques aplicados al requerimiento de registro de agricultores:
+
+| Criterio de Ingeniería | Especificación Formal IEEE 29148 (SyRS) | Historia de Usuario Ágil + BDD |
+| :--- | :--- | :--- |
+| **Propósito y enfoque** | Documentación prescriptiva, exhaustiva e inmutable para acuerdos contractuales. Minimiza la ambigüedad y define el alcance técnico formal del sistema. | Carta de conversación ágil, ejecutable y enfocada en la entrega continua de valor para el usuario final. Fomenta el entendimiento compartido y la adaptación continua. |
+| **Sintaxis y estructura** | Cláusulas normativas estructuradas utilizando lenguaje prescriptivo formal (*«El sistema deberá proporcionar...»*), con fichas técnicas detalladas de precondiciones, entradas, salidas y flujos de excepción. | Formato estructurado centrado en el usuario (*«Como [Rol] quiero [Acción] para [Beneficio]»*) complementado con escenarios de prueba en lenguaje Gherkin (*Given-When-Then*). |
+| **Validación y pruebas** | Matriz de trazabilidad de requerimientos (RTM) y diseño de casos de prueba manuales de aceptación e inspección formal. | Especificación viva y ejecutable traducible directamente a métodos automatizados de prueba `@Test` en JUnit 5 y validaciones REST con `MockMvc`. |
+| **Gestión del cambio** | Proceso formal y rígido que exige comités formales de control de cambios (CCB - Change Control Board), análisis de impacto contractual y revisiones documentales exhaustivas. | Refinamiento continuo (*Backlog Grooming*) adaptativo y colaborativo al inicio de cada Sprint, liderado por el Product Owner en conjunto con el equipo de desarrollo. |
+
+### 4.1 Conclusiones del Análisis Comparativo en Scrumban
+En el marco de la metodología híbrida **Scrumban**, la integración de la especificación IEEE 29148 como parte de la pista arquitectónica (*Architectural Runway*) proporciona la rigurosidad conceptual para definir la persistencia relacional, integridad referencial y contratos de seguridad. Simultáneamente, la especificación BDD permite la verificación automatizada inmediata mediante pruebas unitarias y de integración en el pipeline de Integración Continua (CI). Ambos enfoques se complementan, garantizando trazabilidad contractual y agilidad técnica sin acumulación de deuda técnica.

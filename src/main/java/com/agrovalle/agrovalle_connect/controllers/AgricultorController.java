@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agrovalle.agrovalle_connect.dtos.AgricultorRequestDTO;
 import com.agrovalle.agrovalle_connect.dtos.AgricultorResponseDTO;
+import com.agrovalle.agrovalle_connect.dtos.LoginRequestDTO;
 import com.agrovalle.agrovalle_connect.services.AgricultorService;
 
 import jakarta.validation.Valid;
@@ -42,5 +43,17 @@ public class AgricultorController {
             @Valid @RequestBody final AgricultorRequestDTO dto) {
         AgricultorResponseDTO registrado = agricultorService.registrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(registrado);
+    }
+
+    /**
+     * Autentica un agricultor registrado con correo y contraseña.
+     *
+     * @param dto credenciales de inicio de sesión
+     * @return agricultor autenticado y token JWT
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AgricultorResponseDTO> iniciarSesion(
+            @Valid @RequestBody final LoginRequestDTO dto) {
+        return ResponseEntity.ok(agricultorService.autenticar(dto));
     }
 }
