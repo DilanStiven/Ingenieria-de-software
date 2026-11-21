@@ -89,11 +89,11 @@ equipo debe detener la toma de trabajo en la etapa anterior hasta reducir el WIP
 
 | Medida | Valor disponible | Evidencia / limitación |
 | --- | --- | --- |
-| Historias completadas | 3 historias (HU-01, HU-02 y HU-04) | `docs/sprint-1-review.md` |
+| Historias completadas | 3 historias (HU-01, HU-02 y HU-04) | `sprints/sprint-1/review.md` |
 | Throughput | 3 historias por Sprint; 10 SP completados | Un único Sprint reportado; no es una tendencia histórica |
-| Pull Requests fusionados | 20 | `docs/sprint-1-review.md` |
-| Horas planificadas / reales | 38 / 40 | `docs/sprint-1-review.md` |
-| Excesos de WIP | 1 exceso reportado en Code Review | `docs/sprint-1-retrospective.md`; no aparece en las cuatro Dailies detalladas |
+| Pull Requests fusionados | 20 | `sprints/sprint-1/review.md` |
+| Horas planificadas / reales | 38 / 40 | `sprints/sprint-1/review.md` |
+| Excesos de WIP | 1 exceso reportado en Code Review | `sprints/sprint-1/retrospective.md`; no aparece en las cuatro Dailies detalladas |
 | Muestra de tiempo de HU-01, tarea #10 | Creada el 29/09/2026 a las 17:15 y movida a Done el 01/10/2026 a las 18:00 (GMT-5): 2 días y 45 minutos | Historial de la tarjeta #10 compartido por el equipo. Es tiempo creación→Done; no se confirma fecha de despliegue. |
 | Cycle Time de la tarjeta #10 | Aproximadamente 2 días calendario (29/09/2026 a 01/10/2026) | El equipo confirma que entró a *In Progress* el mismo día de su creación (29/09); llegó a Done el 01/10 a las 18:00 (GMT-5). Como no se conserva la hora exacta de entrada, es una estimación por fechas, no una duración exacta verificable en el historial. |
 | CFD | GitHub Projects muestra un gráfico *Burn up* y un conteo actual por estado, no un CFD | El Burn up no muestra inventario acumulado por etapa; falta evidencia de un CFD para analizar cuellos de botella. |

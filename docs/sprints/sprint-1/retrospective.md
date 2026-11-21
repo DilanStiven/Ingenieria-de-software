@@ -8,7 +8,7 @@
 | **Sprint** | Sprint 1 (24/09/2026 – 09/10/2026) |
 | **Fecha de la Retrospectiva** | 09/10/2026 — 17:00 (Discord) |
 | **Técnica utilizada** | Start / Stop / Continue |
-| **Archivo** | `docs/sprint-1-retrospective.md` |
+| **Archivo** | `docs/sprints/sprint-1/retrospective.md` |
 
 ---
 

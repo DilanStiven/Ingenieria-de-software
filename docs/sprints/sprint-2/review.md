@@ -18,7 +18,7 @@
 
 **Sprint Goal:** el equipo consolidó el incremento del Sprint 1 con refactorización orientada a los 5 principios SOLID, adopción de patrones GoF de comportamiento (Strategy y Observer), pruebas automatizadas con cobertura superior al 60 %, pipeline de Integración Continua en GitHub Actions y gestión visual del flujo Scrumban con límites de trabajo en progreso (WIP).
 
-**Resultado:** el equipo reportó el objetivo como cumplido satisfactoriamente en todos los puntos técnicos verificables de la sección 2. La Historia HU-06 permanece como candidata priorizada del Product Backlog para el siguiente ciclo (véase [`sprint-2-planning.md`](sprint-2-planning.md)).
+**Resultado:** el equipo reportó el objetivo como cumplido satisfactoriamente en todos los puntos técnicos verificables de la sección 2. La Historia HU-06 permanece como candidata priorizada del Product Backlog para el siguiente ciclo (véase [`planning.md`](planning.md)).
 
 ## 2. Incremento entregado y evidencia
 
@@ -80,6 +80,6 @@ PostgreSQL real ni se afirma integración de estos cambios mediante Pull Request
 
 Posteriormente, el equipo informó que seleccionó HU-08, HU-09 y HU-12 para Sprint 3; la selección
 y reestimación de puntos se registran en la aclaración posterior de la
-[`retrospectiva del Sprint 2`](sprint-2-retrospective.md). Esta decisión posterior reemplaza la
+[`retrospectiva del Sprint 2`](retrospective.md). Esta decisión posterior reemplaza la
 selección candidata de HU-06 para el Sprint 3, sin modificar lo consignado sobre el cierre de
 Sprint 2.

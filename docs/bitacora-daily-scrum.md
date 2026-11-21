@@ -338,3 +338,29 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 * **Acuerdos y acciones:**
   * Confirmar que HU-12 y sus tareas reflejen la integración del PR #126 en el tablero.
   * Dilan reportó no tener impedimentos; no se registraron impedimentos del resto del equipo.
+
+---
+
+## 13. Sprint 3 — Daily #4 (Jueves 19/11/2026) — Cierre y Preparación de Sustentación
+
+* **Hora / Duración:** 10:00 / 15 min
+* **Canal:** Discord (Llamada de voz de sincronización final del Grupo 5)
+* **Asistentes confirmados:** Dilan Stiven Castillo (Scrum Master), Kevin Estiven Lucumi, Carlos Andres Rosales, Santiago Edilmo Hurtado.
+* **Ausentes y motivo:** Ninguno. Equipo completo.
+
+| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima sesión? | Impedimentos |
+| --- | --- | --- | --- |
+| **Dilan Castillo** | Verificó la integración completa de HU-11 y HU-12 en `develop`; actualizó el contrato Definition of Done (`docs/dod.md`) y el reporte de métricas del Tercer Corte. | Coordinar la consolidación de ramas, el etiquetado del release tag `v3.0.0-final` y preparar la estructura de la demo ejecutiva de 15 minutos. | Ninguno. |
+| **Carlos Rosales** | Revisó la suite de pruebas unitarias y de integración de pagos (HU-09) y contacto (HU-05); verificó que Checkstyle mantenga 0 violaciones estáticas. | Apoyar la revisión de Clean Code por pares (`docs/clean-code-review.md`) y validar la estabilidad de los DTOs para Postman. | Ninguno. |
+| **Kevin Lucumi** | Verificó la configuración de los workflows de GitHub Actions y la generación correcta del reporte de cobertura JaCoCo (>90%). | Revisar la plantilla de issues y verificar las políticas de seguridad en `SecurityConfig.java`. | Ninguno. |
+| **Santiago Hurtado** | Revisó el comprobante PDF (HU-10) y la consistencia de los endpoints de la API REST para el flujo End-to-End. | Preparar la colección de pruebas en Postman para el flujo de sustentación (Registro $\to$ Login $\to$ Cosecha $\to$ Precios $\to$ Orden). | Ninguno. |
+
+* **Estado del tablero:** 
+  * Backlog: 0 tareas activas para el Sprint 3.
+  * In Progress: 0/3 tareas (WIP libre).
+  * Code Review: 0/2 tareas (WIP libre).
+  * Done: 12 Story Points completados al 100% (HU-05, HU-09, HU-10, HU-11, HU-12).
+* **Acuerdos y acciones:**
+  * El equipo declara formalmente el **cierre exitoso del Sprint 3**.
+  * Se valida el cumplimiento estricto del Definition of Done (DoD) sobre todas las historias integradas.
+  * Todo el equipo alineado para la sesión de sustentación final frente a la docente Paola Andrea Bedoya Toro.

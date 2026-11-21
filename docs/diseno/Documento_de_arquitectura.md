@@ -274,7 +274,7 @@ implementadas en esta copia del repositorio.
 |---|---|---|---|
 | RF-01 | Publicar producto agrícola | El agricultor autenticado puede publicar un producto agrícola. | Implementado en `POST /api/v1/productos`; retorna HTTP 201 con un `ProductoResponseDTO`. |
 | RF-02 | Registrar oferta sobre una cosecha | El agricultor publica una cosecha ya registrada como oferta de venta. | Diseño inicial; no hay entidades `Cosecha`/`Oferta` ni endpoint `/api/ofertas` en el código actual. |
-| RF-03 | Inicio de sesión con contraseña | El agricultor autentica una cuenta existente con correo y contraseña. | Mockup de diseño; no hay endpoint de login ni credenciales de correo/contraseña en el modelo actual. |
+| RF-03 | Inicio de sesión con contraseña | El agricultor autentica una cuenta existente con correo y contraseña. | Implementado: `POST /api/v1/auth/login`; el registro requiere correo y contraseña, las contraseñas se almacenan con BCrypt y el token JWT dura 24 horas. |
 
 ### Requisitos No Funcionales
 - **RNF-01 (Seguridad):** Autenticación basada en JWT para endpoints protegidos.

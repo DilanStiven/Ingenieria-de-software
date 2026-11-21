@@ -13,7 +13,7 @@
 | **Sprint** | Sprint 1 (24/09/2026 – 09/10/2026) |
 | **Fecha de la Review** | 09/10/2026 — 16:00 (Google Meet) |
 | **Asistentes** | Equipo de desarrollo y Docente (en el rol de Product Owner) |
-| **Archivo** | `docs/sprint-1-review.md` |
+| **Archivo** | `docs/sprints/sprint-1/review.md` |
 
 ---
 
@@ -130,6 +130,6 @@ Elementos propuestos para el Sprint 2:
 
 - Repositorio: [https://github.com/DilanStiven/Ingenieria-de-software](https://github.com/DilanStiven/Ingenieria-de-software)
 - Tablero (GitHub Projects): [https://github.com/users/DilanStiven/projects/2](https://github.com/users/DilanStiven/projects/2)
-- Planning: [`docs/sprint-1-planning.md`](sprint-1-planning.md)
-- Bitácora de Dailies: [`docs/bitacora-daily-scrum.md`](bitacora-daily-scrum.md)
-- Retrospectiva: [`docs/sprint-1-retrospective.md`](sprint-1-retrospective.md)
+- Planning: [`planning.md`](planning.md)
+- Bitácora de Dailies: [`../../bitacora-daily-scrum.md`](../../bitacora-daily-scrum.md)
+- Retrospectiva: [`retrospective.md`](retrospective.md)

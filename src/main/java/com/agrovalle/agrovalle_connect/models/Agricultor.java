@@ -18,6 +18,8 @@ import jakarta.persistence.UniqueConstraint;
 public class Agricultor {
 
     private static final int CEDULA_LONGITUD_MAXIMA = 20;
+    private static final int CORREO_LONGITUD_MAXIMA = 254;
+    private static final int PASSWORD_HASH_LONGITUD_MAXIMA = 100;
 
     /**
      * Identificador único del agricultor.
@@ -43,6 +45,18 @@ public class Agricultor {
      */
     @Column(nullable = false, length = CEDULA_LONGITUD_MAXIMA)
     private String cedula;
+
+    /**
+     * Correo normalizado para inicio de sesión.
+     */
+    @Column(length = CORREO_LONGITUD_MAXIMA, unique = true)
+    private String correo;
+
+    /**
+     * Hash BCrypt de la contraseña; puede ser nulo en cuentas antiguas.
+     */
+    @Column(name = "password_hash", length = PASSWORD_HASH_LONGITUD_MAXIMA)
+    private String passwordHash;
 
     /**
      * Obtiene el identificador del agricultor.
@@ -114,5 +128,41 @@ public class Agricultor {
      */
     public void setCedula(final String cedulaValue) {
         this.cedula = cedulaValue;
+    }
+
+    /**
+     * Obtiene el correo normalizado del agricultor.
+     *
+     * @return correo o null para cuentas antiguas sin credenciales
+     */
+    public String getCorreo() {
+        return correo;
+    }
+
+    /**
+     * Establece el correo normalizado del agricultor.
+     *
+     * @param correoValue correo electrónico
+     */
+    public void setCorreo(final String correoValue) {
+        this.correo = correoValue;
+    }
+
+    /**
+     * Obtiene el hash BCrypt de la contraseña.
+     *
+     * @return hash o null para cuentas antiguas sin credenciales
+     */
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    /**
+     * Establece el hash BCrypt de la contraseña.
+     *
+     * @param passwordHashValue hash de la contraseña
+     */
+    public void setPasswordHash(final String passwordHashValue) {
+        this.passwordHash = passwordHashValue;
     }
 }
