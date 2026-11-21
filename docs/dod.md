@@ -52,7 +52,7 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
   - **Repository:** Abstracción del acceso a datos.
   - **Strategy:** Lógica de cálculo de tarifas y fletes logísticos intercambiable y desacoplada (`TarifaStrategy`).
   - **Observer:** Manejo desacoplado de eventos y notificaciones asíncronas (`ApplicationEventPublisher` y `@EventListener`).
-- [ ] **Clean Code Review:** Los dos hallazgos de `PagoService` se corrigieron; falta una nueva revisión y aprobación por pares registrada en `docs/clean-code-review.md`.
+- [x] **Clean Code Review:** Los dos hallazgos de `PagoService` se corrigieron y la aprobación por pares quedó registrada en el [PR #145](https://github.com/DilanStiven/Ingenieria-de-software/pull/145) por `@santiageao`; el control de CI pasó el 21 de noviembre de 2026. El alcance de la aprobación corresponde a los cambios del PR, no a una certificación integral de todos los criterios de esta lista.
 
 ### D. Persistencia y Control de Migraciones de Base de Datos
 - [x] **Normalización Relacional en Tercera Forma Normal (3FN):** Esquema relacional libre de anomalías de inserción, actualización y borrado.
