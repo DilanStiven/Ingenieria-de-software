@@ -44,33 +44,36 @@ Todas las historias se encuentran aprobadas mediante revisión de pares (Code Re
 Conforme a lo documentado en [`docs/metrics/sprint-metrics-corte3.md`](metrics/sprint-metrics-corte3.md):
 
 1. **Velocidad del Equipo (Velocity):**
-   - Sprint 1: 10 SP comprometidos / 8 SP completados (80.0%).
-   - Sprint 2: 14 SP comprometidos / 12 SP completados (85.7%).
-   - Sprint 3: 16 SP comprometidos / 16 SP completados (**100.0%**).
-   - **Velocidad promedio:** **12.0 Story Points** por ciclo.
+   - Sprint 1: 10 SP comprometidos / 10 SP completados (100%), según su Review.
+   - Sprint 2: puntos comprometidos y completados no verificables en las actas disponibles.
+   - Sprint 3: 12 SP comprometidos / 12 SP completados (100%), según su Planning y retrospectiva.
+   - No se calcula un promedio de tres sprints hasta verificar el dato faltante del Sprint 2.
 2. **Eficiencia de Entrega:**
-   - **Lead Time Promedio:** **4.2 días** (desde definición de HU hasta Done).
-   - **Cycle Time Promedio:** **1.8 días** (tiempo neto de desarrollo activo).
+   - Lead Time y Cycle Time: pendientes de timestamps reproducibles del tablero.
 3. **Control del Tablero (WIP Limits):**
-   - El Diagrama de Flujo Acumulado (CFD) demostró estabilidad operacional sin transgresión de los límites acordados (*In Progress: 3*, *Code Review: 2*).
+   - Los límites configurados son *In Progress: 3* y *Code Review / Testing: 2*. Falta el historial diario para construir el CFD y evaluar estabilidad.
 
 ---
 
 ## 4. Estado de Preparación para la Sustentación Final (Sesión 16 — 40%)
 
-La célula Scrum cuenta con los elementos técnicos y metodológicos requeridos para la presentación ejecutiva de 15 minutos:
+La estructura de 15 minutos está preparada como guion, pero la demo E2E y las diapositivas requieren verificación/evidencia antes de declarar la sustentación lista:
 
 - **Minutos 0–3 (Diapositivas):** Problema regional de intermediación agrícola, stack tecnológico Java 17 / PostgreSQL y arquitectura en 4 capas.
-- **Minutos 3–9 (Demo en Vivo End-to-End):** Flujo probado en Postman:
+- **Minutos 3–9 (Demo en Vivo End-to-End):** Flujo propuesto en Postman, pendiente de ejecutar y guardar evidencia:
   $$\text{Registro} \longrightarrow \text{Login JWT} \longrightarrow \text{Publicar Cosecha} \longrightarrow \text{Consultar Precios} \longrightarrow \text{Crear Orden y Pagar}$$
-- **Minutos 9–12 (Demostración DevOps):** Demostración de los pipelines de CI (`ci.yml`) y CD (`cd.yml`) en GitHub Actions.
+- **Minutos 9–12 (Demostración DevOps):** Mostrar las ejecuciones exitosas de CI (`ci.yml`) y CD (`cd.yml`) en GitHub Actions.
 - **Minutos 12–15 (Preguntas Técnicas):** Justificación de decisiones arquitectónicas en ADR-001/002, desacoplamiento con Strategy/Observer y análisis de métricas.
 
 ---
 
 ## 5. Dictamen del Scrum Master
 
-El incremento funcional acumulado cumple a cabalidad con el contrato de calidad **Definition of Done (DoD)** y los estándares **ISO/IEC 25010** e **ISO/IEC/IEEE 29148:2018**, encontrándose el proyecto en estado óptimo para el cierre evaluativo del semestre.
+El staging responde al health check y el Sprint 3 registra 12/12 SP. No se declara aún el cierre
+integral del Tercer Corte: el reporte de flujo necesita datos fuente, la revisión Clean Code requiere
+aprobación por pares después de los últimos cambios y el Code Freeze depende de publicar el tag sobre
+el commit final de `main`. HU-08, HU-13, HU-14 y HU-15 pertenecen al Sprint 4 según el Planning del
+Sprint 3 y no se implementan como parte de esta actualización documental.
 
 **Dilan Stiven Castillo Valencia**  
 *Scrum Master — Célula de Desarrollo AgroValle Connect (Grupo 5)*

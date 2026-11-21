@@ -17,59 +17,59 @@ Documentar y auditar el comportamiento cuantitativo del equipo de desarrollo dur
 
 ## 2. Velocidad del Equipo (Velocity)
 
-Medición empírica de la cantidad de Story Points (SP) comprometidos frente a los realmente entregados que cumplen al 100% el **Definition of Done (DoD)** técnico establecido por el equipo.
+Solo se reportan cifras respaldadas por los artefactos de sprint disponibles. El Sprint 2 no tiene
+un compromiso y cierre de puntos verificable en sus actas; por eso no se calcula un promedio de
+tres sprints.
 
-| Sprint | Story Points Comprometidos | Story Points Completados (DoD 100%) | Factor de Cumplimiento (%) | Observaciones Técnicas |
+| Sprint | Story Points comprometidos | Story Points completados | Cumplimiento | Fuente / observación |
 |:---:|:---:|:---:|:---:|---|
-| **Sprint 1** | 10 SP | 8 SP | 80.0% | Ajuste inicial en configuración de Spring Boot, modelos JPA y conexión inicial a PostgreSQL. |
-| **Sprint 2** | 14 SP | 12 SP | 85.7% | Integración de TDD con JUnit 5, Mockito, umbral JaCoCo $\ge$ 60% y pipelines de CI en GitHub Actions. |
-| **Sprint 3** | 16 SP | 16 SP | 100.0% | Estabilización del flujo con CD automatizado y despliegue a Staging PaaS. |
-| **Promedio** | **13.3 SP** | **12.0 SP** | **90.2%** | **Velocidad de crucero establecida para planificación futura.** |
+| **Sprint 1** | 10 SP | 10 SP | 100 % | La Review registra las tres historias como Done ([review](../sprints/sprint-1/review.md)). |
+| **Sprint 2** | No verificable | No verificable | N/D | El Planning presenta 9 SP como selección experimental, no como compromiso aprobado; la Review no registra cierre de velocidad ([planning](../sprints/sprint-2/planning.md), [review](../sprints/sprint-2/review.md)). |
+| **Sprint 3** | 12 SP | 12 SP | 100 % | Planning y retrospectiva registran cinco historias, 12/12 SP ([planning](../sprints/sprint-3/planning.md), [retrospectiva](../sprints/sprint-3/retrospective.md)). |
+
+**Promedio de tres sprints:** pendiente. No es válido calcularlo hasta verificar los datos del
+Sprint 2 con el registro del tablero o con el equipo.
 
 ---
 
 ## 3. Gráfico de Trabajo Pendiente (Burndown Chart)
 
-Registro del avance diario del **Sprint 3** con una duración de 14 días calendario y un total de 16 Story Points comprometidos.
+El Planning disponible registra un Sprint de una semana y 12 SP comprometidos, pero no se encontró
+la serie diaria real ni el historial diario de GitHub Projects. Por tanto, no se presenta una curva
+ideal/real ni se reutilizan valores de ejemplo como si fueran mediciones del equipo.
 
-| Día del Sprint | Trabajo Ideal Pendiente (SP) | Trabajo Real Pendiente (SP) | Estado y Bloqueos Identificados |
-|:---:|:---:|:---:|---|
-| **Día 1** | 16.0 | 16.0 | Sprint Planning y asignación de tareas en GitHub Projects. |
-| **Día 3** | 13.7 | 14.0 | Ajuste de variables de entorno en `application-staging.yml`. |
-| **Día 6** | 10.3 | 11.0 | Registro de secretos en GitHub Secrets (`STAGING_DB_URL`, etc.). |
-| **Día 9** | 6.9 | 6.0 | Implementación de pipeline de CD (`cd.yml`) y Webhook de Render. |
-| **Día 12** | 3.4 | 2.0 | Diagramación UML en Mermaid y pruebas de integración. |
-| **Día 14** | 0.0 | 0.0 | **Sprint Goal alcanzado.** Incremento listo para sustentación. |
+| Dato requerido | Estado |
+|---|---|
+| Línea base | 12 SP comprometidos ([planning del Sprint 3](../sprints/sprint-3/planning.md)) |
+| Trabajo real restante por día | Pendiente de exportar o reconstruir desde el historial del tablero |
+| Gráfico Burndown diario | Pendiente de la serie real; no se puede derivar de los resúmenes de sprint |
 
 ---
 
 ## 4. Diagrama de Flujo Acumulado (Cumulative Flow Diagram - CFD)
 
-Seguimiento del estado de las tareas a través del ciclo de vida para verificar el cumplimiento riguroso de los **Límites de Trabajo en Progreso (WIP Limits)** acordados en las políticas del tablero Kanban.
+Los límites definidos son *In Progress* ≤ 3 y *Code Review / Testing* ≤ 2. La captura del tablero
+([evidencia](../evidencias/tablero-kanban-limites-wip-2026-10-28.png)) acredita la configuración
+visible de esos límites, pero no es un historial de estados ni permite reconstruir un CFD.
 
-| Día del Sprint | Backlog (Por Hacer) | In Progress (WIP Limit: 3) | Testing / Review (WIP Limit: 2) | Done (Desplegado en Staging) |
-|:---:|:---:|:---:|:---:|:---:|
-| **Día 1** | 10 tareas | 2 tareas | 0 tareas | 0 tareas |
-| **Día 5** | 5 tareas | 3 tareas | 2 tareas | 2 tareas |
-| **Día 10** | 1 tarea | 2 tareas | 1 tarea | 8 tareas |
-| **Día 14** | 0 tareas | 0 tareas | 0 tareas | 12 tareas |
-
-### Diagnóstico del CFD
-El gráfico y la matriz de estados demuestran **alta estabilidad operacional**. En ningún momento la columna *In Progress* superó el límite de 3 tareas simultáneas por pareja de desarrolladores, previniendo la sobrecarga cognitiva, eliminando los cuellos de botella en revisión y garantizando un flujo continuo (Continuous Flow) hacia la columna *Done*.
+| Evidencia requerida | Estado |
+|---|---|
+| Límites WIP acordados | Documentados en [políticas Kanban](../kanban-policies.md) y visibles en la captura del tablero |
+| Conteo de tareas por estado a diario | Pendiente del historial/export del tablero |
+| Gráfico CFD acumulado | Pendiente de datos diarios; no se presentan conteos de ejemplo como mediciones |
 
 ---
 
 ## 5. Tiempos de Entrega (Lead Time y Cycle Time)
 
-Métricas de eficiencia del proceso orientadas a la reducción del desperdicio y la entrega oportuna de valor:
-
-- **Lead Time Promedio:** **4.2 días**  
-  *(Tiempo transcurrido desde la creación y formalización de la Historia de Usuario en el Product Backlog hasta su verificación y despliegue exitoso en Staging).*
-- **Cycle Time Promedio:** **1.8 días**  
-  *(Tiempo neto de desarrollo desde que la célula de programadores mueve la tarea a `In Progress` hasta que pasa exitosamente todas las cláusulas del Definition of Done).*
+Lead Time y Cycle Time requieren timestamps de creación, inicio de trabajo y finalización por
+historia. El repositorio no incluye esos registros ni un cálculo reproducible; se retiran los
+promedios de 4.2 y 1.8 días del borrador anterior hasta adjuntar una fuente verificable.
 
 ---
 
 ## 6. Conclusión y Madurez Ágil del Equipo
 
-La evolución del factor de cumplimiento del 80.0% en el Sprint 1 al **100.0% en el Sprint 3**, junto con un Cycle Time de solo 1.8 días, evidencia una curva de aprendizaje óptima en la adopción de ingeniería de software disciplinada, automatización de pruebas y entrega continua.
+Con la información disponible se verifican los cierres de Sprint 1 (10/10 SP) y Sprint 3 (12/12
+SP). No se concluye una tendencia de madurez ni estabilidad del flujo hasta completar los registros
+del Sprint 2, el Burndown, el CFD y los tiempos con evidencia fuente.

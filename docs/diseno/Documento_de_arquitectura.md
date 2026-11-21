@@ -114,8 +114,10 @@ sequenceDiagram
 
 ## 5. Diagrama de despliegue
 
-La imagen siguiente es una propuesta académica de topología. El despliegue local observado usa
-Java 17, Spring Boot con servidor embebido y PostgreSQL; no hay una interfaz web independiente.
+El diagrama siguiente describe el entorno local de desarrollo (Java 17, Spring Boot con servidor
+embebido y PostgreSQL); no hay una interfaz web independiente. El staging desplegado en Render se
+documenta en el diagrama canónico [`architecture/diagramas-uml.md`](architecture/diagramas-uml.md)
+y en [`architecture-decisions/ADR-001-despliegue-staging-paas.md`](architecture-decisions/ADR-001-despliegue-staging-paas.md).
 Los puertos y URL de desarrollo dependen del entorno.
 
 ```mermaid
@@ -199,7 +201,8 @@ public class OfertaMapper {
 
 **Solución:** el contenedor de Spring crea una única instancia (singleton) de cada componente (@Service, @Repository, @RestController, @Component) y la inyecta por constructor donde se necesita. La clase declara sus dependencias y no las crea.
 
-**Dónde se aplica:** en todas las capas; el ejemplo muestra el servicio y el controlador.
+**Dónde se aplica:** en las capas de servicios y controladores mediante inyección por constructor.
+`PagoService` también inyecta `OrdenLogisticaService` por constructor.
 
 ```java
 @Service

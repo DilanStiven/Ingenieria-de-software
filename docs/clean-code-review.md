@@ -28,22 +28,22 @@ Certificar formalmente la calidad interna del código fuente antes del **Code Fr
 
 | Criterio Técnico | Aspecto Evaluado | Estado | Hallazgo / Acción Aplicada |
 |---|---|:---:|---|
-| **Nombres Significativos** | Clases, métodos y variables reflejan claramente la intención de negocio sin abreviaturas crípticas ni nombres ambiguos (ej. `calcularTarifaPorDistancia()` en vez de `calc()`). | Cumple | Clases como `CalculadorTarifaService`, `OfertaCosechaRequestDTO`, `SolicitudContactoCreadaEvent` usan nomenclatura descriptiva. |
-| **Funciones Pequeñas y Monotarea** | Cada método realiza una única operación conceptual y tiene menos de 25 líneas efectivas. | Cumple | Métodos refactorizados con extracción de submétodos auxiliares para validación de fechas, cálculo de montos y mapeo DTO. |
+| **Nombres Significativos** | Clases, métodos y variables reflejan claramente la intención de negocio sin abreviaturas crípticas ni nombres ambiguos (ej. `calcularTarifaPorDistancia()` en vez de `calc()`). | Cumple | Clases como `CalculadorTarifaService`, `ProductoRequestDTO` y `SolicitudContactoCreadaEvent` usan nomenclatura descriptiva. |
+| **Funciones Pequeñas y Monotarea** | Cada método realiza una única operación conceptual y tiene menos de 25 líneas efectivas. | Remediado; pendiente de pares | `PagoService.procesar()` delega ahora la autorización, validación, persistencia y cierre del pago en métodos auxiliares. La revisión de pares debe confirmar el criterio en el alcance completo. |
 | **Eliminación de Redundancias (DRY)** | Ausencia de bloques duplicados de lógica o consultas SQL redundantes. | Cumple | Se centralizó la autenticación en `JwtAuthenticationFilter` y el cálculo de tarifas en el patrón `Strategy`. |
 | **Manejo Centralizado de Excepciones** | Sin bloques `try/catch` vacíos; excepciones de negocio capturadas por `@ControllerAdvice`. | Cumple | `GlobalExceptionHandler` captura `CredencialesInvalidasException`, `RecursoNoEncontradoException` y retorna respuestas HTTP uniformes (401, 404, 400). |
 | **SRP (Single Responsibility)** | Cada clase tiene una única razón de cambio. | Cumple | Controladores solo gestionan HTTP/DTOs; Servicios contienen exclusivamente lógica de dominio; Repositorios acceden a datos. |
 | **OCP (Open/Closed Principle)** | El sistema está abierto a la extensión pero cerrado a la modificación. | Cumple | Patrón **Strategy** permite incorporar nuevas fórmulas de flete (urbano, intermunicipal) sin modificar `OrdenLogisticaService`. |
 | **LSP (Liskov Substitution)** | Las implementaciones de interfaces pueden sustituirse sin alterar la corrección del programa. | Cumple | Estrategias de flete y adaptadores de pasarela cumplen fielmente sus interfaces de contrato. |
 | **ISP (Interface Segregation)** | Interfaces específicas y cohesivas sin obligar a clientes a implementar métodos no utilizados. | Cumple | Interfaces de repositorios heredan puntualmente de `JpaRepository` sin métodos sobrantes. |
-| **DIP (Dependency Inversion)** | Módulos de alto nivel dependen de abstracciones, no de clases concretas. Inyección por constructor. | Cumple | Inyección de dependencias mediante constructores en todos los `@Service` y `@RestController` (evitando inyección por campo `@Autowired`). |
+| **DIP (Dependency Inversion)** | Módulos de alto nivel dependen de abstracciones, no de clases concretas. Inyección por constructor. | Remediado; pendiente de pares | `PagoService` inyecta ahora `OrdenLogisticaService` por constructor y mantiene sus dependencias como campos `final`. Falta una nueva revisión de pares para certificar la lista completa. |
 | **Ausencia de Código Muerto** | Sin imports no utilizados, variables locales no referenciadas ni comentarios de código viejo. | Cumple | Checkstyle verificado con 0 violaciones en imports no usados (`UnusedImportsCheck`) y variables locales (`FinalLocalVariableCheck`). |
 
 ---
 
-## 4. Dictamen de Aprobación
+## 4. Dictamen de la Revisión
 
-Los revisores certifican que el código base de **AgroValle Connect** cumple a cabalidad con los estándares de ingeniería de software, arquitectura limpia en 4 capas y legibilidad requeridos para la sustentación final del Tercer Corte.
+Los dos hallazgos puntuales de `PagoService` se corrigieron en esta rama. Esta lista no se considera una nueva certificación: falta que los revisores vuelvan a validar el cambio y registren su aprobación.
 
 - **Firma Revisor 1:** Dilan Stiven Castillo Valencia (Scrum Master / Reviewer)
 - **Firma Revisor 2:** Kevin Estiven Lucumi Polo (Developer / Reviewer)

@@ -34,11 +34,12 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
 ### B. Seguridad y Protección de Datos Sensibles
 - [x] **Autenticación y Autorización Stateless (Spring Security + JWT):**
   - Endpoints protegidos mediante tokens criptográficos JWT firmados (HMAC-SHA256) con expiración controlada.
-  - Verificación estricta de roles (`AGRICULTOR`, `COMPRADOR`, `TRANSPORTISTA`).
+  - Roles implementados en `RolUsuario`: `AGRICULTOR` y `TRANSPORTISTA`. El rol y autenticación de comprador no están implementados; revisar como dependencia de futuras historias de compra y reputación.
 - [x] **Cifrado de Contraseñas:** Ninguna credencial se persiste en texto plano; almacenamiento mediante hash irreversible con `BCryptPasswordEncoder`.
-- [x] **Aislamiento de Secretos (Zero Hardcoded Secrets):**
+- [ ] **Aislamiento de Secretos (Zero Hardcoded Secrets):**
   - Prohibición absoluta de credenciales, IPs o tokens quemados en código fuente o archivos versionados.
-  - Extracción obligatoria desde variables de entorno (`application-staging.yml`) e inyección segura a través de **GitHub Secrets**.
+  - La aplicación obtiene DB/JWT desde variables de entorno de Render (`DB_URL_VAR`, `DB_USER_VAR`, `DB_PASS_VAR`, `JWT_SECRET_VAR`); GitHub Actions usa `DEPLOY_HOOK_URL`.
+  - La guía pide cinco variables en GitHub Secrets (`STAGING_DB_URL`, `STAGING_DB_USER`, `STAGING_DB_PASSWORD`, `JWT_SECRET_KEY`, `DEPLOY_HOOK_URL`). La configuración actual no coincide y queda pendiente validar con la docente antes de cambiar dónde se administran las credenciales.
 
 ### C. Mantenibilidad, Clean Code y Patrones de Diseño
 - [x] **Verificación Estática de Código (Checkstyle):**
@@ -51,7 +52,7 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
   - **Repository:** Abstracción del acceso a datos.
   - **Strategy:** Lógica de cálculo de tarifas y fletes logísticos intercambiable y desacoplada (`TarifaStrategy`).
   - **Observer:** Manejo desacoplado de eventos y notificaciones asíncronas (`ApplicationEventPublisher` y `@EventListener`).
-- [x] **Clean Code Review:** Certificación por pares firmada en docs/clean-code-review.md verificando funciones pequeñas, nombres descriptivos y principios SOLID.
+- [ ] **Clean Code Review:** Los dos hallazgos de `PagoService` se corrigieron; falta una nueva revisión y aprobación por pares registrada en `docs/clean-code-review.md`.
 
 ### D. Persistencia y Control de Migraciones de Base de Datos
 - [x] **Normalización Relacional en Tercera Forma Normal (3FN):** Esquema relacional libre de anomalías de inserción, actualización y borrado.
@@ -73,12 +74,12 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
   - Integración a `develop` y `main` únicamente mediante Pull Requests con al menos 1 aprobación formal (Peer Review).
 - [x] **Conventional Commits:** Historial de commits estandarizado con prefijos semánticos (`feat:`, `fix:`, `docs:`, `test:`, `chore:`).
 - [x] **Automatización Pre-Commit (Husky):** Hook local que valida Checkstyle y pruebas antes de permitir cualquier commit.
-- [x] **Trazabilidad de Requerimientos y Diseño:**
+- [ ] **Trazabilidad de Requerimientos y Diseño:**
   - Requerimientos formalizados bajo ISO/IEC/IEEE 29148:2018 y Backlog BDD en `docs/requirements/`.
-  - 7 Diagramas UML actualizados en sintaxis Mermaid en `docs/architecture/diagramas-uml.md`.
-  - Decisiones de arquitectura documentadas en `ADR-001` y `ADR-002` bajo formato Nygard.
-  - Métricas cuantitativas de flujo consolidadas en `docs/metrics/sprint-metrics-corte3.md`.
-- [x] **Code Freeze:** Etiquetado oficial de la versión final mediante Git Tag (`v3.0.0-final`).
+  - Diagramas UML en `docs/diseno/architecture/diagramas-uml.md`. La guía usa HU-12/HU-13 para escenarios distintos a los del Backlog aprobado; las historias futuras HU-08, HU-13, HU-14 y HU-15 no se implementan en esta etapa.
+  - Decisiones de arquitectura en `docs/diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md` y `ADR-002-estrategia-despliegue-produccion.md`.
+  - [ ] Completar los puntos diarios y los gráficos de Burndown/CFD y añadir evidencia fuente en `docs/metrics/sprint-metrics-corte3.md`.
+- [ ] **Code Freeze:** Pendiente crear el Git Tag `v3.0.0-final` sobre el commit final de `main`. El tag no existe en el repositorio ni en el remoto consultado.
 
 ---
 
