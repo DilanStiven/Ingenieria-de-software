@@ -169,6 +169,7 @@ La configuración técnica del laboratorio quedó integrada en el repositorio:
   **Deploy Application to Staging Cloud** en `main`, commit `0ad30db`: [ejecución exitosa](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/44940959390).
 - El secreto `DEPLOY_HOOK_URL` está configurado en los secretos del repositorio. Las credenciales de
   PostgreSQL y el secreto JWT se mantienen en las variables de entorno del servicio Render.
+- El historial de errores, causas y soluciones está en el [registro de incidencias de staging](../../evidencias/registro-incidencias-staging.md).
 
 **Consideración del plan gratuito:** la instancia web se duerme tras inactividad y puede tardar en
 responder al primer acceso. Render informa que la base de datos gratuita vence el 21/12/2026; para
