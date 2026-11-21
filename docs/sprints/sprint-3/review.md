@@ -160,9 +160,19 @@ La configuración técnica del laboratorio quedó integrada en el repositorio:
 - Workflow `.github/workflows/cd.yml` condicionado a la aprobación de CI.
 - ADR de staging actualizado en `docs/diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`.
 
-**Pendiente externo:** registrar los secretos en GitHub, seleccionar y configurar el proveedor PaaS,
-activar el perfil `staging`, ejecutar el pipeline en `main` y adjuntar aquí la captura o URL pública
-del HTTP 200 devuelto por el entorno. No se reporta como prueba en vivo hasta disponer de esa evidencia.
+**Estado: completado y verificado el 21/11/2026.** La aplicación `agrovalle-connect` y PostgreSQL
+`agrovalle-staging-db` están desplegados en Render (Oregon, plan gratuito). El servicio responde en:
+
+- Health check: [https://agrovalle-connect-owri.onrender.com/api/v1/estado](https://agrovalle-connect-owri.onrender.com/api/v1/estado)
+- Resultado observado: HTTP 200; `estado: OK`, `perfil: staging` y `baseDatos: PostgreSQL Connected`.
+- El workflow de GitHub Actions ejecutó correctamente **Verification & Quality Gates (CI)** y
+  **Deploy Application to Staging Cloud** en `main`, commit `0ad30db`: [ejecución exitosa](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/44940959390).
+- El secreto `DEPLOY_HOOK_URL` está configurado en los secretos del repositorio. Las credenciales de
+  PostgreSQL y el secreto JWT se mantienen en las variables de entorno del servicio Render.
+
+**Consideración del plan gratuito:** la instancia web se duerme tras inactividad y puede tardar en
+responder al primer acceso. Render informa que la base de datos gratuita vence el 21/12/2026; para
+mantener el staging después de esa fecha, se debe actualizar el plan o migrar la base antes del vencimiento.
 
 ## 10. Enlaces
 
