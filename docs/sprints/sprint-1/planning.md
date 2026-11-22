@@ -2,7 +2,7 @@
 
 > **Alcance de este artefacto:** registra el plan y las soluciones propuestas al inicio del Sprint;
 > los nombres de clases, tablas y tareas no necesariamente coinciden con la implementación final.
-> Para el resultado reportado, consultar [Sprint 1 Review](sprint-1-review.md); para el código
+> Para el resultado reportado, consultar [Sprint 1 Review](review.md); para el código
 > vigente, consultar `src/main`.
 
 | Campo | Valor |
@@ -13,7 +13,7 @@
 | **Equipo Scrum** | Grupo 5 |
 | **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065|
 | **Duración del Sprint** | 2 semanas (24/09/2026 – 09/10/2026) |
-| **Archivo** | `docs/sprint-1-planning.md` |
+| **Archivo** | `docs/sprints/sprint-1/planning.md` |
 | **Norma de calidad** | ISO/IEC 25010:2011 |
 
 ---
@@ -368,7 +368,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-#### ⚠️ Tarea 1.7 — Traducción BDD → Pruebas JUnit 5 **[OBLIGATORIA]** (3 h) — *Carlos*
+#### Tarea 1.7 — Traducción BDD → Pruebas JUnit 5 **[OBLIGATORIA]** (3 h) — *Carlos*
 
 - **Descripción:** Traducir los 3 escenarios BDD de HU-01 a pruebas unitarias
   (`ProductorServiceTest`, Mockito) e integradas (`ProductorControllerTest`, MockMvc). Añadir
@@ -658,7 +658,7 @@ public ResponseEntity<ProductoResponseDTO> publicar(
 }
 ```
 
-#### ⚠️ Tarea 2.6 — Traducción BDD → Pruebas JUnit 5 **[OBLIGATORIA]** (3 h) — *Santiago*
+#### Tarea 2.6 — Traducción BDD → Pruebas JUnit 5 **[OBLIGATORIA]** (3 h) — *Santiago*
 
 - **Descripción:** Automatizar los 3 escenarios de HU-02: publicación exitosa con ID único
   (Service + Controller), fecha pasada → 400 y ausencia de token → 401 (`@WebMvcTest` con
@@ -784,7 +784,7 @@ public ResponseEntity<List<ProductoDTO>> filtrar(
 }
 ```
 
-#### ⚠️ Tarea 4.4 — Traducción BDD → Pruebas JUnit 5 **[OBLIGATORIA]** (2 h) — *Santiago*
+#### Tarea 4.4 — Traducción BDD → Pruebas JUnit 5 **[OBLIGATORIA]** (2 h) — *Santiago*
 
 - **Descripción:** Automatizar los 3 escenarios de HU-04 con `@WebMvcTest` y MockMvc.
 - **ISO/IEC 25010:** *Adecuación Funcional → Corrección funcional*; *Mantenibilidad →

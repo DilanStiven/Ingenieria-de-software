@@ -1,15 +1,22 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
 echo "Ejecutando Checkstyle..."
-sh ./mvnw checkstyle:check
+if [ -f ./mvnw ]; then
+  ./mvnw checkstyle:check
+else
+  mvn checkstyle:check
+fi
 if [ $? -ne 0 ]; then
   echo "Commit bloqueado: hay advertencias de Checkstyle sin resolver."
   exit 1
 fi
 
 echo "Ejecutando pruebas unitarias..."
-sh ./mvnw clean verify
+if [ -f ./mvnw ]; then
+  ./mvnw clean verify
+else
+  mvn clean verify
+fi
 if [ $? -ne 0 ]; then
   echo "Commit bloqueado: hay pruebas fallando."
   exit 1

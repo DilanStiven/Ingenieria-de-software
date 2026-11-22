@@ -1,0 +1,10 @@
+.git
+.github
+.vscode
+.husky
+target
+node_modules
+docs
+*.md
+*.png
+*.pdf

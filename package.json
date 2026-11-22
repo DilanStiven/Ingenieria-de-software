@@ -1,0 +1,12 @@
+{
+  "name": "agrovalle-connect-quality-hooks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Configuración de hooks Git para validar la calidad del proyecto Java.",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  },
+  "scripts": {
+    "prepare": "husky"
+  }
+}

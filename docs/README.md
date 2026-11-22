@@ -1,143 +1,86 @@
-# Documentación de AgroValle Connect
+# Índice de Documentación de Ingeniería — AgroValle Connect
 
-Esta carpeta reúne especificaciones, registros de Sprint y documentos de diseño. Los artefactos
-de planificación y diseño describen decisiones o propuestas de su fecha; no necesariamente
-representan la implementación actual.
+**Institución Universitaria Antonio José Camacho**  
+**Facultad de Ingeniería | Programa de Ingeniería de Sistemas**  
+**Asignatura:** Ingeniería de Software II | **Período:** 2-2026  
+**Docente:** Paola Andrea Bedoya Toro  
+**Proyecto Integrador:** AgroValle Connect (Plataforma Agrícola del Valle del Cauca)  
+**Estándar de Calidad:** ISO/IEC 25010 & ISO/IEC/IEEE 29148:2018  
+**Ubicación:** `docs/README.md`  
 
-## Documentos
+---
 
-| Documento | Contenido |
-| --- | --- |
-| [`dod.md`](dod.md) | Definition of Done y criterios de calidad del equipo. |
-| [`ieee29148-req01.md`](ieee29148-req01.md) | Requerimiento de registro de agricultores y escenarios BDD. |
-| [`sprint-1-planning.md`](sprint-1-planning.md) | Alcance y tareas planificadas para el Sprint 1. |
-| [`sprint-1-review.md`](sprint-1-review.md) | Resultado reportado y demostración del Sprint 1. |
-| [`sprint-1-retrospective.md`](sprint-1-retrospective.md) | Retrospectiva y acciones de mejora del Sprint 1. |
-| [`bitacora-daily-scrum.md`](bitacora-daily-scrum.md) | Registro disponible de las reuniones de seguimiento del Sprint 1. |
-| [`kanban-policies.md`](kanban-policies.md) | Políticas de flujo y métricas; incluye las limitaciones de evidencia. |
-| [`sprint-2-planning.md`](sprint-2-planning.md) | Propuesta de selección HU-06 para el Sprint 2; requiere decisiones y aprobación del equipo. |
-| [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | Estado ejecutivo del avance técnico verificable y pendientes; no inventa resultados de un Sprint no documentado. |
-| [`evidencias/reporte-jacoco-java25-run-91.md`](evidencias/reporte-jacoco-java25-run-91.md) | Cobertura del reporte JaCoCo descargado del CI Java 25, con acceso al HTML completo y contadores agregados. |
-| [`evidencias/anexo-evidencias-jacoco-kanban.pdf`](evidencias/anexo-evidencias-jacoco-kanban.pdf) | Anexo PDF con resultados JaCoCo y captura de los límites WIP visibles en GitHub Projects. |
-| [`sprint-2-review.md`](sprint-2-review.md) | Review del Sprint 2: incremento, evidencia y trabajo pendiente. |
-| [`sprint-2-retrospective.md`](sprint-2-retrospective.md) | Retrospectiva del Sprint 2 (Start / Stop / Continue), en tercera persona. |
-| [`diseno/Documento_de_arquitectura.md`](diseno/Documento_de_arquitectura.md) | Arquitectura propuesta y contraste con el código actual. |
-| [`diseno/Documento_de_normalizacion.md`](diseno/Documento_de_normalizacion.md) | Contrasta el modelo implementado con la propuesta académica normalizada. |
-| [`diseno/Documento_de_prototipado.md`](diseno/Documento_de_prototipado.md) | Wireframes y flujos propuestos; no son pantallas implementadas. |
-| [`diseno/Anexo_de_diagramas.md`](diseno/Anexo_de_diagramas.md) | Catálogo de diagramas y mockups. |
-| [`diseno/schema.sql`](diseno/schema.sql) | DDL de referencia para el modelo JPA vigente, en una base vacía; no es una migración automática. |
-| [`diseno/schema-academico-propuesto.sql`](diseno/schema-academico-propuesto.sql) | DDL separado del diseño académico propuesto de cinco entidades; no corresponde al esquema vigente. |
-| [`diseno/arquitectura-mvc-gof.md`](diseno/arquitectura-mvc-gof.md) | Nombre de la guía para la arquitectura MVC de 4 capas y patrones GoF (mismo contenido que `Documento_de_arquitectura.md`). |
-| [`diseno/modelo-entidad-relacion.png`](diseno/modelo-entidad-relacion.png) | MER conceptual (copia de la Figura 3 del anexo). |
-| [`diseno/modelo-datos-der.png`](diseno/modelo-datos-der.png) | Modelo físico / DER (copia de la Figura 2); el DDL está en `diseno/schema.sql`. |
-| [`diseno/diagrama-despliegue.png`](diseno/diagrama-despliegue.png) | Diagrama de despliegue (Figura 7). |
-| [`diseno/diagrama-secuencia.png`](diseno/diagrama-secuencia.png) | Diagrama de secuencia (Figura 5). |
-| [`diseno/diagrama-componentes.png`](diseno/diagrama-componentes.png) | Diagrama de componentes (Figura 6). |
-| [`diseno/mockups-ui.pdf`](diseno/mockups-ui.pdf) | Flujo de pantallas y mockups reunidos en un PDF (Figuras 8 a 14). |
+## 1. Propósito y Estructura del Repositorio Documental
 
-## Evidencia y estado
+Esta carpeta centraliza todos los artefactos de ingeniería de software, especificaciones formales, registros metodológicos por sprint, diagramas de diseño y decisiones de arquitectura del proyecto **AgroValle Connect**. Toda la documentación evoluciona en texto plano Markdown (`.md`) junto al código fuente Java 17 / Spring Boot para garantizar auditabilidad, trazabilidad y control de versiones mediante Git commits.
 
-Las imágenes de diseño se encuentran en [`diseno/images/`](diseno/images/). Las capturas
-operativas históricas que cita la Review del Sprint 1 no están incluidas en este repositorio; sus
-resultados se conservan como información reportada en el documento, no como evidencia
-reproducible disponible aquí. La carpeta [`evidencias/`](evidencias/) contiene capturas de
-verificaciones realizadas el 22/10/2026 y el 28/10/2026, no evidencia histórica del Sprint 1:
+---
 
-- [Resumen de pruebas y cobertura](evidencias/validacion-pruebas-y-cobertura-2026-10-22.png).
-- [Reporte JaCoCo completo de la ejecución CI #91](evidencias/reporte-jacoco-java25-run-91.md) ([ZIP descargable](evidencias/jacoco-java25-run-91.zip)).
-- [Anexo PDF: cobertura JaCoCo y captura de WIP](evidencias/anexo-evidencias-jacoco-kanban.pdf).
-- [Captura del tablero con WIP In Progress 3 y Code Review / Testing 2](evidencias/tablero-kanban-limites-wip-2026-10-28.png); muestra la configuración visible en ese momento, no su cumplimiento histórico.
-- [Build exitoso y Checkstyle](evidencias/validacion-build-checkstyle-2026-10-22.png).
-- [Pull Request #56 con CI Java 25 aprobado y revisión pendiente](evidencias/ci-java25-pr-56-2026-10-28.png).
-- [Restricción única para la cédula en PostgreSQL](evidencias/pgadmin-restriccion-2026-10-28.png).
-- [Tablas de `agrovalle_db` antes de crear `productos`](evidencias/pgadmin-tablas-2026-10-28.png).
-- [Listado de reglas de protección para `main` y `develop`](evidencias/proteccion-ramas-main-develop-2026-10-28.png).
-- [Regla de `develop`: resumen](evidencias/proteccion-develop-resumen-2026-10-28.png), [check de CI requerido](evidencias/proteccion-develop-check-ci-2026-10-28.png) y [opciones finales](evidencias/proteccion-develop-opciones-finales-2026-10-28.png). Las capturas muestran Pull Request obligatorio, una aprobación requerida y el check `Build, Checkstyle & JaCoCo Coverage`; también muestran desactivadas las opciones de force push y eliminación.
-- [Regla de `main`: resumen](evidencias/proteccion-main-resumen-2026-10-28.png), [check de CI requerido](evidencias/proteccion-main-check-ci-2026-10-28.png) y [opciones finales](evidencias/proteccion-main-opciones-finales-2026-10-28.png), con la misma configuración visible que `develop`.
+## 2. Catálogo Maestro de Documentos
 
-### Verificación local de PostgreSQL — 2026-10-22
+| Categoría | Documento | Descripción / Alcance Técnico |
+|---|---|---|
+| **Calidad y Contratos** | [`dod.md`](dod.md) | **Definition of Done (DoD):** Contrato de calidad técnica no negociable basado en el modelo ISO/IEC 25010, firmado por la célula Scrum. |
+| **Calidad y Auditoría** | [`clean-code-review.md`](clean-code-review.md) | **Clean Code Review:** Hallazgos de tamaño de método e inyección corregidos; pendiente una nueva aprobación de pares. |
+| **Gobernanza y Flujo** | [`kanban-policies.md`](kanban-policies.md) | **Políticas Kanban / Scrumban:** Políticas explícitas de entrada/salida por columna, WIP Limits (*In Progress: 3*, *Code Review: 2*) y Ley de Little. |
+| **Gobernanza y Flujo** | [`bitacora-daily-scrum.md`](bitacora-daily-scrum.md) | **Bitácora de Daily Scrums:** Registro cronológico de sincronización diaria y resolución de impedimentos (Sprints 1, 2 y 3). |
+| **Operación y Evidencias** | [`evidencias/registro-incidencias-staging.md`](evidencias/registro-incidencias-staging.md) | **Registro de incidencias de staging:** síntomas, causas, soluciones y validación del despliegue en Render y GitHub Actions. |
+| **Requerimientos** | [`requirements/ieee-29148-syrs-agrovalle.md`](requirements/ieee-29148-syrs-agrovalle.md) | **Especificación de Requerimientos (SyRS):** Redacción prescriptiva formal bajo el estándar internacional ISO/IEC/IEEE 29148:2018. |
+| **Requerimientos** | [`requirements/product-backlog-bdd.md`](requirements/product-backlog-bdd.md) | **Product Backlog BDD:** 15 Historias de Usuario priorizadas con MoSCoW, estimadas con Fibonacci y especificadas con escenarios *Given-When-Then* (GWT). |
+| **Arquitectura UML** | [`diseno/architecture/diagramas-uml.md`](diseno/architecture/diagramas-uml.md) | **Diagramas UML:** tres secuencias, dos colaboraciones, componentes y despliegue; el documento identifica las diferencias entre el flujo solicitado y el código vigente. |
+| **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`](diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md) | **ADR-001:** Decisión implementada de Render y PostgreSQL gestionado para el ambiente de staging. |
+| **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md`](diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md) | **ADR-002:** Estrategia propuesta de despliegue en producción con Zero-Downtime y alta disponibilidad. |
+| **Métricas Ágiles** | [`metrics/sprint-metrics-corte3.md`](metrics/sprint-metrics-corte3.md) | **Reporte de Métricas de Flujo (Corte 3):** Incluye tablas de Velocity, Burndown, CFD y Lead/Cycle Time; falta completar y respaldar los registros diarios y los gráficos exigidos. |
+| **Informes Ejecutivos** | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | **Resumen Ejecutivo Sprint 2:** Informe de avance técnico verificable al cierre del Segundo Corte. |
+| **Informes Ejecutivos** | [`resumen-ejecutivo-sprint-3.md`](resumen-ejecutivo-sprint-3.md) | **Resumen Ejecutivo Sprint 3:** Consolidado final del Tercer Corte, métricas de calidad y preparación para sustentación. |
 
-La aplicación se inició con Java 25 contra `agrovalle_db` en PostgreSQL 17.11 y con
-`spring.jpa.hibernate.ddl-auto=none` para impedir cambios automáticos de esquema durante la
-prueba. El endpoint de registro respondió `409 Conflict` al recibir una cédula ya existente.
-Después de detener la aplicación, una consulta de solo lectura confirmó un agricultor, ninguna
-cédula duplicada y la restricción `uk_agricultor_cedula`; la tabla `productos` no existía y no fue
-creada durante la prueba.
+---
 
-Este resultado documenta una verificación técnica actual, no una captura ni un resultado
-histórico de la Review del Sprint 1. Las capturas compartidas durante esta revisión muestran el
-respaldo y consultas actuales de pgAdmin; no sustituyen las evidencias históricas ausentes.
+## 3. Ciclo de Vida Metodológico por Sprints (`docs/sprints/`)
 
-### Persistencia de productos en PostgreSQL — 2026-10-28
+El desarrollo incremental del proyecto se encuentra estructurado en carpetas dedicadas por sprint:
 
-Antes del cambio se creó y validó un respaldo reciente de `agrovalle_db`. Después, los scripts
-`V2__create_productos.sql` y `V3__index_productos_filtro.sql` se aplicaron manualmente y en una
-sola transacción, porque Flyway no está configurado en la aplicación. La tabla `productos` quedó
-con sus columnas, restricciones de cantidad y precio, llave foránea hacia `agricultor` e índice
-de filtro.
+```
+docs/sprints/
+├── sprint-0/                   # Sprint de Preparación Técnica (Readiness & Setup)
+│   ├── planning.md             # Sprint Goal, DoD inicial, estrategia GitFlow y Checkstyle
+│   ├── review.md               # Evidencias de setup de Spring Boot, Maven Wrapper y Husky
+│   └── retrospective.md        # Retrospectiva Start-Stop-Continue del Sprint 0
+├── sprint-1/                   # Cimientos del Marketplace (HU-01, HU-02, HU-04 — 10 SP)
+│   ├── planning.md             # Descomposición de tareas y estimación Fibonacci
+│   ├── review.md               # Demos funcionales de API REST y persistencia
+│   └── retrospective.md        # Compromisos de mejora técnica inicial
+├── sprint-2/                   # Mercado y Logística Base (HU-03, HU-06, HU-07 — 9 SP)
+│   ├── planning.md             # Selección de HUs para refactorización SOLID y Patrones GoF
+│   ├── review.md               # Evidencias de CI en GitHub Actions y TDD (Segundo Corte)
+│   └── retrospective.md        # Compromisos de mejora del Sprint 2
+└── sprint-3/                   # Pedidos, Pagos y Staging (HU-05, HU-09..HU-12 — 12 SP)
+    ├── planning.md             # Sprint Goal de entrega final y configuración de CD
+    ├── review.md               # Evidencias de cierre 100%, demos y pruebas automatizadas
+    └── retrospective.md        # Balance final del semestre y lecciones aprendidas de ingeniería
+```
 
-Una prueba SQL transaccional insertó un producto temporal usando un agricultor existente,
-confirmó que era visible dentro de la transacción y revirtió el cambio. La comprobación final de
-la base real confirmó un agricultor, cero productos y cero filas de prueba; no se dejó información
-temporal persistida. La captura de tablas enlazada arriba es anterior a esta migración y no
-representa el esquema actual.
+---
 
-Una primera petición contra una copia desechable no devolvió respuesta HTTP y no fue posible
-determinar si llegó a ejecutarse. La copia temporal se eliminó antes de consultar el marcador de
-esa petición, así que su resultado queda indeterminado. En un segundo intento se preparó otra
-base vacía, pero el lanzador Java no inició la aplicación: su compilación Maven usó el JDK
-predeterminado 17.0.12, mientras en ese momento el proyecto estaba configurado para Java 25
-(`release 25`). No se envió ninguna
-petición en este segundo intento. La base y el archivo de configuración temporales se eliminaron,
-y la base real no recibió solicitudes de prueba. Por tanto, el DDL y la inserción SQL reversible
-están verificados; la persistencia mediante HTTP queda pendiente de una ejecución exitosa con la
-versión Java 17 que ahora exige el proyecto según la guía académica.
+## 4. Diseño, Arquitectura, Base de Datos y Prototipado (`docs/diseno/`)
 
-El 29/10/2026, la configuración vigente se alineó a Java 17 para cumplir la guía académica. Las
-validaciones descritas a continuación y los runs de Java 25 son evidencia histórica de una
-configuración anterior; no sustituyen una nueva ejecución local y de CI con Java 17.
+Los artefactos de arquitectura y diseño se mantienen bajo `docs/diseno/`, según la indicación de la docente. La guía del laboratorio muestra otra ruta (`docs/architecture/`); en este repositorio el documento canónico de UML está en `docs/diseno/architecture/`.
 
-### Verificación local de calidad — 2026-10-28
+- [`diseno/architecture/diagramas-uml.md`](diseno/architecture/diagramas-uml.md): diagramas UML del sistema y diferencias frente a los casos académicos requeridos.
+- [`diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`](diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md): decisión de despliegue de staging en Render.
+- [`diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md`](diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md): propuesta para despliegue de producción.
+- [`diseno/Documento_de_arquitectura.md`](diseno/Documento_de_arquitectura.md): Arquitectura propuesta en 4 capas y patrones GoF.
+- [`diseno/Documento_de_normalizacion.md`](diseno/Documento_de_normalizacion.md): Justificación de la normalización del modelo relacional en 3FN.
+- [`diseno/Documento_de_prototipado.md`](diseno/Documento_de_prototipado.md): Flujo de pantallas y wireframes UI/UX.
+- [`diseno/Anexo_de_diagramas.md`](diseno/Anexo_de_diagramas.md): Catálogo consolidado de diagramas conceptuales, físicos y pantallas.
+- [`diseno/schema.sql`](diseno/schema.sql): DDL relacional de referencia.
 
-Con Java 25 se ejecutó `.\mvnw.cmd clean verify checkstyle:check`: 26 pruebas, cero fallos,
-cero errores y una omitida porque requiere PostgreSQL local; Checkstyle reportó cero infracciones.
-JaCoCo midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas. El `pom.xml`
-ahora exige al menos 60 % en los tres contadores y la verificación Maven pasó.
+---
 
-Para conocer el contrato y la persistencia vigentes, priorizar el código fuente, los DTO y la
-configuración de `src/main`. Desde el 18/11/2026 la aplicación incluye Flyway, con migraciones en
-`src/main/resources/db/migration`. Una base vacía ejecuta las versiones V1 a V7; una base existente
-sin historial Flyway se marca en V6 y aplica V7. Hibernate conserva `ddl-auto=update` para las
-entidades que aún no tienen migraciones. El modelo de cinco entidades y las pantallas web se
-conservan como propuestas académicas, separadas del modelo JPA actualmente implementado.
-La ejecución local del 18/11/2026 verificó el arranque de Spring Boot con Flyway y ambos caminos de
-migración en H2 2.4 con modo de compatibilidad PostgreSQL; `mvn verify` terminó con 102 pruebas,
-sin fallos y con JaCoCo aprobado. Esto no sustituye una validación contra un servidor PostgreSQL real.
+## 5. Estado Tecnológico Actual (Línea Base del Tercer Corte)
 
-La ejecución remota #91 de GitHub Actions para el [Pull Request #56](https://github.com/DilanStiven/Ingenieria-de-software/pull/56)
-finalizó correctamente el 28/10/2026: el workflow configuró Java 25 Temurin y pasaron compilación,
-Checkstyle y JaCoCo. La [ejecución #91](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/40811041503)
-corresponde al commit `0c9d664`; el reporte descargado midió 80,26 % de instrucciones, 73,08 % de ramas y 81,13 % de líneas.
-El PR sigue abierto contra `develop` y GitHub indica que falta
-al menos una aprobación; por tanto, el CI está verde, pero los cambios todavía no se han integrado.
-La captura enlazada arriba conserva la vista del PR y su check exitoso.
-
-La ejecución anterior #86 en `main`, commit
-[`f648ba7`](https://github.com/DilanStiven/Ingenieria-de-software/commit/f648ba77d36b8876d35c377cef766529538a1f82),
-terminó correctamente el 19/10/2026 usando Java 17; no validaba Java 25. Las capturas de
-configuración verifican que tanto `main` como `develop` exigen Pull Request, una aprobación y el
-check `Build, Checkstyle & JaCoCo Coverage`; en ambas se muestran desactivados force push y
-eliminación.
-
-### Pendiente para la entrega formal
-
-- Configurar el depurador con JDK 17 y volver a realizar la prueba HTTP de persistencia contra una
-  base desechable.
-- Obtener la aprobación requerida y completar la integración del Pull Request #56 a `develop`;
-  el run verde de Java 25 acredita la rama del PR, no todavía `main`.
-- Realizar el Planning real del Sprint 2, confirmar o cambiar HU-06, tomar decisiones pendientes,
-  y completar Review/retrospectiva con fechas y resultados reales. Las tres revisiones adicionales
-  de avance reportadas por el equipo se consignan sin inventar sus fechas.
-- Preparar el PDF de entrega con los enlaces, la evidencia CI requerida y el resumen del trabajo
-  que efectivamente se complete. La falta de la línea de tiempo histórica Kanban queda declarada
-  como limitación, no se presenta como si existiera una captura.
+- **Plataforma:** Java 17 LTS (Eclipse Temurin) con Spring Boot 4.1.1.
+- **Control de Calidad:** Checkstyle (Google Java Style) con **0 violaciones estáticas**.
+- **Pruebas Automatizadas:** **35 suites de pruebas en verde** (`JUnit 5 + Mockito + MockMvc`) con **0 fallos y 0 errores**.
+- **Cobertura de Código JaCoCo:** **91% en instrucciones** y **76% en ramas** (superando el umbral contractual del 60%).
+- **Persistencia:** PostgreSQL con 17 scripts de migración secuenciales e inmutables Flyway (`V1` a `V17`).

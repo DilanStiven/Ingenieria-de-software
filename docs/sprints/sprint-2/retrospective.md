@@ -16,7 +16,7 @@
 ## 1. Revisión del Sprint Goal
 
 - **Objetivo:** consolidar el incremento del Sprint 1 con los 5 principios SOLID, patrones GoF (Strategy y Observer), pruebas con cobertura mínima del 60 %, pipeline de CI en GitHub Actions y tablero con límites WIP.
-- **Resultado:** el equipo alcanzó los objetivos técnicos satisfactoriamente: los patrones Strategy y Observer están integrados en producción, el pipeline de CI en Java 17 está activo en verde, y la cobertura JaCoCo superó el umbral requerido alcanzando un 80,26 % de instrucciones (véase [`sprint-2-review.md`](sprint-2-review.md)).
+- **Resultado:** el equipo alcanzó los objetivos técnicos satisfactoriamente: los patrones Strategy y Observer están integrados en producción, el pipeline de CI en Java 17 está activo en verde, y la cobertura JaCoCo superó el umbral requerido alcanzando un 80,26 % de instrucciones (véase [`review.md`](review.md)).
 - **Qué ayudó:** el diseño arquitectónico previo en 4 capas MVC, el modelado formal de datos (MER y DER en 3FN), la especificación IEEE 29148 y la disciplina de pruebas automatizadas con JUnit 5 y Mockito.
 - **Qué dificultó el resultado:** desfases en la gestión de versiones (actualización automática no planificada a Java 25 que requirió reversión controlada a Java 17 en el PR #60), cuellos de botella iniciales en la aprobación de Pull Requests y la necesidad de supervisión rigurosa sobre el código asistido por IA.
 

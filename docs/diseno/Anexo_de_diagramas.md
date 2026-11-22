@@ -202,3 +202,170 @@ erDiagram
 ![Figura 14. Mockup: Lista de ofertas](images/diagrama-14-mockup-lista-ofertas.png)
 
 *Figura 14. Mockup: Lista de ofertas*
+
+## Diagramas contrastados con la implementacion actual
+
+Los siguientes diagramas describen el código presente en el repositorio, no todos los detalles de
+las capturas de referencia. Los flujos de publicación y pagos tienen implementaciones equivalentes,
+pero usan el modelo JPA vigente (`Agricultor`, `Producto`, `Pedido` y `OrdenLogistica`) en vez de las
+entidades académicas `Finca`, `Cosecha`, `Oferta` y `Carrito`. Las imágenes de componentes y despliegue
+compartidas se documentan con sus diferencias respecto al código.
+
+### Flujo implementado: publicar producto (HU-02)
+
+<!-- mermaid-checked: no \n, no em-dash/en-dash, no {} in labels, subgraphs are id["label"], arrows are -->|"label"|, all subgraphs closed by end, ids unique -->
+~~~mermaid
+flowchart TD
+    H2Client["Cliente HTTP"]
+    H2Jwt["JwtAuthenticationFilter valida Bearer JWT"]
+    H2Controller["ProductoController POST /api/v1/productos"]
+    H2Service["ProductoService valida fecha no anterior a hoy"]
+    H2FarmerRepo["AgricultorRepository carga agricultor del token"]
+    H2ProductRepo["ProductoRepository guarda producto"]
+    H2DB[("PostgreSQL tabla productos")]
+    H2Response["HTTP 201 ProductoResponseDTO"]
+    H2Event["ProductoPublicadoEvent"]
+    H2Listener["ProductoPublicadoListener registra evento"]
+
+    H2Client -->|"token y datos del producto"| H2Jwt
+    H2Jwt -->|"identidad autenticada"| H2Controller
+    H2Controller -->|"delegacion"| H2Service
+    H2Service -->|"valida propietario"| H2FarmerRepo
+    H2FarmerRepo -->|"consulta JPA"| H2DB
+    H2Service -->|"persiste producto"| H2ProductRepo
+    H2ProductRepo -->|"INSERT"| H2DB
+    H2ProductRepo -->|"producto guardado"| H2Service
+    H2Service -->|"publica evento"| H2Event
+    H2Event -->|"notifica observador"| H2Listener
+    H2Service -->|"respuesta creada"| H2Response
+    H2Response -->|"HTTP 201"| H2Client
+~~~
+
+**Diferencia con la captura:** la validación de propiedad consulta `AgricultorRepository` usando el ID
+del JWT; no existe `FincaRepository`. La persistencia escribe en `productos`, no en `ofertas_cosecha`.
+La fecha se valida para que no sea anterior al día actual. El evento del producto se registra en log;
+no crea una oferta separada.
+
+### Flujo implementado: contacto, pago y orden logística
+
+<!-- mermaid-checked: no \n, no em-dash/en-dash, no {} in labels, subgraphs are id["label"], arrows are -->|"label"|, all subgraphs closed by end, ids unique -->
+~~~mermaid
+flowchart TD
+    PClient["Cliente API"]
+    PContactController["ContactoController POST /api/v1/contacto/mensaje"]
+    PContactService["ContactoService valida producto y cantidad"]
+    POrder["PedidoRepository crea pedido pendiente"]
+    PMessage["ContactoMensajeRepository guarda mensaje"]
+    PEvent["SolicitudContactoCreadaEvent"]
+    PListener["SolicitudContactoCreadaListener"]
+    PNotification["NotificacionService guarda notificacion"]
+    PNotificationRepo["NotificacionRepository"]
+    PContactResponse["HTTP 200 confirmacion"]
+    PPaymentController["PagoController POST /api/v1/pagos"]
+    PPaymentService["PagoService procesa pago"]
+    PGateway["PasarelaPagoSimulada"]
+    PApproved["Pago aprobado"]
+    PRejected["Pago rechazado"]
+    PStock["Descuenta inventario"]
+    PPurchase["Guarda Pago y OrdenCompra"]
+    PLogistics["OrdenLogisticaService crea orden"]
+    PWallet["BilleteraService acredita agricultor"]
+    PRetry["Conserva pedido y fecha limite de 15 minutos"]
+    PDB[("PostgreSQL")]
+
+    PClient -->|"solicita contacto"| PContactController
+    PContactController -->|"delegacion"| PContactService
+    PContactService -->|"guarda"| POrder
+    PContactService -->|"guarda"| PMessage
+    PContactService -->|"publica evento"| PEvent
+    PEvent -->|"transaccion antes del commit"| PListener
+    PListener -->|"registra"| PNotification
+    PNotification -->|"persiste"| PNotificationRepo
+    PContactService -->|"confirmacion"| PContactResponse
+    PContactResponse -->|"HTTP 200"| PClient
+    PClient -->|"inicia pago del pedido"| PPaymentController
+    PPaymentController -->|"delegacion"| PPaymentService
+    PPaymentService -->|"solicita resultado"| PGateway
+    PGateway -->|"aprobado"| PApproved
+    PGateway -->|"rechazado"| PRejected
+    PApproved -->|"actualiza"| PStock
+    PApproved -->|"registra"| PPurchase
+    PApproved -->|"crea alistamiento"| PLogistics
+    PApproved -->|"acredita"| PWallet
+    PRejected -->|"mantiene para reintento"| PRetry
+    PRetry -->|"devuelve fecha limite"| PClient
+    POrder -->|"JPA"| PDB
+    PMessage -->|"JPA"| PDB
+    PNotificationRepo -->|"JPA"| PDB
+    PPaymentService -->|"JPA"| PDB
+~~~
+
+**Diferencia con la captura:** el código no tiene `CarritoRepo`, `InventarioService` ni un controlador
+de orden de compra que confirme el carrito. `OrdenLogisticaController` existe para alistamiento y
+rutas, no para confirmar compras. El pedido se crea al enviar el contacto y pasa a pagado solo cuando
+el servicio de pago aprueba. En el rechazo se informa el plazo de reintento; esta captura no representa
+ese contrato. El modelo actual tampoco define un rol de comprador separado.
+
+### Eventos Observer que existen
+
+<!-- mermaid-checked: no \n, no em-dash/en-dash, no {} in labels, subgraphs are id["label"], arrows are -->|"label"|, all subgraphs closed by end, ids unique -->
+~~~mermaid
+flowchart TD
+    EContact["ContactoService"]
+    EContactEvent["SolicitudContactoCreadaEvent"]
+    EContactListener["SolicitudContactoCreadaListener"]
+    ENotification["NotificacionService"]
+    ENotificationRepo["NotificacionRepository"]
+    EProduct["ProductoService"]
+    EProductEvent["ProductoPublicadoEvent"]
+    EProductListener["ProductoPublicadoListener"]
+    ELog["Log de aplicacion"]
+    EDB[("PostgreSQL")]
+
+    EContact -->|"publica"| EContactEvent
+    EContactEvent -->|"TransactionalEventListener antes del commit"| EContactListener
+    EContactListener -->|"persiste bandeja"| ENotification
+    ENotification -->|"guarda"| ENotificationRepo
+    ENotificationRepo -->|"JPA"| EDB
+    EProduct -->|"publica"| EProductEvent
+    EProductEvent -->|"EventListener"| EProductListener
+    EProductListener -->|"registra en log"| ELog
+~~~
+
+**Diferencia con la captura HU-13:** no se encontró un endpoint para cambiar el estado de una orden
+con `PATCH /ordenes/:id/estado` ni un evento que persista una notificacion por cambio de estado. El
+listener de producto solo registra el evento; las notificaciones persistidas corresponden a nuevas
+solicitudes de contacto.
+
+### Arquitectura y despliegue
+
+El documento canónico con los diagramas UML y el flujo de despliegue vigente está en
+[`architecture/diagramas-uml.md`](architecture/diagramas-uml.md). Los diagramas e imágenes de este
+anexo conservan el diseño académico inicial y no deben tomarse como evidencia del estado actual.
+
+<!-- mermaid-checked: no \n, no em-dash/en-dash, no {} in labels, subgraphs are id["label"], arrows are -->|"label"|, all subgraphs closed by end, ids unique -->
+~~~mermaid
+flowchart LR
+    subgraph DEPDev["Desarrollo local"]
+        DEPClient["Cliente HTTP"]
+        DEPApp["Spring Boot Java 17"]
+        DEPDatabase[("PostgreSQL local")]
+    end
+    subgraph DEPCI["Integracion continua"]
+        DEPRepo["Repositorio GitHub"]
+        DEPWorkflow["GitHub Actions"]
+        DEPBuild["Maven build tests Checkstyle JaCoCo"]
+    end
+    DEPCloud["Render Railway Neon Supabase no configurados"]
+
+    DEPClient -->|"HTTP local"| DEPApp
+    DEPApp -->|"JDBC local"| DEPDatabase
+    DEPRepo -->|"push o pull request"| DEPWorkflow
+    DEPWorkflow -->|"compila y verifica"| DEPBuild
+~~~
+
+El sistema sí cuenta con Dockerfile, perfil de staging, workflow de CD y despliegue activo en Render
+con PostgreSQL administrado por Render. El diagrama de este anexo es histórico; la topología real y
+su evidencia se documentan en [`architecture/diagramas-uml.md`](architecture/diagramas-uml.md),
+[`architecture-decisions/ADR-001-despliegue-staging-paas.md`](architecture-decisions/ADR-001-despliegue-staging-paas.md)
+y [`../sprints/sprint-3/review.md`](../sprints/sprint-3/review.md).

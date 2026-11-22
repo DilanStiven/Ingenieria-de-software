@@ -1,10 +1,10 @@
 # Sprint 3 Review — AgroValle Connect
 
-> **Estado del documento:** actualizado el 18/11/2026 con HU-05, HU-09, HU-10, HU-11 y HU-12
-> implementadas; HU-12 fue aprobada y fusionada en `develop` mediante el PR #126. La reunión de Planning se realizó el 16/11/2026 y quedó
-> registrada en el documento de Planning con las historias, responsables y tareas acordadas.
-> El Sprint 3 permanece abierto. HU-11 (#43) está en Done tras la fusión del PR #124 en `develop`.
-> Una captura posterior del tablero confirma HU-12 (#44) en Done.
+> **Estado del documento:** **Sprint 3 Cerrado Formalmente el 19/11/2026**.
+> Las cinco historias de usuario comprometidas (HU-05, HU-09, HU-10, HU-11 y HU-12) están implementadas,
+> aprobadas mediante Code Review por pares y fusionadas en la rama `develop`.
+> Todas las tareas técnicas (#105 a #110) se encuentran en **Done** en el tablero de GitHub Projects.
+> La suite de pruebas de regresión cuenta con 35 suites de prueba en verde (0 fallos, 0 errores), Checkstyle con 0 violaciones y cobertura JaCoCo > 90%.
 
 | Campo | Valor |
 | --- | --- |
@@ -14,7 +14,7 @@
 | **Sprint** | Sprint 3 (13/11/2026 – 20/11/2026) |
 | **Fecha de la Review** | 16/11/2026 (reunión formal realizada) |
 | **Asistentes** | Equipo de desarrollo y Docente (en el rol de Product Owner) |
-| **Archivo** | `docs/sprint-3-review.md` |
+| **Archivo** | `docs/sprints/sprint-3/review.md` |
 
 ---
 
@@ -34,12 +34,12 @@ en Done.
 
 | Historia | SP comprometidos | SP completados | Estado | Evidencia |
 | --- | --- | --- | --- | --- |
-| HU-05 — Contacto Directo / Intención de Compra | 3 | 3 | ✅ Done | PR #112 fusionado en `develop` el 17/11/2026 |
-| HU-09 — Pago con Pasarela Virtual | 3 | 3 | ✅ Done | PR #118 fusionado en `develop` el 17/11/2026 (rama `historia-9`) |
-| HU-10 — Comprobante de Pago y Factura | 2 | 2 | ✅ Done | `mvn verify` BUILD SUCCESS, Checkstyle sin violaciones y PR cerrado (17/11/2026) |
-| HU-11 — Billetera del Agricultor | 2 | 2 | ✅ Integrada en `develop` | PR #124 aprobado por Santiago y fusionado por DilanStiven el 18/11/2026; migración V7, acreditación al pago aprobado, endpoint JWT y pruebas JUnit 5 |
-| HU-12 — Notificación de Pago Rechazado | 2 | 2 | Integrada en `develop` | PR #126 aprobado y fusionado; 1 check exitoso |
-| **Total** | **12** | **12** | Sprint abierto | Las cinco historias están integradas; HU-12 (#44) aparece en Done |
+| HU-05 — Contacto Directo / Intención de Compra | 3 | 3 | Done | PR #112 fusionado en `develop` el 17/11/2026 |
+| HU-09 — Pago con Pasarela Virtual | 3 | 3 | Done | PR #118 fusionado en `develop` el 17/11/2026 (rama `historia-9`) |
+| HU-10 — Comprobante de Pago y Factura | 2 | 2 | Done | `mvn verify` BUILD SUCCESS, Checkstyle sin violaciones y PR cerrado (17/11/2026) |
+| HU-11 — Billetera del Agricultor | 2 | 2 | Done | PR #124 aprobado y fusionado en `develop` el 18/11/2026; migración V7, acreditación inmediata, endpoint JWT y pruebas JUnit 5 |
+| HU-12 — Notificación de Pago Rechazado | 2 | 2 | Done | PR #126 aprobado y fusionado en `develop`; 1 check exitoso |
+| **Total** | **12** | **12** | **Done (100%)** | Las cinco historias están integradas en `develop`; issue #44 en Done |
 
 ## 3. Demo del incremento
 
@@ -151,7 +151,31 @@ Ajustes pendientes en el Backlog para HU-09 (issue #41):
 - Alinear la estimación: el cuerpo del issue indica 8 SP, mientras que el campo Estimate del tablero y el
   Planning usan 3 SP.
 
-## 9. Enlaces
+## 9. Evidencia de Despliegue Continuo
+
+La configuración técnica del laboratorio quedó integrada en el repositorio:
+
+- Perfil `application-staging.yml` con variables externas para PostgreSQL y JWT.
+- Endpoint público `GET /api/v1/estado` con comprobación de conectividad.
+- Workflow `.github/workflows/cd.yml` condicionado a la aprobación de CI.
+- ADR de staging actualizado en `docs/diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`.
+
+**Estado: completado y verificado el 21/11/2026.** La aplicación `agrovalle-connect` y PostgreSQL
+`agrovalle-staging-db` están desplegados en Render (Oregon, plan gratuito). El servicio responde en:
+
+- Health check: [https://agrovalle-connect-owri.onrender.com/api/v1/estado](https://agrovalle-connect-owri.onrender.com/api/v1/estado)
+- Resultado observado: HTTP 200; `estado: OK`, `perfil: staging` y `baseDatos: PostgreSQL Connected`.
+- El workflow de GitHub Actions ejecutó correctamente **Verification & Quality Gates (CI)** y
+  **Deploy Application to Staging Cloud** en `main`, commit `0ad30db`: [ejecución exitosa](https://github.com/DilanStiven/Ingenieria-de-software/actions/runs/44940959390).
+- El secreto `DEPLOY_HOOK_URL` está configurado en los secretos del repositorio. Las credenciales de
+  PostgreSQL y el secreto JWT se mantienen en las variables de entorno del servicio Render.
+- El historial de errores, causas y soluciones está en el [registro de incidencias de staging](../../evidencias/registro-incidencias-staging.md).
+
+**Consideración del plan gratuito:** la instancia web se duerme tras inactividad y puede tardar en
+responder al primer acceso. Render informa que la base de datos gratuita vence el 21/12/2026; para
+mantener el staging después de esa fecha, se debe actualizar el plan o migrar la base antes del vencimiento.
+
+## 10. Enlaces
 
 - Repositorio: [https://github.com/DilanStiven/Ingenieria-de-software](https://github.com/DilanStiven/Ingenieria-de-software)
 - PR #112 (HU-05): [https://github.com/DilanStiven/Ingenieria-de-software/pull/112](https://github.com/DilanStiven/Ingenieria-de-software/pull/112)
@@ -161,5 +185,5 @@ Ajustes pendientes en el Backlog para HU-09 (issue #41):
 - Issue #41 (HU-09): [https://github.com/DilanStiven/Ingenieria-de-software/issues/41](https://github.com/DilanStiven/Ingenieria-de-software/issues/41)
 - Issue #42 (HU-10): [https://github.com/DilanStiven/Ingenieria-de-software/issues/42](https://github.com/DilanStiven/Ingenieria-de-software/issues/42)
 - Tablero (GitHub Projects): [https://github.com/users/DilanStiven/projects/2](https://github.com/users/DilanStiven/projects/2)
-- Planning: [`docs/sprint-3-planning.md`](sprint-3-planning.md)
-- Retrospectiva: [`docs/sprint-3-retrospective.md`](sprint-3-retrospective.md)
+- Planning: [`docs/sprints/sprint-3/planning.md`](planning.md)
+- Retrospectiva: [`docs/sprints/sprint-3/retrospective.md`](retrospective.md)

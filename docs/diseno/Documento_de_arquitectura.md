@@ -114,8 +114,10 @@ sequenceDiagram
 
 ## 5. Diagrama de despliegue
 
-La imagen siguiente es una propuesta académica de topología. El despliegue local observado usa
-Java 17, Spring Boot con servidor embebido y PostgreSQL; no hay una interfaz web independiente.
+El diagrama siguiente describe el entorno local de desarrollo (Java 17, Spring Boot con servidor
+embebido y PostgreSQL); no hay una interfaz web independiente. El staging desplegado en Render se
+documenta en el diagrama canónico [`architecture/diagramas-uml.md`](architecture/diagramas-uml.md)
+y en [`architecture-decisions/ADR-001-despliegue-staging-paas.md`](architecture-decisions/ADR-001-despliegue-staging-paas.md).
 Los puertos y URL de desarrollo dependen del entorno.
 
 ```mermaid
@@ -199,7 +201,8 @@ public class OfertaMapper {
 
 **Solución:** el contenedor de Spring crea una única instancia (singleton) de cada componente (@Service, @Repository, @RestController, @Component) y la inyecta por constructor donde se necesita. La clase declara sus dependencias y no las crea.
 
-**Dónde se aplica:** en todas las capas; el ejemplo muestra el servicio y el controlador.
+**Dónde se aplica:** en las capas de servicios y controladores mediante inyección por constructor.
+`PagoService` también inyecta `OrdenLogisticaService` por constructor.
 
 ```java
 @Service
@@ -274,7 +277,7 @@ implementadas en esta copia del repositorio.
 |---|---|---|---|
 | RF-01 | Publicar producto agrícola | El agricultor autenticado puede publicar un producto agrícola. | Implementado en `POST /api/v1/productos`; retorna HTTP 201 con un `ProductoResponseDTO`. |
 | RF-02 | Registrar oferta sobre una cosecha | El agricultor publica una cosecha ya registrada como oferta de venta. | Diseño inicial; no hay entidades `Cosecha`/`Oferta` ni endpoint `/api/ofertas` en el código actual. |
-| RF-03 | Inicio de sesión con contraseña | El agricultor autentica una cuenta existente con correo y contraseña. | Mockup de diseño; no hay endpoint de login ni credenciales de correo/contraseña en el modelo actual. |
+| RF-03 | Inicio de sesión con contraseña | El agricultor autentica una cuenta existente con correo y contraseña. | Implementado: `POST /api/v1/auth/login`; el registro requiere correo y contraseña, las contraseñas se almacenan con BCrypt y el token JWT dura 24 horas. |
 
 ### Requisitos No Funcionales
 - **RNF-01 (Seguridad):** Autenticación basada en JWT para endpoints protegidos.
