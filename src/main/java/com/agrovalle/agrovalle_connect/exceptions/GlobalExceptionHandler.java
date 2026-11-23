@@ -101,6 +101,18 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja consultas de agricultores inexistentes.
+     *
+     * @param ex excepción lanzada por el servicio
+     * @return respuesta HTTP 404
+     */
+    @ExceptionHandler(AgricultorNoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> manejarAgricultorNoEncontrado(
+            final AgricultorNoEncontradoException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Maneja parámetros de solicitud inválidos.
      *
      * @param ex excepción de validación

@@ -48,6 +48,9 @@ class ResenaServiceTest {
     @Mock
     private AgricultorRepository agricultorRepository;
 
+    @Mock
+    private ReputacionService reputacionService;
+
     @InjectMocks
     private ResenaService resenaService;
 
@@ -66,8 +69,8 @@ class ResenaServiceTest {
             resena.setId(55L);
             return resena;
         });
-        when(resenaRepository.calcularPromedioPorAgricultor(AGRICULTOR_ID))
-                .thenReturn(4.5D);
+        when(reputacionService.calcularPromedioEstrellas(AGRICULTOR_ID))
+                .thenReturn(new BigDecimal("4.50"));
 
         ResenaRequestDTO request = new ResenaRequestDTO();
         request.setIdOrdenCompra(ORDEN_ID);
@@ -148,8 +151,8 @@ class ResenaServiceTest {
             resena.setId(56L);
             return resena;
         });
-        when(resenaRepository.calcularPromedioPorAgricultor(AGRICULTOR_ID))
-                .thenReturn(1.0D);
+        when(reputacionService.calcularPromedioEstrellas(AGRICULTOR_ID))
+                .thenReturn(new BigDecimal("1.00"));
 
         ResenaResponseDTO response = resenaService.guardar(
                 solicitud(1, null), COMPRADOR_ID);
