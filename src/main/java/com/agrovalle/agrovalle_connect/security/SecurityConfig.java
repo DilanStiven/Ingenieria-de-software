@@ -56,6 +56,9 @@ public class SecurityConfig {
     /** Ruta para consultar las notificaciones del agricultor. */
     private static final String NOTIFICACIONES_PATH = "/api/v1/notificaciones";
 
+    /** Ruta para guardar calificaciones de órdenes entregadas. */
+    private static final String RESENAS_PATH = "/api/v1/resenas";
+
     private final JwtService jwtService;
 
     /**
@@ -94,6 +97,9 @@ public class SecurityConfig {
                     .hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.GET, NOTIFICACIONES_PATH)
                     .hasRole("AGRICULTOR")
+                .requestMatchers(HttpMethod.POST, RESENAS_PATH).authenticated()
+                .requestMatchers(HttpMethod.POST, ORDENES_PATH + "/*/resena")
+                    .authenticated()
                 .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers(HttpMethod.POST, ORDENES_PATH)

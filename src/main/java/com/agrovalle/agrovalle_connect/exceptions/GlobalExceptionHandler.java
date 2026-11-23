@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ResenaInvalidaException.class)
+    public ResponseEntity<Map<String, String>> manejarResenaInvalida(
+            final ResenaInvalidaException ex) {
+        return respuestaDeError(ex.getMessage(), ex.getStatus());
+    }
+
     /**
      * Maneja el caso de cédula duplicada.
      *
