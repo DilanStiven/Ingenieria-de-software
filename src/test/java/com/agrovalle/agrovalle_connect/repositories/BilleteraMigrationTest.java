@@ -28,11 +28,19 @@ class BilleteraMigrationTest {
 
         flyway.migrate();
 
+ HU13
         assertEquals("19", flyway.info().current().getVersion().getVersion());
         assertEquals(1, contarTabla(DATABASE_FRESH, "BILLETERA"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "NOTIFICACION"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "ORDEN_LOGISTICA"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "RESENA"));
+
+        assertEquals("18", flyway.info().current().getVersion().getVersion());
+        assertEquals(1, contarTabla(DATABASE_FRESH, "BILLETERA"));
+        assertEquals(1, contarTabla(DATABASE_FRESH, "NOTIFICACION"));
+        assertEquals(1, contarTabla(DATABASE_FRESH, "ORDEN_LOGISTICA"));
+        assertEquals(1, contarTabla(DATABASE_FRESH, "CALIFICACION_TRANSPORTE"));
+ develop
         assertEquals(1, contarColumna(DATABASE_FRESH, "AGRICULTOR", "CORREO"));
         assertEquals(1, contarColumna(DATABASE_FRESH, "AGRICULTOR", "PASSWORD_HASH"));
         assertEquals(1, contarColumna(DATABASE_FRESH, "RESENA", "ESTRELLAS"));
@@ -75,12 +83,17 @@ class BilleteraMigrationTest {
         Flyway flyway = configurarFlyway(DATABASE_EXISTING);
         flyway.migrate();
 
+ HU13
         assertEquals("19", flyway.info().current().getVersion().getVersion());
+
+        assertEquals("18", flyway.info().current().getVersion().getVersion());
+ develop
         assertEquals(1, contarAgricultores(DATABASE_EXISTING));
         assertEquals(1, contarCredencialesLegadasNulas(DATABASE_EXISTING));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "BILLETERA"));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "NOTIFICACION"));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "ORDEN_LOGISTICA"));
+        assertEquals(1, contarTabla(DATABASE_EXISTING, "CALIFICACION_TRANSPORTE"));
         assertEquals(CANTIDAD_LEGACY, obtenerCantidadPedido(DATABASE_EXISTING, 9L));
     }
 
