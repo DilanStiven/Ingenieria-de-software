@@ -215,7 +215,47 @@ flowchart TD
     API -->|"HTTP 200"| Cliente
 ```
 
-## 6. Componentes de la arquitectura en capas
+## 6. Secuencia: calificación del servicio de transporte (HU-14)
+
+El endpoint recibe la calificación de puntualidad y el estado de las cajas. El servicio carga el
+viaje con bloqueo, comprueba que la identidad autenticada sea el comprador del pedido asociado y
+deriva al conductor desde el vehículo asignado; el cliente no envía un identificador de conductor.
+El modelo de estados vigente solo contempla `EN_RUTA` como estado de ruta activa, por lo que este es
+el estado aceptado para registrar la calificación.
+
+```mermaid
+sequenceDiagram
+    actor Comprador
+    participant Filtro as JwtAuthenticationFilter
+    participant API as CalificacionTransporteController
+    participant Servicio as CalificacionTransporteService
+    participant Ordenes as OrdenLogisticaRepository
+    participant Calificaciones as CalificacionTransporteRepository
+    participant DB as PostgreSQL
+
+    Comprador->>Filtro: POST /api/v1/viajes/{id}/calificacion + JWT + métricas
+    Filtro->>API: identidad autenticada
+    API->>Servicio: registrar(viajeId, compradorId, puntualidad, estadoCajas)
+    Servicio->>Ordenes: buscarPorIdParaActualizar(viajeId)
+    Ordenes->>DB: cargar y bloquear orden logística
+    DB-->>Ordenes: viaje, pedido y vehículo asignado
+    Ordenes-->>Servicio: OrdenLogistica
+    Servicio->>Servicio: validar compradorId == pedido.compradorId
+    alt El comprador no coincide o el viaje no tiene pedido
+        Servicio-->>API: OrdenNoEncontradaException
+        API-->>Comprador: HTTP 404 Not Found
+    else Comprador autorizado
+        Servicio->>Servicio: validar ruta, conductor y duplicados
+        Servicio->>Calificaciones: save(calificación con conductor del vehículo)
+        Calificaciones->>DB: INSERT calificacion_transporte
+        DB-->>Calificaciones: calificación persistida
+        Calificaciones-->>Servicio: CalificacionTransporte
+        Servicio-->>API: CalificacionTransporteResponseDTO
+        API-->>Comprador: HTTP 201 Created
+    end
+```
+
+## 7. Componentes de la arquitectura en capas
 
 ```mermaid
 flowchart LR
@@ -244,7 +284,7 @@ flowchart LR
     Servicios --> Estrategias
 ```
 
-## 7. Despliegue de staging
+## 8. Despliegue de staging
 
 La aplicación y su base de datos de staging están desplegadas en Render. PostgreSQL también está
 alojado en Render; no se usa Neon. El workflow ejecuta las verificaciones antes de invocar el Deploy

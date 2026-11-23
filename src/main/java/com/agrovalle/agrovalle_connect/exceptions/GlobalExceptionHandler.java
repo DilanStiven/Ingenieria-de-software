@@ -162,6 +162,18 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja errores al registrar una calificación de transporte.
+     *
+     * @param ex error de negocio con estado HTTP explícito
+     * @return respuesta con el estado y mensaje correspondientes
+     */
+    @ExceptionHandler(CalificacionTransporteException.class)
+    public ResponseEntity<Map<String, String>> manejarCalificacionTransporte(
+            final CalificacionTransporteException ex) {
+        return respuestaDeError(ex.getMessage(), ex.getStatus());
+    }
+
+    /**
      * Maneja fechas de cosecha inválidas (anteriores a hoy).
      *
      * @param ex excepción de fecha inválida
