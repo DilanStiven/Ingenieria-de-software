@@ -53,6 +53,10 @@ public class SecurityConfig {
     private static final String CALIFICACIONES_VIAJE_PATH =
             "/api/v1/viajes/*/calificacion";
 
+    /** Ruta pública para consultar reputación de agricultores. */
+    private static final String REPUTACION_AGRICULTORES_PATH =
+            "/api/v1/agricultores/*/reputacion";
+
     /** Ruta para consultar la billetera del agricultor. */
     private static final String BILLETERA_PATH = "/api/v1/billetera";
 
@@ -93,6 +97,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, PRODUCTOS_PATH).hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.GET, PRODUCTOS_PATH).permitAll()
                 .requestMatchers(HttpMethod.GET, PRECIOS_PATH).permitAll()
+                .requestMatchers(HttpMethod.GET, REPUTACION_AGRICULTORES_PATH).permitAll()
                 .requestMatchers(HttpMethod.POST, CONTACTO_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, PAGOS_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, CALIFICACIONES_VIAJE_PATH).authenticated()

@@ -255,7 +255,42 @@ sequenceDiagram
     end
 ```
 
-## 7. Componentes de la arquitectura en capas
+## 7. Secuencia: consulta de reputación del agricultor (HU-15)
+
+La consulta es pública y comprueba primero que el agricultor exista. Luego calcula el promedio
+desde sus reseñas persistidas, lo redondea a dos decimales y devuelve `0.00` cuando todavía no
+tiene reseñas. La prueba BDD de HU-15.3 cubre diez órdenes calificadas y verifica el promedio
+resultante de `4.80`.
+
+```mermaid
+sequenceDiagram
+    actor Visitante
+    participant API as ReputacionController
+    participant Servicio as ReputacionService
+    participant Agricultores as AgricultorRepository
+    participant Resenas as ResenaRepository
+    participant DB as PostgreSQL
+
+    Visitante->>API: GET /api/v1/agricultores/{id}/reputacion
+    API->>Servicio: obtenerReputacion(agricultorId)
+    Servicio->>Agricultores: existsById(agricultorId)
+    Agricultores->>DB: comprobar agricultor
+    DB-->>Agricultores: existe / no existe
+    alt Agricultor inexistente
+        Servicio-->>API: AgricultorNoEncontradoException
+        API-->>Visitante: HTTP 404 Not Found
+    else Agricultor existente
+        Servicio->>Resenas: calcularPromedioPorAgricultor(agricultorId)
+        Resenas->>DB: AVG(estrellas) de sus reseñas
+        DB-->>Resenas: promedio o null
+        Resenas-->>Servicio: promedio
+        Servicio->>Servicio: redondear a dos decimales; null se convierte en 0.00
+        Servicio-->>API: ReputacionResponseDTO
+        API-->>Visitante: HTTP 200 OK
+    end
+```
+
+## 8. Componentes de la arquitectura en capas
 
 ```mermaid
 flowchart LR
@@ -284,7 +319,7 @@ flowchart LR
     Servicios --> Estrategias
 ```
 
-## 8. Despliegue de staging
+## 9. Despliegue de staging
 
 La aplicación y su base de datos de staging están desplegadas en Render. PostgreSQL también está
 alojado en Render; no se usa Neon. El workflow ejecuta las verificaciones antes de invocar el Deploy

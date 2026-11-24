@@ -27,7 +27,7 @@ Esta carpeta centraliza todos los artefactos de ingeniería de software, especif
 | **Operación y Evidencias** | [`evidencias/registro-incidencias-staging.md`](evidencias/registro-incidencias-staging.md) | **Registro de incidencias de staging:** síntomas, causas, soluciones y validación del despliegue en Render y GitHub Actions. |
 | **Requerimientos** | [`requirements/ieee-29148-syrs-agrovalle.md`](requirements/ieee-29148-syrs-agrovalle.md) | **Especificación de Requerimientos (SyRS):** Redacción prescriptiva formal bajo el estándar internacional ISO/IEC/IEEE 29148:2018. |
 | **Requerimientos** | [`requirements/product-backlog-bdd.md`](requirements/product-backlog-bdd.md) | **Product Backlog BDD:** 15 Historias de Usuario priorizadas con MoSCoW, estimadas con Fibonacci y especificadas con escenarios *Given-When-Then* (GWT). |
-| **Arquitectura UML** | [`diseno/architecture/diagramas-uml.md`](diseno/architecture/diagramas-uml.md) | **Diagramas UML:** cuatro secuencias, dos colaboraciones, componentes y despliegue; el documento identifica las diferencias entre el flujo solicitado y el código vigente. |
+| **Arquitectura UML** | [`diseno/architecture/diagramas-uml.md`](diseno/architecture/diagramas-uml.md) | **Diagramas UML:** cinco secuencias, dos colaboraciones, componentes y despliegue; el documento identifica las diferencias entre el flujo solicitado y el código vigente. |
 | **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`](diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md) | **ADR-001:** Decisión implementada de Render y PostgreSQL gestionado para el ambiente de staging. |
 | **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md`](diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md) | **ADR-002:** Estrategia propuesta de despliegue en producción con Zero-Downtime y alta disponibilidad. |
 | **Métricas Ágiles** | [`metrics/sprint-metrics-corte3.md`](metrics/sprint-metrics-corte3.md) | **Reporte de Métricas de Flujo (Corte 3):** Incluye tablas de Velocity, Burndown, CFD y Lead/Cycle Time; falta completar y respaldar los registros diarios y los gráficos exigidos. |
@@ -81,6 +81,6 @@ Los artefactos de arquitectura y diseño se mantienen bajo `docs/diseno/`, segú
 
 - **Plataforma:** Java 17 LTS (Eclipse Temurin) con Spring Boot 4.1.1.
 - **Control de Calidad:** Checkstyle (Google Java Style) con **0 violaciones estáticas**.
-- **Pruebas Automatizadas:** **38 clases de pruebas** (`JUnit 5 + Mockito + MockMvc`); consultar las ejecuciones recientes para resultados.
+- **Pruebas Automatizadas:** **43 clases de pruebas** (`JUnit 5 + Mockito + MockMvc`); la última ejecución registró 154 pruebas, 0 fallos y 1 omitida.
 - **Cobertura de Código JaCoCo:** **91% en instrucciones** y **76% en ramas** (superando el umbral contractual del 60%).
-- **Persistencia:** PostgreSQL con 18 scripts de migración secuenciales e inmutables Flyway (`V1` a `V18`).
+- **Persistencia:** PostgreSQL con 20 scripts de migración secuenciales e inmutables Flyway (`V1` a `V20`).
