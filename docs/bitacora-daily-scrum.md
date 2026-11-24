@@ -376,17 +376,35 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 | --- | --- | --- | --- |
 | **Dilan Castillo** | Completó HU-14.1 (migración y persistencia de calificaciones de transporte), HU-14.2 (servicio que asocia la calificación al transportista del viaje), HU-14.3 (endpoint `POST /api/v1/viajes/{id}/calificacion` protegido con JWT y validación del comprador) y HU-14.4 (prueba JUnit 5 del escenario de cuatro estrellas asociadas al conductor). La suite reportó 137 pruebas, 0 fallos y 1 omitida; Checkstyle, 0 violaciones. | Publicar HU-14 y su documentación en `origin/historia-14`. HU-15 aún no se ha iniciado. | No informado. |
 | **Carlos Rosales** | Asistió a la reunión; no se compartió un reporte individual de avance. | Sin reporte individual compartido. | No informado. |
-| **Kevin Lucumi** | Asistió a la reunión; no se compartió un reporte individual de avance. | Sin reporte individual compartido. | No informado. |
+| **Kevin Lucumi** | Completó todas las subtareas de HU-13: 13.1 (entidad `Reseña` y migración Flyway), 13.2 (`ResenaService` con validación de orden entregada, persistencia de reseña y actualización del perfil del agricultor), 13.3 (`ResenaController` con endpoint POST protegido por JWT) y 13.4 (pruebas JUnit 5 de los escenarios BDD). PR #150 listo para Code Review. Reportó 2 horas de trabajo (issue #45, Start date y Target date: 23/11/2026). | Estar disponible para apoyar al equipo en las tareas restantes del Sprint. | Ninguno. |
 
-* **Estado del tablero:** No informado. HU-14 está implementada y validada localmente, pendiente de publicación. HU-15 permanece pendiente.
+* **Estado del tablero al momento de la Daily:** HU-13 (issue #45) completada y PR #150 listo para revisión; HU-14 estaba implementada localmente y pendiente de publicación; HU-15 aún no se había iniciado.
 * **Acuerdos y acciones:**
+  * Kevin notificó al equipo vía Discord que el PR #150 (HU-13) está listo para revisión y fusión.
+  * **Actualización posterior:** adnoireph aprobó y fusionó el PR #150 en `develop` ese día con 1 check exitoso.
   * Publicar los cambios de HU-14 junto con la bitácora y la documentación técnica en `origin/historia-14`.
   * Dejar HU-15 para trabajo posterior; no se reportó como iniciada en esta sesión.
-feature/resolucion-historias-esas
 ---
 
-## 15. Sprint 4 - Daily HU-08 (Lunes 23/11/2026)
-`r`n* **Hora / Duración:** Pendiente de registro`r`n* **Canal:** Pendiente de registro formal`r`n* **Asistentes confirmados:** No se registró una reunión Scrum en las evidencias disponibles`r`n* **Motivo del registro:** actualización técnica posterior a la implementación de HU-08`r`n`r`n| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |`r`n| --- | --- | --- | --- |`r`n| **Dilan Castillo** | Implementó la migración V10, la entidad CheckpointViaje, el CheckpointService, el endpoint PATCH /api/v1/viajes/{id}/llegada y las pruebas JUnit 5/MockMvc. | Validar sobre PostgreSQL real, definir el canal de notificación al comprador y registrar el PR. | No hay validación persistente ni PR aprobado en las evidencias disponibles. |`r`n| **Carlos Rosales** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |`r`n| **Kevin Lucumi** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |`r`n| **Santiago Hurtado** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |`r`n`r`n* **Estado de calidad:** 6 pruebas enfocadas en verde y suite completa con 102 pruebas, 0 fallos y 1 omitida.`r`n* **Bloqueos:** no se registró una ejecución persistente contra PostgreSQL real ni una prueba HTTP contra el servidor.`r`n`r`n* **Acuerdos y acciones:**`r`n  * Ejecutar V10 sobre PostgreSQL antes del merge.`r`n  * Verificar acceso exclusivo del transportista asignado al endpoint de llegada.`r`n  * Definir el canal de notificación al comprador.`r`n  * Registrar el PR aprobado en el tablero y en la documentación.`r`n
+## 15. Registro técnico posterior a la Daily — HU-08 (Lunes 23/11/2026)
+
+* **Hora / Duración:** No aplica a este registro técnico; la duración reportada para la tarea fue de 30 minutos.
+* **Canal:** No informado.
+* **Asistentes confirmados:** No se registró una reunión formal para este reporte técnico.
+* **Motivo del registro:** avance técnico de HU-08, separado de las actas de reunión.
+
+| Integrante | Trabajo reportado | Validación / siguiente paso | Impedimentos |
+| --- | --- | --- | --- |
+| **Dilan Castillo** | Implementó la migración V21, la entidad `CheckpointViaje`, `CheckpointService`, el endpoint `PATCH /api/v1/viajes/{id}/llegada` y pruebas JUnit 5/MockMvc. | En el momento del reporte: 6 pruebas enfocadas; suite de 102 pruebas, 0 fallos y 1 omitida. Pendiente validar PostgreSQL y formalizar el PR. | No se registró validación persistente contra PostgreSQL. |
+| **Carlos Rosales** | Sin actualización individual registrada. | Pendiente. | No informado. |
+| **Kevin Lucumi** | Sin actualización individual registrada. | Pendiente. | No informado. |
+| **Santiago Hurtado** | Sin actualización individual registrada. | Pendiente. | No informado. |
+
+El endpoint registra el estado `EN_DESTINO` y publica el evento de llegada. Esta implementación se
+integró posteriormente en `develop`; la Review del Sprint documenta la compatibilidad pendiente
+con el requisito `ENTREGADA` de HU-13. El listener actual solo escribe un log de aplicación y el
+evento se publica sin identificador del comprador; no se verificó una notificación entregada al
+usuario.
 
 
 ### Registro posterior a la Daily — HU-15.1 (23/11/2026)
