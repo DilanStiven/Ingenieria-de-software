@@ -281,3 +281,29 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
   * Kevin notificó al equipo que el PR #112 (HU-05) está listo para revisión y fusión.
   * DalanStiven realizó el Code Review y aprobó el PR #112; fusionado en `develop` el mismo día.
   * Rama `HU05` eliminada tras el merge.
+
+---
+
+## 11. Sprint 4 — Daily #1 (Lunes 23/11/2026)
+
+* **Hora / Duración:** Pendiente de registro
+* **Canal:** Pendiente de registro formal
+* **Asistentes confirmados:** No se registró una reunión Scrum en las evidencias disponibles
+* **Motivo del registro:** actualización técnica posterior a la implementación de HU-08
+
+| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |
+| --- | --- | --- | --- |
+| **Dilan Castillo** | Se implementó HU-08 con migración V10, entidad `CheckpointViaje`, repositorio, DTO, evento de llegada, servicio protegido y endpoint `PATCH /api/v1/viajes/{id}/llegada`; se verificaron 102 pruebas con 0 fallos y 1 omitida. | Validar V10 y el endpoint contra PostgreSQL real, confirmar el canal de notificación al comprador y registrar el PR. | No se dispone de una ejecución persistente controlada ni de una aprobación formal del PR. |
+| **Carlos Rosales** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |
+| **Kevin Lucumi** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |
+| **Santiago Hurtado** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |
+
+* **Estado del tablero:** HU-08 permanece como implementación técnica completada y pendiente de validación formal.
+* **Estado de calidad:** pruebas enfocadas de checkpoints 6/6 en verde; suite completa 102 pruebas con 0 fallos y 1 omitida.
+* **Bloqueos:** ninguna integración real con PostgreSQL ni ejecución HTTP contra el servidor se registró en esta sesión.
+
+* **Acuerdos y acciones:**
+  * Ejecutar la migración V10 sobre PostgreSQL antes del merge.
+  * Verificar que un transportista asignado pueda registrar la llegada y que otro rol reciba 403.
+  * Definir si la notificación al comprador permanece interna o requiere canal externo.
+  * Registrar el PR aprobado y enlazarlo en la Review y en el Backlog.
