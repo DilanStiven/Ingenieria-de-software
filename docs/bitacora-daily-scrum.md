@@ -382,3 +382,46 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 * **Acuerdos y acciones:**
   * Publicar los cambios de HU-14 junto con la bitácora y la documentación técnica en `origin/historia-14`.
   * Dejar HU-15 para trabajo posterior; no se reportó como iniciada en esta sesión.
+feature/resolucion-historias-esas
+---
+
+## 15. Sprint 4 - Daily HU-08 (Lunes 23/11/2026)
+`r`n* **Hora / Duración:** Pendiente de registro`r`n* **Canal:** Pendiente de registro formal`r`n* **Asistentes confirmados:** No se registró una reunión Scrum en las evidencias disponibles`r`n* **Motivo del registro:** actualización técnica posterior a la implementación de HU-08`r`n`r`n| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima? | Impedimentos |`r`n| --- | --- | --- | --- |`r`n| **Dilan Castillo** | Implementó la migración V10, la entidad CheckpointViaje, el CheckpointService, el endpoint PATCH /api/v1/viajes/{id}/llegada y las pruebas JUnit 5/MockMvc. | Validar sobre PostgreSQL real, definir el canal de notificación al comprador y registrar el PR. | No hay validación persistente ni PR aprobado en las evidencias disponibles. |`r`n| **Carlos Rosales** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |`r`n| **Kevin Lucumi** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |`r`n| **Santiago Hurtado** | Pendiente de actualización individual | Pendiente de actualización individual | Pendiente |`r`n`r`n* **Estado de calidad:** 6 pruebas enfocadas en verde y suite completa con 102 pruebas, 0 fallos y 1 omitida.`r`n* **Bloqueos:** no se registró una ejecución persistente contra PostgreSQL real ni una prueba HTTP contra el servidor.`r`n`r`n* **Acuerdos y acciones:**`r`n  * Ejecutar V10 sobre PostgreSQL antes del merge.`r`n  * Verificar acceso exclusivo del transportista asignado al endpoint de llegada.`r`n  * Definir el canal de notificación al comprador.`r`n  * Registrar el PR aprobado en el tablero y en la documentación.`r`n
+
+
+### Registro posterior a la Daily — HU-15.1 (23/11/2026)
+
+* **Daily Scrum:** sesión de 15 minutos con Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan
+  Stiven Castillo.
+* **Duración reportada de la tarea:** 30 minutos.
+* **Trabajo realizado por Dilan Castillo:** implementación de `ReputacionService` para calcular
+  el promedio de estrellas desde las reseñas del agricultor, redondearlo a dos decimales y devolver
+  cero cuando aún no hay reseñas. `ResenaService` reutiliza este cálculo para actualizar el perfil
+  al registrar una nueva reseña.
+* **Validación:** se añadieron pruebas unitarias para el promedio y el caso sin reseñas. Los
+  resultados fueron 148 pruebas, 0 fallos y 1 omitida; Checkstyle finalizó con 0 violaciones.
+* **Alcance:** al cierre de esta tarea solo HU-15.1 estaba completa; la exposición del promedio en
+  perfil y catálogo se abordó posteriormente en HU-15.2.
+
+### Registro de trabajo — HU-15.2 (23/11/2026)
+
+* **Daily Scrum:** sesión de 15 minutos con Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan
+  Stiven Castillo.
+* **Duración reportada de la tarea:** 30 minutos.
+* **Trabajo realizado por Dilan Castillo:** implementación de `GET
+  /api/v1/agricultores/{id}/reputacion`, público para consulta desde el perfil y el catálogo, con
+  respuesta del promedio calculado por `ReputacionService`.
+* **Validación:** se añadieron pruebas del endpoint público, del agricultor inexistente y del
+  identificador inválido. La suite completa reportó 153 pruebas, 0 fallos y 1 omitida; Checkstyle
+  finalizó con 0 violaciones.
+
+### Registro de trabajo — HU-15.3 (23/11/2026)
+
+* **Daily Scrum:** sesión de 15 minutos con Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan
+  Stiven Castillo.
+* **Duración reportada de la tarea:** 30 minutos.
+* **Trabajo realizado por Dilan Castillo:** se añadió una prueba de integración BDD que persiste
+  diez órdenes calificadas para un agricultor y verifica que el promedio calculado por las reseñas
+  sea **4.80**.
+* **Validación:** suite completa con 154 pruebas, 0 fallos y 1 omitida; Checkstyle con 0 violaciones.
+ main

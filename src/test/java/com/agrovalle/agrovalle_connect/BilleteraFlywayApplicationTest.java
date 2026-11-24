@@ -26,7 +26,7 @@ class BilleteraFlywayApplicationTest {
 
     @Test
     void configuraFlywayYAplicaLaMigracionDeBilleteraAlIniciar() {
-        assertEquals("20", flyway.info().current().getVersion().getVersion());
+        assertEquals("21", flyway.info().current().getVersion().getVersion());
         Integer billeteras = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM information_schema.tables "
                         + "WHERE table_schema = 'PUBLIC' AND table_name = 'BILLETERA'",

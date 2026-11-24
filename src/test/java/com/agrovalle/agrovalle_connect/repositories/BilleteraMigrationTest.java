@@ -28,7 +28,7 @@ class BilleteraMigrationTest {
 
         flyway.migrate();
 
-        assertEquals("20", flyway.info().current().getVersion().getVersion());
+        assertEquals("21", flyway.info().current().getVersion().getVersion());
         assertEquals(1, contarTabla(DATABASE_FRESH, "BILLETERA"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "NOTIFICACION"));
         assertEquals(1, contarTabla(DATABASE_FRESH, "ORDEN_LOGISTICA"));
@@ -75,7 +75,7 @@ class BilleteraMigrationTest {
         Flyway flyway = configurarFlyway(DATABASE_EXISTING);
         flyway.migrate();
 
-        assertEquals("20", flyway.info().current().getVersion().getVersion());
+        assertEquals("21", flyway.info().current().getVersion().getVersion());
         assertEquals(1, contarAgricultores(DATABASE_EXISTING));
         assertEquals(1, contarCredencialesLegadasNulas(DATABASE_EXISTING));
         assertEquals(1, contarTabla(DATABASE_EXISTING, "BILLETERA"));

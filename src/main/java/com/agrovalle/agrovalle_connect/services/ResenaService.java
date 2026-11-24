@@ -12,7 +12,6 @@ import com.agrovalle.agrovalle_connect.repositories.OrdenCompraRepository;
 import com.agrovalle.agrovalle_connect.repositories.OrdenLogisticaRepository;
 import com.agrovalle.agrovalle_connect.repositories.ResenaRepository;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,21 +19,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ResenaService {
 
-    private static final int ESCALA_PROMEDIO = 2;
-
     private final ResenaRepository resenaRepository;
     private final OrdenCompraRepository ordenCompraRepository;
     private final OrdenLogisticaRepository ordenLogisticaRepository;
     private final AgricultorRepository agricultorRepository;
+    private final ReputacionService reputacionService;
 
     public ResenaService(final ResenaRepository resenas,
             final OrdenCompraRepository ordenes,
             final OrdenLogisticaRepository ordenesLogisticas,
-            final AgricultorRepository agricultores) {
+            final AgricultorRepository agricultores,
+            final ReputacionService reputacion) {
         this.resenaRepository = resenas;
         this.ordenCompraRepository = ordenes;
         this.ordenLogisticaRepository = ordenesLogisticas;
         this.agricultorRepository = agricultores;
+        this.reputacionService = reputacion;
     }
 
     @Transactional
@@ -77,12 +77,8 @@ public class ResenaService {
                 ? null : dto.getComentario().trim());
         Resena guardada = resenaRepository.save(resena);
 
-        Double promedio = resenaRepository.calcularPromedioPorAgricultor(
-                agricultor.getId());
-        BigDecimal promedioDecimal = promedio == null
-                ? BigDecimal.ZERO
-                : BigDecimal.valueOf(promedio).setScale(
-                        ESCALA_PROMEDIO, RoundingMode.HALF_UP);
+        BigDecimal promedioDecimal =
+                reputacionService.calcularPromedioEstrellas(agricultor.getId());
         agricultor.setCalificacionPromedio(promedioDecimal);
         agricultorRepository.save(agricultor);
 
