@@ -364,3 +364,57 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
   * El equipo declara formalmente el **cierre exitoso del Sprint 3**.
   * Se valida el cumplimiento estricto del Definition of Done (DoD) sobre todas las historias integradas.
   * Todo el equipo alineado para la sesión de sustentación final frente a la docente Paola Andrea Bedoya Toro.
+
+## 14. Sprint 4 — Daily #1 (Lunes 23/11/2026)
+
+* **Hora / Duración:** Hora no informada / 30 minutos, según lo reportado por Dilan.
+* **Asistentes confirmados:** Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan Stiven Castillo.
+* **Otros asistentes o ausencias:** No informados.
+* **Nota:** La duración reportada fue de 30 minutos; el formato de esta bitácora establece un máximo de 15 minutos.
+
+| Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima sesión? | Impedimentos |
+| --- | --- | --- | --- |
+| **Dilan Castillo** | Completó HU-14.1 (migración y persistencia de calificaciones de transporte), HU-14.2 (servicio que asocia la calificación al transportista del viaje), HU-14.3 (endpoint `POST /api/v1/viajes/{id}/calificacion` protegido con JWT y validación del comprador) y HU-14.4 (prueba JUnit 5 del escenario de cuatro estrellas asociadas al conductor). La suite reportó 137 pruebas, 0 fallos y 1 omitida; Checkstyle, 0 violaciones. | Publicar HU-14 y su documentación en `origin/historia-14`. HU-15 aún no se ha iniciado. | No informado. |
+| **Carlos Rosales** | Asistió a la reunión; no se compartió un reporte individual de avance. | Sin reporte individual compartido. | No informado. |
+| **Kevin Lucumi** | Asistió a la reunión; no se compartió un reporte individual de avance. | Sin reporte individual compartido. | No informado. |
+
+* **Estado del tablero:** No informado. HU-14 está implementada y validada localmente, pendiente de publicación. HU-15 permanece pendiente.
+* **Acuerdos y acciones:**
+  * Publicar los cambios de HU-14 junto con la bitácora y la documentación técnica en `origin/historia-14`.
+  * Dejar HU-15 para trabajo posterior; no se reportó como iniciada en esta sesión.
+
+### Registro posterior a la Daily — HU-15.1 (23/11/2026)
+
+* **Daily Scrum:** sesión de 15 minutos con Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan
+  Stiven Castillo.
+* **Duración reportada de la tarea:** 30 minutos.
+* **Trabajo realizado por Dilan Castillo:** implementación de `ReputacionService` para calcular
+  el promedio de estrellas desde las reseñas del agricultor, redondearlo a dos decimales y devolver
+  cero cuando aún no hay reseñas. `ResenaService` reutiliza este cálculo para actualizar el perfil
+  al registrar una nueva reseña.
+* **Validación:** se añadieron pruebas unitarias para el promedio y el caso sin reseñas. Los
+  resultados fueron 148 pruebas, 0 fallos y 1 omitida; Checkstyle finalizó con 0 violaciones.
+* **Alcance:** al cierre de esta tarea solo HU-15.1 estaba completa; la exposición del promedio en
+  perfil y catálogo se abordó posteriormente en HU-15.2.
+
+### Registro de trabajo — HU-15.2 (23/11/2026)
+
+* **Daily Scrum:** sesión de 15 minutos con Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan
+  Stiven Castillo.
+* **Duración reportada de la tarea:** 30 minutos.
+* **Trabajo realizado por Dilan Castillo:** implementación de `GET
+  /api/v1/agricultores/{id}/reputacion`, público para consulta desde el perfil y el catálogo, con
+  respuesta del promedio calculado por `ReputacionService`.
+* **Validación:** se añadieron pruebas del endpoint público, del agricultor inexistente y del
+  identificador inválido. La suite completa reportó 153 pruebas, 0 fallos y 1 omitida; Checkstyle
+  finalizó con 0 violaciones.
+
+### Registro de trabajo — HU-15.3 (23/11/2026)
+
+* **Daily Scrum:** sesión de 15 minutos con Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan
+  Stiven Castillo.
+* **Duración reportada de la tarea:** 30 minutos.
+* **Trabajo realizado por Dilan Castillo:** se añadió una prueba de integración BDD que persiste
+  diez órdenes calificadas para un agricultor y verifica que el promedio calculado por las reseñas
+  sea **4.80**.
+* **Validación:** suite completa con 154 pruebas, 0 fallos y 1 omitida; Checkstyle con 0 violaciones.

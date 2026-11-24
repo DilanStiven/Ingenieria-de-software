@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ResenaInvalidaException.class)
+    public ResponseEntity<Map<String, String>> manejarResenaInvalida(
+            final ResenaInvalidaException ex) {
+        return respuestaDeError(ex.getMessage(), ex.getStatus());
+    }
+
     /**
      * Maneja el caso de cédula duplicada.
      *
@@ -95,6 +101,18 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja consultas de agricultores inexistentes.
+     *
+     * @param ex excepción lanzada por el servicio
+     * @return respuesta HTTP 404
+     */
+    @ExceptionHandler(AgricultorNoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> manejarAgricultorNoEncontrado(
+            final AgricultorNoEncontradoException ex) {
+        return respuestaDeError(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Maneja parámetros de solicitud inválidos.
      *
      * @param ex excepción de validación
@@ -158,6 +176,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OperacionRutaException.class)
     public ResponseEntity<Map<String, String>> manejarOperacionRuta(
             final OperacionRutaException ex) {
+        return respuestaDeError(ex.getMessage(), ex.getStatus());
+    }
+
+    /**
+     * Maneja errores al registrar una calificación de transporte.
+     *
+     * @param ex error de negocio con estado HTTP explícito
+     * @return respuesta con el estado y mensaje correspondientes
+     */
+    @ExceptionHandler(CalificacionTransporteException.class)
+    public ResponseEntity<Map<String, String>> manejarCalificacionTransporte(
+            final CalificacionTransporteException ex) {
         return respuestaDeError(ex.getMessage(), ex.getStatus());
     }
 

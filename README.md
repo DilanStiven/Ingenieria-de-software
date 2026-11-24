@@ -5,7 +5,7 @@
 [![Java 17](https://img.shields.io/badge/Java-17%20(LTS)-orange?style=for-the-badge&logo=openjdk&logoColor=white)](https://adoptium.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-3FN%20Relational-blue?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Flyway Migrations](https://img.shields.io/badge/Flyway-V1%20..%20V17-red?style=for-the-badge&logo=flyway&logoColor=white)](src/main/resources/db/migration)
+[![Flyway Migrations](https://img.shields.io/badge/Flyway-V1%20..%20V20-red?style=for-the-badge&logo=flyway&logoColor=white)](src/main/resources/db/migration)
 [![Quality Standard](https://img.shields.io/badge/Standard-ISO%2FIEC%2025010-blueviolet?style=for-the-badge)](docs/dod.md)
 
 ---
@@ -76,7 +76,7 @@ agrovalle-connect/
 │       └── cd.yml                      # Pipeline de CD (Inyección de Secrets y Despliegue PaaS)
 ├── docs/
 │   ├── architecture/
-│   │   └── diagramas-uml.md            # 7 Diagramas UML consolidados en sintaxis Mermaid.js
+│   │   └── diagramas-uml.md            # 9 Diagramas UML consolidados en sintaxis Mermaid.js
 │   ├── architecture-decisions/
 │   │   ├── ADR-001-despliegue-staging-paas.md         # Registro de decisión PaaS Staging
 │   │   └── ADR-002-estrategia-despliegue-produccion.md  # Registro de decisión Producción
@@ -107,9 +107,9 @@ agrovalle-connect/
 │   │   └── resources/
 │   │       ├── application.properties  # Perfil por defecto (Desarrollo local)
 │   │       ├── application-staging.yml # Perfil desacoplado con variables de entorno
-│   │       └── db/migration/           # 17 Migraciones SQL Flyway (V1..V17)
+│   │       └── db/migration/           # 20 Migraciones SQL Flyway (V1..V20)
 │   └── test/
-│       ├── java/                       # 35 Clases de Pruebas Unitarias e Integración
+│       ├── java/                       # 43 Clases de Pruebas Unitarias e Integración
 │       └── resources/
 │           └── application-test.yml    # Configuración de pruebas H2 en memoria
 ├── checkstyle.xml                      # Reglas de estilo Google Java Style
@@ -171,7 +171,7 @@ gitGraph
 Los artefactos técnicos requeridos para la evaluación del Tercer Corte se encuentran enlazados a continuación:
 
 - **Contrato de Calidad (DoD):** [`docs/dod.md`](docs/dod.md) (Checklist completo bajo norma ISO/IEC 25010).
-- **Diagramas UML Consolidados:** [`docs/architecture/diagramas-uml.md`](docs/architecture/diagramas-uml.md) (Secuencia HU-07, HU-02, HU-03; Colaboración HU-12, HU-13; Componentes MVC 4 capas; Despliegue PaaS).
+- **Diagramas UML Consolidados:** [`docs/diseno/architecture/diagramas-uml.md`](docs/diseno/architecture/diagramas-uml.md) (Secuencias HU-07, HU-02, HU-03 y HU-14; colaboración, componentes MVC y despliegue PaaS).
 - **Reporte de Métricas Ágiles de Flujo:** [`docs/metrics/sprint-metrics-corte3.md`](docs/metrics/sprint-metrics-corte3.md) (Velocity S1 a S3, Burndown diario Sprint 3, CFD con WIP limits, Lead Time 4.2d, Cycle Time 1.8d).
 - **Especificación de Requerimientos (SyRS):** [`docs/requirements/ieee-29148-syrs-agrovalle.md`](docs/requirements/ieee-29148-syrs-agrovalle.md) (Norma ISO/IEC/IEEE 29148:2018).
 - **Product Backlog BDD (15 Historias de Usuario):** [`docs/requirements/product-backlog-bdd.md`](docs/requirements/product-backlog-bdd.md).
@@ -197,6 +197,8 @@ Los artefactos técnicos requeridos para la evaluación del Tercer Corte se encu
 | **Notificaciones** | `GET` | `/api/v1/notificaciones` | Bearer `AGRICULTOR` | Listado de alertas y solicitudes de compradores. |
 | **Logística** | `POST` | `/api/v1/ordenes` | Bearer `AGRICULTOR` | Creación de orden logística y cálculo de tarifa Strategy. |
 | **Logística** | `PATCH` | `/api/v1/ordenes/{id}/alistado` | Bearer `AGRICULTOR` | Transición de orden a lista para despacho. |
+| **Calificación de transporte** | `POST` | `/api/v1/viajes/{id}/calificacion` | JWT; comprador asociado al pedido | Registra puntualidad (1–5) y estado de cajas; asocia la calificación al transportista asignado. |
+| **Reputación** | `GET` | `/api/v1/agricultores/{id}/reputacion` | Público | Consulta el promedio de estrellas del agricultor para perfil y catálogo. |
 
 ---
 

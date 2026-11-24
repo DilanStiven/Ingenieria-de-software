@@ -46,11 +46,22 @@ public class SecurityConfig {
     /** Ruta para procesar pagos de pedidos. */
     private static final String PAGOS_PATH = "/api/v1/pagos";
 
+    /** Ruta para registrar calificaciones de transporte. */
+    private static final String CALIFICACIONES_VIAJE_PATH =
+            "/api/v1/viajes/*/calificacion";
+
+    /** Ruta pública para consultar reputación de agricultores. */
+    private static final String REPUTACION_AGRICULTORES_PATH =
+            "/api/v1/agricultores/*/reputacion";
+
     /** Ruta para consultar la billetera del agricultor. */
     private static final String BILLETERA_PATH = "/api/v1/billetera";
 
     /** Ruta para consultar las notificaciones del agricultor. */
     private static final String NOTIFICACIONES_PATH = "/api/v1/notificaciones";
+
+    /** Ruta para guardar calificaciones de órdenes entregadas. */
+    private static final String RESENAS_PATH = "/api/v1/resenas";
 
     private final JwtService jwtService;
 
@@ -83,12 +94,17 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, PRODUCTOS_PATH).hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.GET, PRODUCTOS_PATH).permitAll()
                 .requestMatchers(HttpMethod.GET, PRECIOS_PATH).permitAll()
+                .requestMatchers(HttpMethod.GET, REPUTACION_AGRICULTORES_PATH).permitAll()
                 .requestMatchers(HttpMethod.POST, CONTACTO_PATH).authenticated()
                 .requestMatchers(HttpMethod.POST, PAGOS_PATH).authenticated()
+                .requestMatchers(HttpMethod.POST, CALIFICACIONES_VIAJE_PATH).authenticated()
                 .requestMatchers(HttpMethod.GET, BILLETERA_PATH + "/**")
                     .hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.GET, NOTIFICACIONES_PATH)
                     .hasRole("AGRICULTOR")
+                .requestMatchers(HttpMethod.POST, RESENAS_PATH).authenticated()
+                .requestMatchers(HttpMethod.POST, ORDENES_PATH + "/*/resena")
+                    .authenticated()
                 .requestMatchers(HttpMethod.POST, VEHICULOS_PATH)
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers(HttpMethod.POST, ORDENES_PATH)

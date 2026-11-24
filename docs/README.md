@@ -23,11 +23,11 @@ Esta carpeta centraliza todos los artefactos de ingeniería de software, especif
 | **Calidad y Contratos** | [`dod.md`](dod.md) | **Definition of Done (DoD):** Contrato de calidad técnica no negociable basado en el modelo ISO/IEC 25010, firmado por la célula Scrum. |
 | **Calidad y Auditoría** | [`clean-code-review.md`](clean-code-review.md) | **Clean Code Review:** Hallazgos de tamaño de método e inyección corregidos; pendiente una nueva aprobación de pares. |
 | **Gobernanza y Flujo** | [`kanban-policies.md`](kanban-policies.md) | **Políticas Kanban / Scrumban:** Políticas explícitas de entrada/salida por columna, WIP Limits (*In Progress: 3*, *Code Review: 2*) y Ley de Little. |
-| **Gobernanza y Flujo** | [`bitacora-daily-scrum.md`](bitacora-daily-scrum.md) | **Bitácora de Daily Scrums:** Registro cronológico de sincronización diaria y resolución de impedimentos (Sprints 1, 2 y 3). |
+| **Gobernanza y Flujo** | [`bitacora-daily-scrum.md`](bitacora-daily-scrum.md) | **Bitácora de Daily Scrums:** Registro cronológico de sincronización diaria y resolución de impedimentos (Sprints 1 a 4). |
 | **Operación y Evidencias** | [`evidencias/registro-incidencias-staging.md`](evidencias/registro-incidencias-staging.md) | **Registro de incidencias de staging:** síntomas, causas, soluciones y validación del despliegue en Render y GitHub Actions. |
 | **Requerimientos** | [`requirements/ieee-29148-syrs-agrovalle.md`](requirements/ieee-29148-syrs-agrovalle.md) | **Especificación de Requerimientos (SyRS):** Redacción prescriptiva formal bajo el estándar internacional ISO/IEC/IEEE 29148:2018. |
 | **Requerimientos** | [`requirements/product-backlog-bdd.md`](requirements/product-backlog-bdd.md) | **Product Backlog BDD:** 15 Historias de Usuario priorizadas con MoSCoW, estimadas con Fibonacci y especificadas con escenarios *Given-When-Then* (GWT). |
-| **Arquitectura UML** | [`diseno/architecture/diagramas-uml.md`](diseno/architecture/diagramas-uml.md) | **Diagramas UML:** tres secuencias, dos colaboraciones, componentes y despliegue; el documento identifica las diferencias entre el flujo solicitado y el código vigente. |
+| **Arquitectura UML** | [`diseno/architecture/diagramas-uml.md`](diseno/architecture/diagramas-uml.md) | **Diagramas UML:** cinco secuencias, dos colaboraciones, componentes y despliegue; el documento identifica las diferencias entre el flujo solicitado y el código vigente. |
 | **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`](diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md) | **ADR-001:** Decisión implementada de Render y PostgreSQL gestionado para el ambiente de staging. |
 | **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md`](diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md) | **ADR-002:** Estrategia propuesta de despliegue en producción con Zero-Downtime y alta disponibilidad. |
 | **Métricas Ágiles** | [`metrics/sprint-metrics-corte3.md`](metrics/sprint-metrics-corte3.md) | **Reporte de Métricas de Flujo (Corte 3):** Incluye tablas de Velocity, Burndown, CFD y Lead/Cycle Time; falta completar y respaldar los registros diarios y los gráficos exigidos. |
@@ -81,6 +81,6 @@ Los artefactos de arquitectura y diseño se mantienen bajo `docs/diseno/`, segú
 
 - **Plataforma:** Java 17 LTS (Eclipse Temurin) con Spring Boot 4.1.1.
 - **Control de Calidad:** Checkstyle (Google Java Style) con **0 violaciones estáticas**.
-- **Pruebas Automatizadas:** **35 suites de pruebas en verde** (`JUnit 5 + Mockito + MockMvc`) con **0 fallos y 0 errores**.
+- **Pruebas Automatizadas:** **43 clases de pruebas** (`JUnit 5 + Mockito + MockMvc`); la última ejecución registró 154 pruebas, 0 fallos y 1 omitida.
 - **Cobertura de Código JaCoCo:** **91% en instrucciones** y **76% en ramas** (superando el umbral contractual del 60%).
-- **Persistencia:** PostgreSQL con 17 scripts de migración secuenciales e inmutables Flyway (`V1` a `V17`).
+- **Persistencia:** PostgreSQL con 20 scripts de migración secuenciales e inmutables Flyway (`V1` a `V20`).

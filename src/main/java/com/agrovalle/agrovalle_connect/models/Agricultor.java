@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.math.BigDecimal;
 
 /**
  * Entidad que representa un agricultor registrado en AgroValle Connect.
@@ -20,6 +21,8 @@ public class Agricultor {
     private static final int CEDULA_LONGITUD_MAXIMA = 20;
     private static final int CORREO_LONGITUD_MAXIMA = 254;
     private static final int PASSWORD_HASH_LONGITUD_MAXIMA = 100;
+    private static final int CALIFICACION_PRECISION = 3;
+    private static final int CALIFICACION_ESCALA = 2;
 
     /**
      * Identificador único del agricultor.
@@ -57,6 +60,10 @@ public class Agricultor {
      */
     @Column(name = "password_hash", length = PASSWORD_HASH_LONGITUD_MAXIMA)
     private String passwordHash;
+
+    @Column(name = "calificacion_promedio",
+            precision = CALIFICACION_PRECISION, scale = CALIFICACION_ESCALA)
+    private BigDecimal calificacionPromedio = BigDecimal.ZERO;
 
     /**
      * Obtiene el identificador del agricultor.
@@ -164,5 +171,23 @@ public class Agricultor {
      */
     public void setPasswordHash(final String passwordHashValue) {
         this.passwordHash = passwordHashValue;
+    }
+
+    /**
+     * Obtiene la calificación promedio actual del agricultor.
+     *
+     * @return promedio de estrellas
+     */
+    public BigDecimal getCalificacionPromedio() {
+        return calificacionPromedio;
+    }
+
+    /**
+     * Establece la calificación promedio recalculada.
+     *
+     * @param calificacionPromedioValue promedio de estrellas
+     */
+    public void setCalificacionPromedio(final BigDecimal calificacionPromedioValue) {
+        this.calificacionPromedio = calificacionPromedioValue;
     }
 }
