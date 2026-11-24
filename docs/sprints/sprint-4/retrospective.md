@@ -20,8 +20,9 @@
 
 El Grupo 5 se comprometió a entregar 9 Story Points distribuidos en cuatro historias de usuario
 (HU-08, HU-13, HU-14 y HU-15), con una capacidad estimada de 24 horas. Al 24/11/2026, las cuatro
-historias están integradas en `develop`; solo se dispone de horas reales verificables para HU-13
-(2 h). La Review y Retrospectiva formales están programadas para el 25/11/2026.
+historias están integradas en `develop`; se registraron 2 h para HU-13 y 1,5 h para HU-15. No se
+encontró duración técnica individual para HU-08 ni HU-14. La Review y Retrospectiva formales están
+programadas para el 25/11/2026.
 
 ## 2. ¿Qué salió bien? (Continue)
 
@@ -36,14 +37,16 @@ historias están integradas en `develop`; solo se dispone de horas reales verifi
 | # | Observación (tercera persona) | Impacto | Evidencia |
 | --- | --- | --- | --- |
 | 1 | El merge de `develop` en HU-13 dejó marcadores de conflicto en pruebas y colisión de versiones Flyway; el check de ese commit falló | CI no pudo compilar las pruebas hasta resolver los marcadores y asignar versiones de migración únicas | PR #150 — commit `2a3d66f`; corrección `8b34b00` |
-| 2 | No se registraron otros problemas antes de la sesión formal | — | — |
+| 2 | La primera ejecución de la prueba de integración de HU-15 falló al compilar porque faltaba una referencia al repositorio en el fixture | Se tuvo que restaurar la referencia y repetir la prueba; la ejecución posterior pasó | Registro técnico de HU-15.3 en la bitácora |
+| 3 | No se registraron otros problemas antes de la sesión formal | — | — |
 
 ## 4. ¿Qué se debería empezar a hacer? (Start)
 
 | # | Propuesta (tercera persona) | Motivación |
 | --- | --- | --- |
 | 1 | Correr `./mvnw verify` después de integrar cambios de `develop` y antes de publicar | Detectar marcadores de conflicto, errores de compilación y colisiones entre migraciones antes de CI |
-| 2 | No se registraron otras propuestas antes de la sesión formal | — |
+| 2 | Verificar que los fixtures de integración conserven sus dependencias de repositorio antes de ejecutar la suite | Evitar fallos de compilación ajenos al comportamiento bajo prueba, como el ocurrido durante HU-15.3 |
+| 3 | No se registraron otras propuestas antes de la sesión formal | — |
 
 ## 5. Seguimiento de las acciones del Sprint 3 y de los riesgos del Planning
 
@@ -59,7 +62,7 @@ historias están integradas en `develop`; solo se dispone de horas reales verifi
 | Métrica | Valor |
 | --- | --- |
 | Story Points comprometidos / integrados | 9 / 9 (HU-08, HU-13, HU-14 y HU-15) |
-| Horas planificadas / reales | Según el Planning; 2 h verificables para HU-13; resto sin dato |
+| Horas planificadas / reales | Según el Planning; 3,5 h verificables (HU-13: 2 h; HU-15: 1,5 h); HU-08 y HU-14 sin dato |
 | Dailies registradas | 1 acta completa; la bitácora menciona otras sesiones y registra aparte avances técnicos |
 | Pull Requests fusionados | 4 (PR #148, #150, #151 y #152; HU-08 se integró además mediante `63c972b`) |
 | Veces que se superó un WIP Limit | No hay registro disponible |

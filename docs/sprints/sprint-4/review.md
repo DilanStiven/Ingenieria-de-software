@@ -75,7 +75,11 @@ una ejecución contra un servidor PostgreSQL real.
 
 | # | Escenario BDD | Petición | Resultado esperado | Resultado real | Evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Consulta de reputación | `GET /api/v1/agricultores/{id}/reputacion` | Devolver promedio calculado; devolver 0 si no existen reseñas | Cubierto por `ReputacionControllerTest`, `ReputacionServiceTest` y `ReputacionServiceIntegrationTest` | PR #151 |
+| 1 | Consulta de reputación | `GET /api/v1/agricultores/{id}/reputacion` | Devolver promedio calculado; devolver 0 si no existen reseñas | Cubierto por `ReputacionControllerTest`, `ReputacionServiceTest` y `ReputacionServiceIntegrationTest`; la integración persiste diez órdenes calificadas y verifica el promedio 4.80 | PR #151 |
+
+Durante la primera ejecución de la prueba de integración de HU-15, la compilación falló porque el
+fixture no conservaba la referencia al repositorio de reseñas. Se restauró la referencia y la prueba
+pasó; el fallo fue del fixture de prueba, no del comportamiento de la aplicación.
 
 ## 4. Calidad del incremento
 
@@ -95,8 +99,8 @@ una ejecución contra un servidor PostgreSQL real.
 | HU-08 | Pendiente | Pendiente | Pendiente | No se encontró un registro de horas verificable |
 | HU-13 | 2,5 | 2 | −0,5 h | Kevin reportó 2 horas en issue #45 |
 | HU-14 | Pendiente | Pendiente | Pendiente | No se encontró un registro de horas verificable |
-| HU-15 | Pendiente | Pendiente | Pendiente | No se encontró un registro de horas verificable |
-| **Total** | **9** | **Pendiente** | Pendiente | Capacidad estimada: 24 h |
+| HU-15 | Pendiente | 1,5 | Pendiente | Tres tareas de 30 minutos cada una, según la bitácora; no se encontró el dato de horas planificadas |
+| **Total** | **9** | **3,5 h registradas** | Pendiente | HU-13: 2 h; HU-15: 1,5 h. HU-08 y HU-14 sin duración técnica registrada; capacidad estimada: 24 h |
 
 ## 6. Trabajo no completado
 

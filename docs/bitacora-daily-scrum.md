@@ -384,6 +384,20 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
   * **Actualización posterior:** adnoireph aprobó y fusionó el PR #150 en `develop` ese día con 1 check exitoso.
   * Publicar los cambios de HU-14 junto con la bitácora y la documentación técnica en `origin/historia-14`.
   * Dejar HU-15 para trabajo posterior; no se reportó como iniciada en esta sesión.
+  * **Actualización posterior:** HU-14 se integró en `develop` mediante el PR #148 el 23/11/2026.
+
+### Registro de tareas — HU-14 (23/11/2026)
+
+| Tarea | Trabajo y evidencia | Duración técnica registrada |
+| --- | --- | --- |
+| HU-14.1 | Migración y persistencia de calificaciones de transporte. La migración se creó como V18 porque V12 ya estaba ocupada y el esquema llegaba hasta V17. | No registrada por separado |
+| HU-14.2 | Servicio que asocia la calificación con el transportista asignado al viaje. | No registrada por separado |
+| HU-14.3 | Endpoint `POST /api/v1/viajes/{id}/calificacion`, protegido con JWT y validación del comprador. | No registrada por separado |
+| HU-14.4 | Prueba JUnit 5 del escenario de calificación de cuatro estrellas asociada al conductor. | No registrada por separado |
+
+* **Validación al cierre:** 137 pruebas, 0 fallos y 1 omitida; Checkstyle, 0 violaciones.
+* **Incidencias:** no hay errores de ejecución registrados para estas tareas. La numeración V18
+  resolvió el conflicto de versión de migración antes de integrar la historia.
 ---
 
 ## 15. Registro técnico posterior a la Daily — HU-08 (Lunes 23/11/2026)
@@ -442,4 +456,10 @@ usuario.
   diez órdenes calificadas para un agricultor y verifica que el promedio calculado por las reseñas
   sea **4.80**.
 * **Validación:** suite completa con 154 pruebas, 0 fallos y 1 omitida; Checkstyle con 0 violaciones.
+* **Incidencia corregida durante la prueba:** la primera ejecución falló al compilar porque el
+  fixture no conservaba la referencia al repositorio de reseñas. Se restauró esa referencia y la
+  prueba de integración pasó; no se registró como fallo del comportamiento de la aplicación.
+* **Tiempo técnico HU-15:** 90 minutos en total (30 minutos por tarea); las tres sesiones Daily de
+  15 minutos se registran aparte.
+* **Actualización posterior:** HU-15 se integró en `develop` mediante el PR #151 el 23/11/2026.
  main
