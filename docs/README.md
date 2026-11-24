@@ -24,6 +24,7 @@ Esta carpeta centraliza todos los artefactos de ingeniería de software, especif
 | **Calidad y Auditoría** | [`clean-code-review.md`](clean-code-review.md) | **Clean Code Review:** Hallazgos de tamaño de método e inyección corregidos; pendiente una nueva aprobación de pares. |
 | **Gobernanza y Flujo** | [`kanban-policies.md`](kanban-policies.md) | **Políticas Kanban / Scrumban:** Políticas explícitas de entrada/salida por columna, WIP Limits (*In Progress: 3*, *Code Review: 2*) y Ley de Little. |
 | **Gobernanza y Flujo** | [`bitacora-daily-scrum.md`](bitacora-daily-scrum.md) | **Bitácora de Daily Scrums:** Registro cronológico de sincronización diaria y resolución de impedimentos (Sprints 1 a 4). |
+| **Metodología por Sprint** | [`sprints/sprint-4/`](sprints/sprint-4/) | **Sprint 4:** Planning, Daily Scrum, Review y Retrospectiva para HU-08, HU-13, HU-14 y HU-15. |
 | **Operación y Evidencias** | [`evidencias/registro-incidencias-staging.md`](evidencias/registro-incidencias-staging.md) | **Registro de incidencias de staging:** síntomas, causas, soluciones y validación del despliegue en Render y GitHub Actions. |
 | **Requerimientos** | [`requirements/ieee-29148-syrs-agrovalle.md`](requirements/ieee-29148-syrs-agrovalle.md) | **Especificación de Requerimientos (SyRS):** Redacción prescriptiva formal bajo el estándar internacional ISO/IEC/IEEE 29148:2018. |
 | **Requerimientos** | [`requirements/product-backlog-bdd.md`](requirements/product-backlog-bdd.md) | **Product Backlog BDD:** 15 Historias de Usuario priorizadas con MoSCoW, estimadas con Fibonacci y especificadas con escenarios *Given-When-Then* (GWT). |
@@ -54,10 +55,15 @@ docs/sprints/
 │   ├── planning.md             # Selección de HUs para refactorización SOLID y Patrones GoF
 │   ├── review.md               # Evidencias de CI en GitHub Actions y TDD (Segundo Corte)
 │   └── retrospective.md        # Compromisos de mejora del Sprint 2
-└── sprint-3/                   # Pedidos, Pagos y Staging (HU-05, HU-09..HU-12 — 12 SP)
-    ├── planning.md             # Sprint Goal de entrega final y configuración de CD
-    ├── review.md               # Evidencias de cierre 100%, demos y pruebas automatizadas
-    └── retrospective.md        # Balance final del semestre y lecciones aprendidas de ingeniería
+├── sprint-3/                   # Pedidos, Pagos y Staging (HU-05, HU-09..HU-12 — 12 SP)
+│   ├── planning.md             # Sprint Goal de entrega final y configuración de CD
+│   ├── review.md               # Evidencias de cierre 100%, demos y pruebas automatizadas
+│   └── retrospective.md        # Balance final del semestre y lecciones aprendidas de ingeniería
+└── sprint-4/                   # Entrega y Reputación (HU-08, HU-13, HU-14, HU-15 — 9 SP)
+    ├── planning.md             # Objetivo, alcance y estimaciones del Sprint 4
+    ├── daily-scrum.md          # Registro disponible de la Daily Scrum
+    ├── review.md               # Estado integrado, evidencias y pendiente de flujo HU-08/HU-13
+    └── retrospective.md        # Resultados verificables y temas pendientes para la sesión formal
 ```
 
 ---
@@ -77,10 +83,10 @@ Los artefactos de arquitectura y diseño se mantienen bajo `docs/diseno/`, segú
 
 ---
 
-## 5. Estado Tecnológico Actual (Línea Base del Tercer Corte)
+## 5. Estado Tecnológico Actual (Línea Base del Sprint 4)
 
 - **Plataforma:** Java 17 LTS (Eclipse Temurin) con Spring Boot 4.1.1.
 - **Control de Calidad:** Checkstyle (Google Java Style) con **0 violaciones estáticas**.
-- **Pruebas Automatizadas:** **43 clases de pruebas** (`JUnit 5 + Mockito + MockMvc`); la última ejecución registró 154 pruebas, 0 fallos y 1 omitida.
+- **Pruebas Automatizadas:** **45 archivos de pruebas** (`JUnit 5 + Mockito + MockMvc`); la última verificación de Sprint 4 registró 160 pruebas, 0 fallos y 1 omitida.
 - **Cobertura de Código JaCoCo:** **91% en instrucciones** y **76% en ramas** (superando el umbral contractual del 60%).
-- **Persistencia:** PostgreSQL con 20 scripts de migración secuenciales e inmutables Flyway (`V1` a `V20`).
+- **Persistencia:** PostgreSQL con 21 scripts de migración secuenciales e inmutables Flyway (`V1` a `V21`).
