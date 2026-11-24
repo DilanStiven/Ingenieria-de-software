@@ -40,6 +40,9 @@ public class SecurityConfig {
     /** Ruta de órdenes logísticas. */
     private static final String ORDENES_PATH = "/api/v1/ordenes";
 
+    /** Ruta de viajes y checkpoints. */
+    private static final String VIAJES_PATH = "/api/v1/viajes";
+
     /** Ruta para enviar solicitudes de contacto. */
     private static final String CONTACTO_PATH = "/api/v1/contacto/mensaje";
 
@@ -108,6 +111,8 @@ public class SecurityConfig {
                     .hasRole("AGRICULTOR")
                 .requestMatchers(HttpMethod.POST, ORDENES_PATH + "/*/ruta")
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
+                .requestMatchers(HttpMethod.PATCH, VIAJES_PATH + "/*/llegada")
+                    .hasRole("TRANSPORTISTA")
                 .requestMatchers(HttpMethod.GET, ORDENES_PATH, ORDENES_PATH + "/**")
                     .hasAnyRole("AGRICULTOR", "TRANSPORTISTA")
                 .requestMatchers("/h2-console/**").permitAll()
