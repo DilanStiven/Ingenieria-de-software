@@ -52,7 +52,7 @@ historias están integradas en `develop`; solo se dispone de horas reales verifi
 | Ejecutar pruebas y Checkstyle antes de integrar | ✅ `./mvnw verify` (160 pruebas, 0 fallos, 1 omitida) y `./mvnw checkstyle:check` (0 violaciones), 24/11/2026 |
 | Escribir las pruebas junto con cada historia | ✅ HU-08, HU-13, HU-14 y HU-15 integraron pruebas automatizadas |
 | Sprint muy corto (3 días) — riesgo de no completar todas las historias | Las cuatro historias están integradas antes del cierre programado; Review y Retrospectiva aún pendientes |
-| HU-13 depende de una orden `ENTREGADA` (HU-08) | Pendiente de reconciliar: HU-08 registra `EN_DESTINO`, HU-13 exige `ENTREGADA`; falta prueba integrada del flujo |
+| Integración HU-08/HU-13 y aviso al comprador | No se encontró transición de `EN_DESTINO` a `ENTREGADA`; el listener de llegada solo registra un log y no se verificó entrega de notificación |
 
 ## 6. Métricas del proceso
 
@@ -69,8 +69,8 @@ historias están integradas en `develop`; solo se dispone de horas reales verifi
 
 | # | Acción (tercera persona) | Responsable | Fecha límite | Criterio de éxito |
 | --- | --- | --- | --- | --- |
-| 1 | Definir y probar la transición entre `EN_DESTINO` y `ENTREGADA` en el flujo HU-08/HU-13 | Equipo Scrum | Review, 25/11/2026 | Prueba integrada que permite reseñar una orden cuyo viaje llegó al destino |
-| 2 | No se registró otra acción antes de la sesión formal | — | — | — |
+| 1 | Implementar y probar la transición de `EN_DESTINO` a `ENTREGADA` en el flujo HU-08/HU-13 | Equipo Scrum | Review, 25/11/2026 | Prueba integrada que permite reseñar una orden cuyo viaje llegó al destino |
+| 2 | Conectar el evento de llegada con un canal de notificación al comprador y probar su recepción | Equipo Scrum | Review, 25/11/2026 | El comprador recibe una notificación verificable al registrar la llegada |
 
 ## 8. Trabajo en equipo
 

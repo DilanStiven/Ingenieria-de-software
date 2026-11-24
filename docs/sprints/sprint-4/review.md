@@ -11,7 +11,7 @@
 | **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065 |
 | **Sprint** | Sprint 4 (23/11/2026 – 25/11/2026) |
 | **Fecha de la Review** | Pendiente (25/11/2026) |
-| **Asistentes** | Equipo de desarrollo y Docente (en el rol de Product Owner) |
+| **Asistentes** | Participantes previstos: equipo de desarrollo y docente; asistencia pendiente de confirmar |
 | **Archivo** | `docs/sprints/sprint-4/review.md` |
 
 ---
@@ -23,10 +23,18 @@
 > la reseña actualizando el perfil del agricultor.
 
 **Resultado al 24/11/2026:** las cuatro historias se integraron en `develop` (9/9 SP). La
-validación automatizada pasa. Sin embargo, queda por resolver/verificar la transición de estado
-entre HU-08 y HU-13: HU-08 registra `EN_DESTINO`, mientras HU-13 acepta reseñas solo cuando la
-orden está `ENTREGADA`. Por ello, no se afirma que el flujo integrado de entrega y reseña haya sido
-demostrado de extremo a extremo.
+validación automatizada pasa. La revisión de código encontró dos brechas en HU-08/HU-13:
+
+1. No se encontró una operación de aplicación que lleve la orden de `EN_DESTINO` a `ENTREGADA`:
+   `CheckpointService` establece el primer estado y `ResenaService` solo acepta el segundo. Las
+   pruebas de HU-13 preparan la orden directamente como `ENTREGADA`; no ejercitan la transición de
+   HU-08. La reseña no queda habilitada por el recorrido actual de HU-08.
+2. `CheckpointService` publica un evento sin `compradorId`; el listener solo escribe un log de
+   aplicación. No se encontró entrega de una notificación al comprador ni una prueba que la
+   verifique.
+
+Por lo anterior, el flujo integrado no está demostrado de extremo a extremo y no se debe declarar
+completo el Sprint Goal funcional.
 
 ## 2. Incremento entregado
 
@@ -38,15 +46,17 @@ demostrado de extremo a extremo.
 | HU-15 — Visualización de Reputación Promedio del Productor | 2 | 2 | ✅ Integrada | PR #151 fusionado en `develop` el 23/11/2026 |
 | **Total** | **9** | **9** | | PRs #148, #150, #151 y #152 |
 
-## 3. Demo del incremento
+## 3. Verificación funcional y demostración pendiente
 
-Entorno: `http://localhost:8080` (Spring Boot + PostgreSQL). Versión: 0.0.1-SNAPSHOT (24/11/2026).
+La demostración manual del incremento está pendiente para la Review del 25/11/2026. La evidencia
+por historia que sigue corresponde a pruebas automatizadas; no acredita una demostración manual ni
+una ejecución contra un servidor PostgreSQL real.
 
 ### 3.1 HU-08 — Actualización de Estado de Entrega
 
 | # | Escenario BDD | Petición | Resultado esperado | Resultado real | Evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Llegada del transportista asignado al destino | `PATCH /api/v1/viajes/{id}/llegada` con JWT | Registrar checkpoint y evento de llegada, cambiar el viaje a `EN_DESTINO` | Cubierto por `CheckpointServiceTest` y `ViajeControllerTest` | PR #152 |
+| 1 | Llegada del transportista asignado al destino | `PATCH /api/v1/viajes/{id}/llegada` con JWT | Registrar checkpoint, cambiar el viaje a `EN_DESTINO` y notificar al comprador | Las pruebas cubren checkpoint y publicación del evento; el listener solo registra un log, no se comprobó entrega de notificación | PR #152 |
 
 ### 3.2 HU-13 — Calificación del Producto y del Agricultor
 
@@ -92,7 +102,8 @@ Entorno: `http://localhost:8080` (Spring Boot + PostgreSQL). Versión: 0.0.1-SNA
 
 | Tarea / Historia | Motivo | Decisión |
 | --- | --- | --- |
-| Demostración integrada de HU-08 → HU-13 | HU-08 cambia el viaje a `EN_DESTINO`; HU-13 valida `ENTREGADA` | Acordar la transición/criterio de entrega y añadir una prueba integrada antes de declarar el flujo completo |
+| Demostración integrada de HU-08 → HU-13 | No se encontró una transición de `EN_DESTINO` a `ENTREGADA`; las pruebas de HU-13 preparan el estado final directamente | Definir la transición/criterio de entrega e incorporar una prueba integrada antes de declarar el flujo completo |
+| Notificación de HU-08 al comprador | El listener del evento solo escribe un log y el evento se publica sin identificador del comprador | Conectar un canal de notificación real, incluir destinatario y probar su recepción |
 | Validación de base de datos real | La ejecución documentada de `verify` utiliza H2 | Si el criterio de aceptación exige PostgreSQL real, ejecutar y registrar esa validación |
 
 ## 7. Retroalimentación recibida
@@ -104,8 +115,8 @@ Entorno: `http://localhost:8080` (Spring Boot + PostgreSQL). Versión: 0.0.1-SNA
 ## 8. Actualización del Product Backlog
 
 HU-08, HU-13, HU-14 y HU-15 están integradas en `develop`. La confirmación del Sprint Goal queda
-sujeta a resolver y demostrar el flujo entre el estado `EN_DESTINO` de HU-08 y el requisito
-`ENTREGADA` de HU-13.
+sujeta a implementar la transición `EN_DESTINO` → `ENTREGADA` y la entrega real de la notificación
+al comprador, que no están presentes en el flujo actual.
 
 ## 9. Enlaces
 

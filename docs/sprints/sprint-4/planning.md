@@ -21,13 +21,13 @@
 
 ## 1. Sprint Goal
 
-> **Entregar un incremento funcional en el que el comprador pueda actualizar el estado de entrega
-> de su pedido, calificar al agricultor y al producto tras recibirlo, y el sistema registre la
-> reseña actualizando el perfil del agricultor.**
+> **Entregar un incremento funcional en el que el conductor registre la llegada del viaje al
+> destino y se notifique al comprador que el pedido está por ser entregado; después de la entrega,
+> el comprador podrá calificar al agricultor y al producto, y el sistema actualizará la reputación.**
 
 Al finalizar el Sprint 4 el sistema permitirá:
 
-1. Actualizar el estado de entrega de un pedido a «Entregado» (HU-08).
+1. Registrar la llegada del conductor al destino y notificar al comprador (HU-08).
 2. Calificar de 1 a 5 estrellas la calidad de la cosecha y dejar un comentario sobre el agricultor (HU-13).
 3. Calificar el servicio de transporte del viaje (HU-14).
 4. Consultar la reputación promedio del agricultor (HU-15).
@@ -42,8 +42,8 @@ Al finalizar el Sprint 4 el sistema permitirá:
 | --- | --- |
 | Velocidad estimada | **9 Story Points** |
 | Integrantes | 4 |
-| Dedicación | 6 h por persona por semana |
-| **Capacidad total** | 4 × 6 h × 1 semana = **24 h** |
+| Dedicación | 6 h por persona por semana (dato registrado) |
+| **Capacidad total** | **24 h estimadas** (el cálculo original supone una semana completa; el Sprint duró 3 días, por lo que la disponibilidad debe confirmarse) |
 | Horas planificadas en tareas | **9 h** (≈ 38 % de la capacidad); el desglose disponible solo detalla las tareas de HU-13 (2,5 h) |
 | Reserva para ceremonias e imprevistos | **15 h** (≈ 62 %): Daily Scrums, Review, Retrospectiva, revisión de PRs y correcciones |
 | Historias seleccionadas | 4 (HU-08, HU-13, HU-14, HU-15) |
@@ -54,10 +54,15 @@ Al finalizar el Sprint 4 el sistema permitirá:
 | ID | Historia de Usuario | Prioridad | SP | Tareas | Horas |
 | --- | --- | --- | --- | --- | --- |
 | HU-08 | Actualización de Estado de Entrega (Checkpoints) | Should Have | 3 | No registrado | No registrado |
-| HU-13 | Calificación del Producto y del Agricultor | Must Have | 2 | 4 | 2,5 h |
+| HU-13 | Calificación del Producto y del Agricultor | Should Have | 2 | 4 | 2,5 h |
 | HU-14 | Calificación del Servicio de Transporte | Should Have | 2 | No registrado | No registrado |
-| HU-15 | Visualización de Reputación Promedio del Productor | Must Have | 2 | No registrado | No registrado |
+| HU-15 | Visualización de Reputación Promedio del Productor | Could Have | 2 | No registrado | No registrado |
 | — | **Total** | | **9** | No registrado | 9 h estimadas (desglose parcial) |
+
+> **Consistencia del Backlog:** este plan usa la reestimación de HU-13 a 2 SP, que deja el Sprint
+> en 9 SP. El resumen del Backlog todavía refleja 3 SP para HU-13 y 10 SP para Sprint 4; además,
+> las prioridades de HU-13 y HU-15 difieren entre el resumen y las fichas detalladas. Esos datos
+> requieren reconciliación en el Backlog.
 
 ### 2.3 Asignación de responsables (propuesta, 23/11/2026)
 
@@ -78,7 +83,7 @@ La auditoría de Checkstyle se hace antes de cada Pull Request (`mvn checkstyle:
 HU-08, HU-14 y HU-15: dependencias/tareas no detalladas en el acta de Planning
 ```
 
-- HU-13 depende de que exista una orden de compra marcada como «Entregada» (HU-08) y de la autenticación JWT (Sprint 1).
+- HU-13 requiere una orden marcada como «Entregada» y autenticación JWT (Sprint 1); HU-08 especifica la llegada al destino. La transición entre ambos estados debe verificarse y no se considera resuelta en este Planning.
 - HU-14 y HU-15: dependencias por definir.
 
 ---
@@ -157,6 +162,7 @@ El desglose de tareas y su responsable no quedaron registrados en el acta de Pla
 | Sprint muy corto (3 días: 23–25/11/2026) | Alto | Priorizar las historias seleccionadas; mantener PRs pequeños |
 | Las tareas se estimaron en 30 min (1 h las pruebas) contando con GitHub Copilot | Medio | Revisar y entender el código antes de cada PR |
 | HU-13 requiere una orden marcada como «Entregada» | Alto | Verificar que el estado alcanzado en HU-08 satisface el criterio de elegibilidad de HU-13 |
+| HU-08 requiere notificar al comprador, pero el canal no quedó definido | Alto | Definir un canal de notificación y probar la recepción, no solo la publicación de un evento |
 | Pruebas y Checkstyle al final del Sprint | Medio | Pruebas en el mismo PR de cada tarea; `mvn test` y `mvn checkstyle:check` antes de cada PR |
 
 ---

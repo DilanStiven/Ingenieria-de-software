@@ -378,10 +378,10 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 | **Carlos Rosales** | Asistió a la reunión; no se compartió un reporte individual de avance. | Sin reporte individual compartido. | No informado. |
 | **Kevin Lucumi** | Completó todas las subtareas de HU-13: 13.1 (entidad `Reseña` y migración Flyway), 13.2 (`ResenaService` con validación de orden entregada, persistencia de reseña y actualización del perfil del agricultor), 13.3 (`ResenaController` con endpoint POST protegido por JWT) y 13.4 (pruebas JUnit 5 de los escenarios BDD). PR #150 listo para Code Review. Reportó 2 horas de trabajo (issue #45, Start date y Target date: 23/11/2026). | Estar disponible para apoyar al equipo en las tareas restantes del Sprint. | Ninguno. |
 
-* **Estado del tablero al cierre de la Daily:** HU-13 (issue #45) completada; PR #150 quedó aprobado y fusionado en `develop` ese día. HU-14 estaba implementada localmente y pendiente de publicación; HU-15 aún no se había iniciado al cierre de la reunión.
+* **Estado del tablero al momento de la Daily:** HU-13 (issue #45) completada y PR #150 listo para revisión; HU-14 estaba implementada localmente y pendiente de publicación; HU-15 aún no se había iniciado.
 * **Acuerdos y acciones:**
   * Kevin notificó al equipo vía Discord que el PR #150 (HU-13) está listo para revisión y fusión.
-  * adnoireph realizó el Code Review y aprobó el PR #150; fusionado en `develop` el mismo día con 1 check exitoso.
+  * **Actualización posterior:** adnoireph aprobó y fusionó el PR #150 en `develop` ese día con 1 check exitoso.
   * Publicar los cambios de HU-14 junto con la bitácora y la documentación técnica en `origin/historia-14`.
   * Dejar HU-15 para trabajo posterior; no se reportó como iniciada en esta sesión.
 ---
@@ -402,7 +402,9 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 
 El endpoint registra el estado `EN_DESTINO` y publica el evento de llegada. Esta implementación se
 integró posteriormente en `develop`; la Review del Sprint documenta la compatibilidad pendiente
-con el requisito `ENTREGADA` de HU-13.
+con el requisito `ENTREGADA` de HU-13. El listener actual solo escribe un log de aplicación y el
+evento se publica sin identificador del comprador; no se verificó una notificación entregada al
+usuario.
 
 
 ### Registro posterior a la Daily — HU-15.1 (23/11/2026)
