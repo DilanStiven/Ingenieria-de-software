@@ -41,8 +41,10 @@ import java.time.LocalDate;
                                 + " AND guia_despacho IS NULL)"
                                 + " OR (estado = 'EN_RUTA' AND vehiculo_id IS NOT NULL"
                                 + " AND fecha_salida IS NOT NULL AND guia_despacho IS NOT NULL)"
-                                + " OR (estado = 'ENTREGADA' AND vehiculo_id IS NOT NULL"
-                                + " AND fecha_salida IS NOT NULL AND guia_despacho IS NOT NULL))")
+                                + " OR (estado IN ('EN_DESTINO', 'ENTREGADO', 'ENTREGADA')"
+                                + " AND vehiculo_id IS NOT NULL"
+                                + " AND fecha_salida IS NOT NULL"
+                                + " AND guia_despacho IS NOT NULL))")
         })
 public class OrdenLogistica {
 
@@ -60,6 +62,8 @@ public class OrdenLogistica {
         PENDIENTE_ALISTAMIENTO,
         ALISTADO,
         EN_RUTA,
+        EN_DESTINO,
+        ENTREGADO,
         ENTREGADA
     }
 
