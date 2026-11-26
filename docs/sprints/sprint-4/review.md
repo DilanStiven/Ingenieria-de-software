@@ -138,11 +138,11 @@ ajuste registrado en PR #152, no el número de versión del borrador.
 
 | Historia | Horas planificadas | Horas reales | Diferencia | Comentario |
 | --- | --- | --- | --- | --- |
-| HU-08 | No desglosadas | 1,5 | No calculable | Tiempo real informado por el usuario el 25/11/2026 |
-| HU-13 | 2,5 | 1 h 35 min | −55 min | Aclaración del usuario: tiempo total de las tareas de HU-13; el issue #45 reportó 2 h |
-| HU-14 | No desglosadas | 1,5 | No calculable | Tiempo real informado por el usuario el 25/11/2026 |
-| HU-15 | No desglosadas | 1,5 | No calculable | Tiempo real informado por el usuario el 25/11/2026 |
-| **Total** | **9** | **6 h 5 min** | **−2 h 55 min** | Capacidad estimada: 24 h; la planificación por historia no quedó registrada para HU-08, HU-14 y HU-15 |
+| HU-08 | 2 h | 1 h 30 min | −30 min | Horas planificadas aclaradas por el usuario; tiempo real informado el 25/11/2026 |
+| HU-13 | 2 h 30 min | 1 h 35 min | −55 min | Aclaración del usuario: tiempo total de las tareas de HU-13; el issue #45 reportó 2 h |
+| HU-14 | 2 h | 1 h 30 min | −30 min | Horas planificadas aclaradas por el usuario; tiempo real informado el 25/11/2026 |
+| HU-15 | 2 h 30 min | 1 h 30 min | −1 h | Horas planificadas aclaradas por el usuario; tiempo real informado el 25/11/2026 |
+| **Total** | **9 h** | **6 h 5 min** | **−2 h 55 min** | Capacidad estimada: 24 h |
 
 ## 6. Trabajo pendiente al corte del 24/11/2026
 
