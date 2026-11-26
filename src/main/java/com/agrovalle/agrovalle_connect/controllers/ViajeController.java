@@ -30,4 +30,13 @@ public class ViajeController {
         return ResponseEntity.ok(checkpointService.registrarLlegada(
                 id, transportistaId));
     }
+
+    @PatchMapping("/{id}/entrega")
+    public ResponseEntity<CheckpointViajeResponseDTO> registrarEntrega(
+            @PathVariable final Long id,
+            final Authentication authentication) {
+        Long transportistaId = Long.valueOf(authentication.getName());
+        return ResponseEntity.ok(checkpointService.registrarEntrega(
+                id, transportistaId));
+    }
 }

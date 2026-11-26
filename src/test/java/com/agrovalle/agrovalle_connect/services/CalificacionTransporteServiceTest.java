@@ -52,7 +52,7 @@ class CalificacionTransporteServiceTest {
         vehiculo.setTransportista(conductor);
         viaje = new OrdenLogistica();
         viaje.setId(VIAJE_ID);
-        viaje.setEstado(OrdenLogistica.Estado.EN_RUTA);
+        viaje.setEstado(OrdenLogistica.Estado.ENTREGADA);
         viaje.setVehiculo(vehiculo);
         Pedido pedido = new Pedido();
         pedido.setCompradorId(COMPRADOR_ID);
@@ -65,7 +65,7 @@ class CalificacionTransporteServiceTest {
     }
 
     @Test
-    void dadoViajeEnRuta_cuandoCalificaConCuatroEstrellas_entoncesAsociaAlConductor() {
+    void dadoViajeEntregado_cuandoCalificaConCuatroEstrellas_entoncesAsociaAlConductor() {
         CalificacionTransporte calificacion =
                 service.registrar(VIAJE_ID, COMPRADOR_ID, 4, "Cajas en buen estado");
         ArgumentCaptor<CalificacionTransporte> captor =
@@ -79,6 +79,17 @@ class CalificacionTransporteServiceTest {
         verify(calificacionRepository).save(captor.capture());
         assertEquals(Short.valueOf((short) 4), captor.getValue().getPuntualidad());
         assertEquals(CONDUCTOR_ID, captor.getValue().getConductor().getId());
+    }
+
+    @Test
+    void dadoViajeEnDestino_cuandoCalifica_entoncesRechazaHastaCompletarEntrega() {
+        viaje.setEstado(OrdenLogistica.Estado.EN_DESTINO);
+
+        assertThrows(CalificacionTransporteException.class,
+                () -> service.registrar(
+                        VIAJE_ID, COMPRADOR_ID, 4, "Cajas en buen estado"));
+
+        verify(calificacionRepository, never()).save(any(CalificacionTransporte.class));
     }
 
     @Test

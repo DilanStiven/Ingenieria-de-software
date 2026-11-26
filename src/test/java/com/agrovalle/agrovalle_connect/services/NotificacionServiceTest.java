@@ -2,11 +2,13 @@ package com.agrovalle.agrovalle_connect.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.agrovalle.agrovalle_connect.dtos.NotificacionResponseDTO;
+import com.agrovalle.agrovalle_connect.events.LlegadaDestinoEvent;
 import com.agrovalle.agrovalle_connect.events.SolicitudContactoCreadaEvent;
 import com.agrovalle.agrovalle_connect.models.Notificacion;
 import com.agrovalle.agrovalle_connect.repositories.NotificacionRepository;
@@ -55,6 +57,27 @@ class NotificacionServiceTest {
     }
 
     @Test
+    void persisteNotificacionDeLlegadaParaElComprador() {
+        LlegadaDestinoEvent evento = new LlegadaDestinoEvent(
+                        21L, 90L, PEDIDO_ID, PRODUCTO_ID, "Cali");
+        when(notificacionRepository.save(any(Notificacion.class)))
+                        .thenAnswer(invocation -> invocation.getArgument(0));
+
+        notificacionService.registrarLlegadaComprador(evento);
+
+        ArgumentCaptor<Notificacion> notificacionCaptor =
+                        ArgumentCaptor.forClass(Notificacion.class);
+        verify(notificacionRepository).save(notificacionCaptor.capture());
+        Notificacion guardada = notificacionCaptor.getValue();
+        assertEquals(90L, guardada.getCompradorId());
+        assertNull(guardada.getAgricultorId());
+        assertEquals(PEDIDO_ID, guardada.getPedidoId());
+        assertEquals(PRODUCTO_ID, guardada.getProductoId());
+        assertEquals("El pedido 11 llegó a Cali y está por ser entregado.",
+                        guardada.getMensaje());
+    }
+
+    @Test
     void listaSoloLasNotificacionesDelAgricultorSolicitado() {
         Notificacion notificacion = new Notificacion();
         notificacion.setId(3L);
@@ -77,5 +100,29 @@ class NotificacionServiceTest {
         assertNotNull(respuesta.get(0).getFechaCreacion());
         verify(notificacionRepository)
                 .findByAgricultorIdOrderByFechaCreacionDesc(AGRICULTOR_ID);
+    }
+
+    @Test
+    void listaSoloLasNotificacionesDelCompradorSolicitado() {
+        Notificacion notificacion = new Notificacion();
+        notificacion.setId(4L);
+        notificacion.setCompradorId(90L);
+        notificacion.setPedidoId(PEDIDO_ID);
+        notificacion.setProductoId(PRODUCTO_ID);
+        notificacion.setMensaje("El pedido llegó a Cali");
+        notificacion.setFechaCreacion(Instant.parse("2026-11-25T18:00:00Z"));
+        when(notificacionRepository.findByCompradorIdOrderByFechaCreacionDesc(90L))
+                .thenReturn(List.of(notificacion));
+
+        List<NotificacionResponseDTO> respuesta =
+                notificacionService.listarPorComprador(90L);
+
+        assertEquals(1, respuesta.size());
+        assertEquals(4L, respuesta.get(0).getId());
+        assertEquals(PEDIDO_ID, respuesta.get(0).getIdPedido());
+        assertEquals(PRODUCTO_ID, respuesta.get(0).getIdProducto());
+        assertEquals("El pedido llegó a Cali", respuesta.get(0).getMensaje());
+        verify(notificacionRepository)
+                .findByCompradorIdOrderByFechaCreacionDesc(90L);
     }
 }

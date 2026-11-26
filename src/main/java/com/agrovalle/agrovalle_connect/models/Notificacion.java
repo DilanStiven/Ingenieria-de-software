@@ -1,6 +1,7 @@
 package com.agrovalle.agrovalle_connect.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.CheckConstraint;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,16 +16,27 @@ import java.time.Instant;
  */
 @Entity
 @Table(name = "notificacion",
-        indexes = @Index(name = "idx_notificacion_agricultor_fecha",
-                columnList = "agricultor_id, fecha_creacion"))
+        indexes = {
+                @Index(name = "idx_notificacion_agricultor_fecha",
+                        columnList = "agricultor_id, fecha_creacion"),
+                @Index(name = "idx_notificacion_comprador_fecha",
+                        columnList = "comprador_id, fecha_creacion")
+        },
+        check = @CheckConstraint(
+                name = "ck_notificacion_destinatario",
+                constraint = "((agricultor_id IS NOT NULL AND comprador_id IS NULL)"
+                        + " OR (agricultor_id IS NULL AND comprador_id IS NOT NULL))"))
 public class Notificacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "agricultor_id", nullable = false)
+    @Column(name = "agricultor_id")
     private Long agricultorId;
+
+    @Column(name = "comprador_id")
+    private Long compradorId;
 
     @Column(name = "pedido_id", nullable = false)
     private Long pedidoId;
@@ -79,6 +91,24 @@ public class Notificacion {
      */
     public void setAgricultorId(final Long agricultorIdValue) {
         this.agricultorId = agricultorIdValue;
+    }
+
+    /**
+     * Obtiene el identificador del comprador destinatario.
+     *
+     * @return identificador del comprador o null para notificaciones del agricultor
+     */
+    public Long getCompradorId() {
+        return compradorId;
+    }
+
+    /**
+     * Establece el comprador destinatario.
+     *
+     * @param compradorIdValue identificador del comprador
+     */
+    public void setCompradorId(final Long compradorIdValue) {
+        this.compradorId = compradorIdValue;
     }
 
     /**

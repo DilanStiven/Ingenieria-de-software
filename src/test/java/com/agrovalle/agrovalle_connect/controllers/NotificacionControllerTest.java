@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,6 +65,30 @@ class NotificacionControllerTest {
                 .andExpect(jsonPath("$[0].mensaje").value("Nueva solicitud de compra"));
 
         verify(notificacionService).listarPorAgricultor(AGRICULTOR_ID);
+    }
+
+    @Test
+    void compradorConsultaSuBandejaDeNotificaciones() throws Exception {
+        Long compradorId = 90L;
+        Notificacion notificacion = new Notificacion();
+        notificacion.setId(4L);
+        notificacion.setCompradorId(compradorId);
+        notificacion.setPedidoId(11L);
+        notificacion.setProductoId(7L);
+        notificacion.setMensaje("El pedido llegó a Cali y está por ser entregado.");
+        notificacion.setFechaCreacion(Instant.parse("2026-11-25T18:00:00Z"));
+        when(notificacionService.listarPorComprador(compradorId))
+                .thenReturn(List.of(new NotificacionResponseDTO(notificacion)));
+
+        mockMvc.perform(get(URL + "/comprador").with(user(compradorId.toString())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(4))
+                .andExpect(jsonPath("$[0].idPedido").value(11))
+                .andExpect(jsonPath("$[0].idProducto").value(7))
+                .andExpect(jsonPath("$[0].mensaje")
+                        .value("El pedido llegó a Cali y está por ser entregado."));
+
+        verify(notificacionService).listarPorComprador(compradorId);
     }
 
     @Test

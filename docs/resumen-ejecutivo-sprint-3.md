@@ -33,7 +33,7 @@ Todas las historias se encuentran aprobadas mediante revisión de pares (Code Re
 | **Verificación Estática (Checkstyle)** | 0 violaciones | **0 violaciones** (Google Java Style Guide) | Cumple |
 | **Pruebas Automatizadas (JUnit 5 + Mockito)** | 100% pruebas en verde | **35 suites de pruebas (0 fallos, 0 errores)** | Cumple |
 | **Cobertura de Código (JaCoCo)** | >= 60% global | **91% en instrucciones / 76% en ramas** | Supera ampliamente |
-| **Control de Versiones de BD (Flyway)** | Migraciones automáticas | **17 versiones inmutables (`V1` a `V17`)** | Cumple |
+| **Control de Versiones de BD (Flyway)** | Migraciones automáticas | **17 versiones inmutables (`V1` a `V17`) al cierre del Sprint 3** | Cumple |
 | **Patrones de Diseño GoF** | Implementación explícita | DTO, Repository, Strategy, Observer | Cumple |
 | **Estándar de Requerimientos** | ISO/IEC/IEEE 29148:2018 | SyRS formalizado + 15 HUs BDD | Cumple |
 
@@ -69,11 +69,13 @@ La estructura de 15 minutos está preparada como guion, pero la demo E2E y las d
 
 ## 5. Dictamen del Scrum Master
 
-El staging responde al health check y el Sprint 3 registra 12/12 SP. No se declara aún el cierre
-integral del Tercer Corte: el reporte de flujo necesita datos fuente, la revisión Clean Code requiere
-aprobación por pares después de los últimos cambios y el Code Freeze depende de publicar el tag sobre
-el commit final de `main`. HU-08, HU-13, HU-14 y HU-15 pertenecen al Sprint 4 según el Planning del
-Sprint 3 y no se implementan como parte de esta actualización documental.
+El staging responde al health check y el Sprint 3 registra 12/12 SP. La revisión Clean Code quedó
+aprobada por pares en el [PR #145](https://github.com/DilanStiven/Ingenieria-de-software/pull/145);
+siguen pendientes los datos fuente de métricas y el Code Freeze depende de publicar el tag sobre el
+commit final de `main`. HU-08, HU-13, HU-14 y HU-15 pertenecían al alcance planificado para Sprint 4,
+no al Sprint 3. Su estado posterior se documenta en los artefactos de [Sprint 4](sprints/sprint-4/);
+la implementación de las cuatro historias no elimina las brechas de integración ni reemplaza la
+demostración final pendiente.
 
 **Dilan Stiven Castillo Valencia**  
 *Scrum Master — Célula de Desarrollo AgroValle Connect (Grupo 5)*

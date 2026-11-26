@@ -30,6 +30,14 @@ tres sprints.
 **Promedio de tres sprints:** pendiente. No es válido calcularlo hasta verificar los datos del
 Sprint 2 con el registro del tablero o con el equipo.
 
+### Conciliación con las cifras de la guía
+
+La guía presenta como ejemplos Sprint 1 = 10/8 SP, Sprint 2 = 14/12 SP y Sprint 3 = 16/16 SP,
+además de un burndown de 16 SP en 14 días, conteos de CFD y promedios de 4,2/1,8 días. Esos valores
+no coinciden con las actas del proyecto ni incluyen una fuente histórica verificable; por eso no se
+copian como mediciones reales. Los cierres respaldados aquí son Sprint 1 = 10/10 y Sprint 3 = 12/12;
+el cierre del Sprint 2 sigue sin poder calcularse.
+
 ---
 
 ## 3. Gráfico de Trabajo Pendiente (Burndown Chart)
@@ -43,6 +51,8 @@ ideal/real ni se reutilizan valores de ejemplo como si fueran mediciones del equ
 | Línea base | 12 SP comprometidos ([planning del Sprint 3](../sprints/sprint-3/planning.md)) |
 | Trabajo real restante por día | Pendiente de exportar o reconstruir desde el historial del tablero |
 | Gráfico Burndown diario | Pendiente de la serie real; no se puede derivar de los resúmenes de sprint |
+
+La serie de 14 días y 16 SP de la guía no corresponde al Planning documentado del Sprint 3.
 
 ---
 
@@ -65,6 +75,9 @@ visible de esos límites, pero no es un historial de estados ni permite reconstr
 Lead Time y Cycle Time requieren timestamps de creación, inicio de trabajo y finalización por
 historia. El repositorio no incluye esos registros ni un cálculo reproducible; se retiran los
 promedios de 4.2 y 1.8 días del borrador anterior hasta adjuntar una fuente verificable.
+
+El Cycle Time aproximado de una tarjeta documentado en las políticas Kanban es una observación
+puntual, no una muestra suficiente para calcular un promedio del equipo.
 
 ---
 
