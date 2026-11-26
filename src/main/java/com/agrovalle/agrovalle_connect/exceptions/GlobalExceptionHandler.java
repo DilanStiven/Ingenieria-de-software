@@ -248,15 +248,12 @@ public class GlobalExceptionHandler {
             final MethodArgumentNotValidException ex) {
         Map<String, String> errores = new HashMap<>();
 
-        // Asigna el primer mensaje de error a la clave "error" para cumplir con las
-        // pruebas
         String primerMensaje = ex.getBindingResult().getFieldErrors().stream()
                 .findFirst()
                 .map(e -> e.getDefaultMessage())
                 .orElse("Error de validación en los campos");
         errores.put("error", primerMensaje);
 
-        // Agrega los errores detallados por cada campo
         ex.getBindingResult().getFieldErrors().forEach(e -> errores.put(e.getField(), e.getDefaultMessage()));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errores);

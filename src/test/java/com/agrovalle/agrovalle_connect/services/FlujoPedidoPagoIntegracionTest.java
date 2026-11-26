@@ -143,15 +143,15 @@ class FlujoPedidoPagoIntegracionTest {
 
         PagoResponseDTO rechazo = pagoService.procesar(
                 contacto.getIdPedido(), COMPRADOR_ID, Pago.MedioPago.PSE);
-        Pedido pedidoPendiente = pedidoRepository.findById(contacto.getIdPedido())
+        Pedido pedidoRechazado = pedidoRepository.findById(contacto.getIdPedido())
                 .orElseThrow();
 
         assertEquals(Pago.Estado.RECHAZADO, rechazo.getEstado());
-        assertEquals(Pedido.Estado.PENDIENTE_PAGO, pedidoPendiente.getEstado());
+        assertEquals(Pedido.Estado.RECHAZADO, pedidoRechazado.getEstado());
         assertNotNull(rechazo.getFechaLimiteReintento());
         assertTrue(Math.abs(Duration.between(
                 rechazo.getFechaLimiteReintento(),
-                pedidoPendiente.getFechaLimiteReintento()).toNanos()) <= 1_000);
+                pedidoRechazado.getFechaLimiteReintento()).toNanos()) <= 1_000);
         assertTrue(ordenLogisticaRepository
                 .findByPedidoId(contacto.getIdPedido()).isEmpty());
 

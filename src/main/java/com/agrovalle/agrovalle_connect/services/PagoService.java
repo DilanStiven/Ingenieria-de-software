@@ -176,7 +176,7 @@ public class PagoService {
             fechaLimiteReintento = ahora.plus(VENTANA_REINTENTO);
             pedido.setFechaLimiteReintento(fechaLimiteReintento);
         }
-        pedido.setEstado(Pedido.Estado.PENDIENTE_PAGO);
+        pedido.setEstado(Pedido.Estado.RECHAZADO);
         pedidoRepository.save(pedido);
         return new PagoResponseDTO(
                 pago, null, null, MENSAJE_PAGO_RECHAZADO, fechaLimiteReintento);
