@@ -161,7 +161,7 @@ class PagoServiceTest {
         Instant fin = Instant.now();
 
         assertEquals(Pago.Estado.RECHAZADO, respuesta.getEstado());
-        assertEquals(Pedido.Estado.PENDIENTE_PAGO, pedido.getEstado());
+        assertEquals(Pedido.Estado.RECHAZADO, pedido.getEstado());
         assertNull(respuesta.getIdOrdenCompra());
         assertNull(respuesta.getNumeroOrden());
         assertEquals("Pago Rechazado. Puedes reintentar hasta la fecha límite indicada.",
