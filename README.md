@@ -1,11 +1,11 @@
 # AgroValle Connect — Plataforma Agrícola del Valle del Cauca
 
 [![CI Pipeline](https://img.shields.io/badge/CI%20Pipeline-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
-[![JaCoCo Coverage](https://img.shields.io/badge/JaCoCo%20Coverage-%3E90%25%20(Req%20%E2%89%A560%25)-brightgreen?style=for-the-badge&logo=codecov&logoColor=white)](target/site/jacoco/index.html)
+[![JaCoCo Coverage](https://img.shields.io/badge/JaCoCo-90%25%20instructions%20%7C%2072%25%20branches-brightgreen?style=for-the-badge&logo=codecov&logoColor=white)](target/site/jacoco/index.html)
 [![Java 17](https://img.shields.io/badge/Java-17%20(LTS)-orange?style=for-the-badge&logo=openjdk&logoColor=white)](https://adoptium.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-3FN%20Relational-blue?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Flyway Migrations](https://img.shields.io/badge/Flyway-V1%20..%20V20-red?style=for-the-badge&logo=flyway&logoColor=white)](src/main/resources/db/migration)
+[![Flyway Migrations](https://img.shields.io/badge/Flyway-V1%20..%20V22-red?style=for-the-badge&logo=flyway&logoColor=white)](src/main/resources/db/migration)
 [![Quality Standard](https://img.shields.io/badge/Standard-ISO%2FIEC%2025010-blueviolet?style=for-the-badge)](docs/dod.md)
 
 ---
@@ -75,13 +75,16 @@ agrovalle-connect/
 │       ├── ci.yml                      # Pipeline de CI (Compilación, Checkstyle, JUnit 5, JaCoCo)
 │       └── cd.yml                      # Pipeline de CD (Inyección de Secrets y Despliegue PaaS)
 ├── docs/
-│   ├── architecture/
-│   │   └── diagramas-uml.md            # 9 Diagramas UML consolidados en sintaxis Mermaid.js
-│   ├── architecture-decisions/
-│   │   ├── ADR-001-despliegue-staging-paas.md         # Registro de decisión PaaS Staging
-│   │   └── ADR-002-estrategia-despliegue-produccion.md  # Registro de decisión Producción
+│   ├── README.md                       # Índice de documentación
+│   ├── bitacora-daily-scrum.md         # Bitácora única de Daily Scrums
+│   ├── diseno/
+│   │   ├── architecture/
+│   │   │   └── diagramas-uml.md        # Diagramas UML consolidados en sintaxis Mermaid.js
+│   │   └── architecture-decisions/
+│   │       ├── ADR-001-despliegue-staging-paas.md         # Registro de decisión PaaS Staging
+│   │       └── ADR-002-estrategia-despliegue-produccion.md  # Registro de decisión Producción
 │   ├── metrics/
-│   │   └── sprint-metrics-corte3.md    # Velocity, Burndown diario, CFD y Lead/Cycle Time
+│   │   └── sprint-metrics-corte3.md    # Velocity y estado de métricas ágiles pendientes
 │   ├── requirements/
 │   │   ├── ieee-29148-syrs-agrovalle.md # Especificación formal SyRS ISO/IEC/IEEE 29148:2018
 │   │   └── product-backlog-bdd.md      # 15 Historias de Usuario con escenarios Given-When-Then
@@ -89,7 +92,8 @@ agrovalle-connect/
 │   │   ├── sprint-0/                   # Readiness, DoD técnico, estrategia Git y setup
 │   │   ├── sprint-1/                   # Cimientos del Marketplace (HU-01, HU-02, HU-04)
 │   │   ├── sprint-2/                   # Mercado y Logística Base (HU-03, HU-06, HU-07)
-│   │   └── sprint-3/                   # Pedidos, Pagos y Staging (HU-05, HU-09..HU-12)
+│   │   ├── sprint-3/                   # Pedidos, Pagos y Staging (HU-05, HU-09..HU-12)
+│   │   └── sprint-4/                   # Entrega y Reputación (HU-08, HU-13..HU-15)
 │   ├── clean-code-review.md            # Certificación de revisión de código por pares y SOLID
 │   └── dod.md                          # Contrato de calidad Definition of Done
 ├── src/
@@ -107,9 +111,9 @@ agrovalle-connect/
 │   │   └── resources/
 │   │       ├── application.properties  # Perfil por defecto (Desarrollo local)
 │   │       ├── application-staging.yml # Perfil desacoplado con variables de entorno
-│   │       └── db/migration/           # 20 Migraciones SQL Flyway (V1..V20)
+│   │       └── db/migration/           # 22 Migraciones SQL Flyway (V1..V22)
 │   └── test/
-│       ├── java/                       # 43 Clases de Pruebas Unitarias e Integración
+│       ├── java/                       # 45 Clases de Pruebas Unitarias e Integración
 │       └── resources/
 │           └── application-test.yml    # Configuración de pruebas H2 en memoria
 ├── checkstyle.xml                      # Reglas de estilo Google Java Style
@@ -122,7 +126,7 @@ agrovalle-connect/
 
 ## 5. Estrategia de Ramificación: GitFlow
 
-El equipo adoptó la estrategia **GitFlow** para aislar el trabajo en curso, garantizar la estabilidad de las versiones entregables y mantener una línea de integración continua verificada por pruebas automáticas:
+El equipo utiliza un flujo basado en **GitFlow** para aislar el trabajo en curso y verificar las integraciones con pruebas automáticas. El diagrama es ilustrativo; no representa el historial exacto de ramas ni la publicación de tags:
 
 ```mermaid
 gitGraph
@@ -130,28 +134,17 @@ gitGraph
     branch develop
     checkout develop
     commit id: "Setup-Spring-Boot"
-    branch feature/sprint-1
-    checkout feature/sprint-1
-    commit id: "feat: hu-01-registro"
-    commit id: "feat: hu-02-productos"
+    branch feature/HU-XX
+    checkout feature/HU-XX
+    commit id: "feat: cambio"
     checkout develop
-    merge feature/sprint-1 tag: "v1.0.0-sprint1"
-    branch feature/sprint-2
-    checkout feature/sprint-2
-    commit id: "feat: hu-03-precios"
-    commit id: "feat: hu-06-07-logistica"
-    checkout develop
-    merge feature/sprint-2 tag: "v2.0.0-sprint2"
-    branch feature/sprint-3
-    checkout feature/sprint-3
-    commit id: "feat: hu-05-contacto"
-    commit id: "feat: hu-09-pagos"
-    commit id: "feat: hu-11-12-billetera"
-    checkout develop
-    merge feature/sprint-3
+    merge feature/HU-XX
     checkout main
-    merge develop tag: "v3.0.0-final"
+    merge develop
 ```
+
+El proyecto usa tags SemVer por Sprint; consulta la [política de versionamiento](docs/versionamiento.md).
+El tag `v1.0.0` se publicará sobre el incremento estable de Sprint 4 después de su integración y aprobación.
 
 ### Reglas de Gobernanza en Git
 1. **Protección de Ramas:** Nadie programa directamente sobre `main` ni `develop`. Prohibido el uso de `push --force`.
@@ -166,18 +159,13 @@ gitGraph
 
 ---
 
-## 6. Documentación de Arquitectura, Métricas y Requerimientos
+## 6. Documentación del Proyecto
 
-Los artefactos técnicos requeridos para la evaluación del Tercer Corte se encuentran enlazados a continuación:
+La documentación de requerimientos, arquitectura, diseño, calidad, métricas y entregables por
+Sprint está organizada en la carpeta `docs/`.
 
-- **Contrato de Calidad (DoD):** [`docs/dod.md`](docs/dod.md) (Checklist completo bajo norma ISO/IEC 25010).
-- **Diagramas UML Consolidados:** [`docs/diseno/architecture/diagramas-uml.md`](docs/diseno/architecture/diagramas-uml.md) (Secuencias HU-07, HU-02, HU-03 y HU-14; colaboración, componentes MVC y despliegue PaaS).
-- **Reporte de Métricas Ágiles de Flujo:** [`docs/metrics/sprint-metrics-corte3.md`](docs/metrics/sprint-metrics-corte3.md) (Velocity S1 a S3, Burndown diario Sprint 3, CFD con WIP limits, Lead Time 4.2d, Cycle Time 1.8d).
-- **Especificación de Requerimientos (SyRS):** [`docs/requirements/ieee-29148-syrs-agrovalle.md`](docs/requirements/ieee-29148-syrs-agrovalle.md) (Norma ISO/IEC/IEEE 29148:2018).
-- **Product Backlog BDD (15 Historias de Usuario):** [`docs/requirements/product-backlog-bdd.md`](docs/requirements/product-backlog-bdd.md).
-- **Ciclo Metodológico por Sprints:** [`docs/sprints/`](docs/sprints/) (`sprint-0/`, `sprint-1/`, `sprint-2/`, `sprint-3/` con Planning, Review y Retrospectiva).
-- **Lista de Chequeo Clean Code Review y SOLID:** [`docs/clean-code-review.md`](docs/clean-code-review.md).
-- **Registros de Decisiones de Arquitectura (ADR):** [`docs/architecture-decisions/`](docs/architecture-decisions/) (`ADR-001` Staging PaaS y `ADR-002` Producción).
+Consulta el [índice de documentación del proyecto](docs/README.md) para explorar los documentos y
+encontrar la versión canónica de cada entregable.
 
 ---
 
@@ -195,10 +183,16 @@ Los artefactos técnicos requeridos para la evaluación del Tercer Corte se encu
 | **Pagos** | `POST` | `/api/v1/pagos` | Autenticado | Procesamiento de pasarela virtual, inventario y orden. |
 | **Billetera** | `GET` | `/api/v1/billetera` | Bearer `AGRICULTOR` | Consulta de saldo acreditado y transacciones. |
 | **Notificaciones** | `GET` | `/api/v1/notificaciones` | Bearer `AGRICULTOR` | Listado de alertas y solicitudes de compradores. |
+| **Notificaciones** | `GET` | `/api/v1/notificaciones/comprador` | JWT autenticado | Bandeja de notificaciones del comprador asociado al token. |
 | **Logística** | `POST` | `/api/v1/ordenes` | Bearer `AGRICULTOR` | Creación de orden logística y cálculo de tarifa Strategy. |
 | **Logística** | `PATCH` | `/api/v1/ordenes/{id}/alistado` | Bearer `AGRICULTOR` | Transición de orden a lista para despacho. |
+| **Logística** | `PATCH` | `/api/v1/viajes/{id}/llegada` | Bearer `TRANSPORTISTA` asignado | Registra la llegada y transiciona el viaje a `EN_DESTINO`; persiste una notificación para el comprador vinculado. |
+| **Logística** | `PATCH` | `/api/v1/viajes/{id}/entrega` | Bearer `TRANSPORTISTA` asignado | Confirma la entrega, transiciona el viaje a `ENTREGADA` y libera el vehículo. |
 | **Calificación de transporte** | `POST` | `/api/v1/viajes/{id}/calificacion` | JWT; comprador asociado al pedido | Registra puntualidad (1–5) y estado de cajas; asocia la calificación al transportista asignado. |
 | **Reputación** | `GET` | `/api/v1/agricultores/{id}/reputacion` | Público | Consulta el promedio de estrellas del agricultor para perfil y catálogo. |
+
+El flujo de entrega es `ALISTADO → EN_RUTA → EN_DESTINO → ENTREGADA`. La reseña de HU-13
+y la calificación de transporte de HU-14 solo se habilitan después de completar la entrega.
 
 ---
 
@@ -230,7 +224,7 @@ Para instalar Husky y activar el hook local de pre-commit, ejecuta `npm install`
   ```
 
 ### 3. Ejecución de Pruebas Unitarias y Cobertura JaCoCo
-Ejecuta las 35 clases de pruebas automáticas y verifica el cumplimiento del umbral de cobertura JaCoCo (>= 60%):
+Ejecuta la suite de pruebas automáticas y verifica el cumplimiento del umbral de cobertura JaCoCo (>= 60%):
 - **Linux / macOS:**
   ```bash
   ./mvnw verify

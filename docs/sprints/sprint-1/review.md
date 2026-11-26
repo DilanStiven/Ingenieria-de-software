@@ -11,6 +11,7 @@
 | **Equipo Scrum** | Grupo 5 |
 | **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065 |
 | **Sprint** | Sprint 1 (24/09/2026 – 09/10/2026) |
+| **Versión del incremento** | `v0.1.0` (tag histórico sobre `f84265b`) |
 | **Fecha de la Review** | 09/10/2026 — 16:00 (Google Meet) |
 | **Asistentes** | Equipo de desarrollo y Docente (en el rol de Product Owner) |
 | **Archivo** | `docs/sprints/sprint-1/review.md` |

@@ -1,5 +1,5 @@
--- DDL de referencia para una base vacía con el modelo JPA actualmente implementado.
--- No es una migración automática: Flyway no está configurado en la aplicación.
+-- Fragmento DDL de referencia para entidades del modelo implementado.
+-- El esquema completo se gestiona mediante migraciones Flyway versionadas.
 -- No aplicar directamente a una base existente sin revisar y respaldar su esquema.
 
 CREATE TABLE IF NOT EXISTS agricultor (
@@ -49,7 +49,10 @@ CREATE TABLE IF NOT EXISTS orden_logistica (
     peso_kg NUMERIC(12, 2) NOT NULL CHECK (peso_kg > 0),
     destino VARCHAR(100) NOT NULL,
     estado VARCHAR(30) NOT NULL DEFAULT 'PENDIENTE_ALISTAMIENTO'
-        CHECK (estado IN ('PENDIENTE_ALISTAMIENTO', 'ALISTADO', 'EN_RUTA')),
+        CHECK (estado IN (
+            'PENDIENTE_ALISTAMIENTO', 'ALISTADO', 'EN_RUTA',
+            'EN_DESTINO', 'ENTREGADO', 'ENTREGADA'
+        )),
     fecha_creacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_salida DATE,
     guia_despacho VARCHAR(40) UNIQUE,
@@ -63,7 +66,7 @@ CREATE TABLE IF NOT EXISTS orden_logistica (
             AND guia_despacho IS NULL
         )
         OR (
-            estado = 'EN_RUTA'
+            estado IN ('EN_RUTA', 'EN_DESTINO', 'ENTREGADO', 'ENTREGADA')
             AND vehiculo_id IS NOT NULL
             AND fecha_salida IS NOT NULL
             AND guia_despacho IS NOT NULL
