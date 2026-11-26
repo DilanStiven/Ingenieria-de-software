@@ -143,7 +143,8 @@ gitGraph
     merge develop
 ```
 
-El tag `v3.0.0-final` aún está pendiente de publicación, según el [DoD](docs/dod.md).
+El proyecto usa tags SemVer por Sprint; consulta la [política de versionamiento](docs/versionamiento.md).
+El tag `v1.0.0` se publicará sobre el incremento estable de Sprint 4 después de su integración y aprobación.
 
 ### Reglas de Gobernanza en Git
 1. **Protección de Ramas:** Nadie programa directamente sobre `main` ni `develop`. Prohibido el uso de `push --force`.

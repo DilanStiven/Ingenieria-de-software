@@ -11,6 +11,7 @@
 | **Equipo Scrum** | Grupo 5 |
 | **Integrantes** | Carlos Andres Rosales Lara CC 1030020342, Kevin Estiven Lucumi Polo CC 1030534697, Dilan Stiven Castillo Valencia CC 1089002055, Santiago Edilmo Hurtado Cuenu CC 1089001065 |
 | **Sprint** | Sprint 4 (23/11/2026 – 25/11/2026) |
+| **Versión objetivo del incremento** | `v1.0.0` (tag pendiente de aprobación e integración en `main`) |
 | **Fecha de la Review** | 25/11/2026 (realizada, según confirmación del equipo) |
 | **Asistentes** | Pendiente de transcribir desde la minuta |
 | **Archivo** | `docs/sprints/sprint-4/review.md` |

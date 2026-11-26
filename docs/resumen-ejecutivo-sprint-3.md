@@ -71,7 +71,7 @@ La estructura de 15 minutos está preparada como guion, pero la demo E2E y las d
 
 El staging responde al health check y el Sprint 3 registra 12/12 SP. La revisión Clean Code quedó
 aprobada por pares en el [PR #145](https://github.com/DilanStiven/Ingenieria-de-software/pull/145);
-siguen pendientes los datos fuente de métricas y el Code Freeze depende de publicar el tag sobre el
+siguen pendientes los datos fuente de métricas y el Code Freeze depende de publicar el tag `v1.0.0` sobre el
 commit final de `main`. HU-08, HU-13, HU-14 y HU-15 pertenecían al alcance planificado para Sprint 4,
 no al Sprint 3. Su estado posterior se documenta en los artefactos de [Sprint 4](sprints/sprint-4/);
 la implementación de las cuatro historias no elimina las brechas de integración ni reemplaza la

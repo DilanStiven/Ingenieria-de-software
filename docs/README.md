@@ -32,6 +32,7 @@ Esta carpeta centraliza todos los artefactos de ingeniería de software, especif
 | **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md`](diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md) | **ADR-001:** Decisión implementada de Render y PostgreSQL gestionado para el ambiente de staging. |
 | **Decisiones de Diseño** | [`diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md`](diseno/architecture-decisions/ADR-002-estrategia-despliegue-produccion.md) | **ADR-002:** Estrategia propuesta de despliegue en producción con Zero-Downtime y alta disponibilidad. |
 | **Métricas Ágiles** | [`metrics/sprint-metrics-corte3.md`](metrics/sprint-metrics-corte3.md) | **Reporte de Métricas de Flujo (Corte 3):** Velocity con cierres respaldados; Burndown, CFD y promedios Lead/Cycle Time pendientes de datos históricos verificables. |
+| **Versionamiento** | [`versionamiento.md`](versionamiento.md) | **Versiones de lanzamiento:** hitos SemVer por Sprint, tags históricos y regla para publicar la primera versión estable. |
 | **Informes Ejecutivos** | [`resumen-ejecutivo-sprint-2.md`](resumen-ejecutivo-sprint-2.md) | **Resumen Ejecutivo Sprint 2:** Informe de avance técnico verificable al cierre del Segundo Corte. |
 | **Informes Ejecutivos** | [`resumen-ejecutivo-sprint-3.md`](resumen-ejecutivo-sprint-3.md) | **Resumen Ejecutivo Sprint 3:** Consolidado final del Tercer Corte, métricas de calidad y preparación para sustentación. |
 

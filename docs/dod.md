@@ -80,7 +80,7 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
   - Diagramas UML en `docs/diseno/architecture/diagramas-uml.md`. La guía usa HU-12/HU-13 para escenarios distintos a los del Backlog aprobado; HU-08, HU-13, HU-14 y HU-15 ya se implementaron según el Backlog, aunque el flujo integrado de entrega conserva brechas descritas en la Review de Sprint 4.
   - Decisiones de arquitectura en `docs/diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md` y `ADR-002-estrategia-despliegue-produccion.md`.
   - [ ] Completar los puntos diarios y los gráficos de Burndown/CFD y añadir evidencia fuente en `docs/metrics/sprint-metrics-corte3.md`; faltan datos históricos del tablero.
-- [ ] **Code Freeze:** Pendiente crear el Git Tag `v3.0.0-final` sobre el commit final de `main`. El tag no existe en el repositorio ni en el remoto consultado.
+- [ ] **Code Freeze:** Publicar el tag `v1.0.0` sobre el commit final aprobado de Sprint 4 en `main`, después del PR y de CI. Los tags retrospectivos `v0.1.0`, `v0.2.0` y `v0.3.0` identifican los hitos de los Sprints 1 a 3; la política está en [`versionamiento.md`](versionamiento.md).
 
 ---
 
