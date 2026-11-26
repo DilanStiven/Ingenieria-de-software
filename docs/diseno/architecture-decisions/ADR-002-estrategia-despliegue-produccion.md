@@ -38,7 +38,7 @@ El proyecto integrador **AgroValle Connect** conectará a productores agrícolas
 
 Se aprueba la **Opción 2: Plataforma de Contenedores Gestionada (PaaS / CaaS Comercial)** para el entorno de producción futuro:
 
-1. **Estrategia de Lanzamiento:** Despliegues progresivos mediante **Rolling Updates** (o Blue/Green) activados desde la rama `main` tras la aprobación de un *Release Tag* oficial (e.g. `v3.0.0-final`).
+1. **Estrategia de Lanzamiento:** Despliegues progresivos mediante **Rolling Updates** (o Blue/Green) activados desde la rama `main` tras la aprobación de un *Release Tag* oficial (por ejemplo, `v1.0.0`); las reglas están en [`versionamiento.md`](../../versionamiento.md).
 2. **Capa de Persistencia:** Base de datos PostgreSQL gestionada con alta disponibilidad (Multi-AZ), copias de seguridad continuas y cifrado en reposo.
 3. **Monitoreo y Salud:** Verificación continua a través de endpoints de telemetría y health checks automatizados.
 

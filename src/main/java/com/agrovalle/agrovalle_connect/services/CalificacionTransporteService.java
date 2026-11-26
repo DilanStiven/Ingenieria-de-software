@@ -63,9 +63,9 @@ public class CalificacionTransporteService {
         if (pedido == null || !Objects.equals(pedido.getCompradorId(), compradorId)) {
             throw new OrdenNoEncontradaException(viajeId);
         }
-        if (viaje.getEstado() != OrdenLogistica.Estado.EN_RUTA) {
+        if (viaje.getEstado() != OrdenLogistica.Estado.ENTREGADA) {
             throw new CalificacionTransporteException(
-                    "Solo se puede calificar un viaje con ruta asignada",
+                    "Solo se puede calificar un viaje entregado",
                     HttpStatus.CONFLICT);
         }
 

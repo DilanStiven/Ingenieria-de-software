@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * API de consulta de notificaciones para el agricultor autenticado.
+ * API de consulta de notificaciones para agricultores y compradores autenticados.
  */
 @RestController
 @RequestMapping("/api/v1/notificaciones")
@@ -38,5 +38,18 @@ public class NotificacionController {
             final Authentication authentication) {
         Long agricultorId = Long.valueOf(authentication.getName());
         return ResponseEntity.ok(notificacionService.listarPorAgricultor(agricultorId));
+    }
+
+    /**
+     * Consulta la bandeja del comprador autenticado.
+     *
+     * @param authentication identidad autenticada
+     * @return notificaciones del comprador
+     */
+    @GetMapping("/comprador")
+    public ResponseEntity<List<NotificacionResponseDTO>> listarComprador(
+            final Authentication authentication) {
+        Long compradorId = Long.valueOf(authentication.getName());
+        return ResponseEntity.ok(notificacionService.listarPorComprador(compradorId));
     }
 }

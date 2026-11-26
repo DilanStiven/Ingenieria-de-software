@@ -174,13 +174,22 @@ flowchart TD
     API -->|"HTTP 200"| Comprador
 ```
 
+## Flujo de entrega conectado (HU-08, HU-13 y HU-14)
+
+HU-08 sigue la secuencia `ALISTADO` → `EN_RUTA` → `EN_DESTINO` → `ENTREGADA`. El transportista
+asignado registra la llegada mediante `PATCH /api/v1/viajes/{id}/llegada`; el evento asociado
+persiste una notificación para el comprador después del commit, consultable en
+`GET /api/v1/notificaciones/comprador`. El transportista asignado confirma el cierre con
+`PATCH /api/v1/viajes/{id}/entrega`, que registra el checkpoint final y libera el vehículo.
+HU-13 y HU-14 aceptan calificaciones únicamente cuando la orden está `ENTREGADA`.
+
 ## 5. Colaboración / Observer vigente: notificación de solicitud de contacto (HU-05)
 
 El PDF asigna HU-13 al cambio de estado de despacho con notificación Observer, pero el Backlog
-aprobado define HU-13 como calificación del producto y del agricultor. También define HU-08 como
-actualización de estado de entrega. Ambas historias están previstas para una etapa posterior y no se
-implementan aquí. Este diagrama muestra únicamente el Observer que sí existe: al registrar una
-solicitud de contacto (HU-05), se persiste una notificación para el agricultor antes del commit.
+aprobado define HU-13 como calificación del producto y del agricultor. HU-08 y HU-13 ya se
+implementaron con esos alcances del Backlog. Este diagrama muestra el Observer vigente para una
+solicitud de contacto (HU-05), donde se persiste una notificación para el agricultor antes del
+commit; no representa el escenario de cambio de despacho solicitado en la guía.
 
 ```mermaid
 flowchart TD
@@ -220,8 +229,10 @@ flowchart TD
 El endpoint recibe la calificación de puntualidad y el estado de las cajas. El servicio carga el
 viaje con bloqueo, comprueba que la identidad autenticada sea el comprador del pedido asociado y
 deriva al conductor desde el vehículo asignado; el cliente no envía un identificador de conductor.
-El modelo de estados vigente solo contempla `EN_RUTA` como estado de ruta activa, por lo que este es
-el estado aceptado para registrar la calificación.
+La calificación solo se acepta después de que HU-08 completa la transición a `ENTREGADA`. El
+servicio carga el viaje con bloqueo, comprueba que la identidad autenticada sea el comprador del
+pedido asociado y deriva al conductor desde el vehículo asignado; el cliente no envía un
+identificador de conductor.
 
 ```mermaid
 sequenceDiagram
@@ -349,5 +360,10 @@ flowchart LR
   `docs/diseno/` por indicación de la docente.
 - **Identificadores HU-12/HU-13:** la guía y el Backlog aprobado asignan historias distintas a esos
   números. Se mantienen los flujos reales del Backlog: HU-12 es rechazo de pago y HU-13 es
-  calificación; las historias de entrega y reputación se ejecutarán posteriormente.
+  calificación. HU-08, HU-13, HU-14 y HU-15 ya están implementadas en Sprint 4 con los alcances del
+  Backlog; los escenarios de confirmación de carrito y cambio de despacho de la guía no son los
+  flujos funcionales aprobados para HU-12 y HU-13.
+- **Notificación de llegada:** la implementación actual persiste una notificación para el
+  comprador después del commit y expone la bandeja autenticada; la Review conserva el corte previo
+  al cierre técnico y su actualización posterior.
 - **Despliegue:** se refleja Render con PostgreSQL en Render, no Neon.tech.

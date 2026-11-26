@@ -7,6 +7,7 @@
 | Equipo | Grupo 5 |
 | Sprint | Sprint 2 (Bloque 2, Segundo Corte) |
 | Fechas del Sprint | 09/10/2026 – 29/10/2026 |
+| Versión del incremento | `v0.2.0` (tag histórico sobre `a08544c`) |
 | Fecha y modalidad de la Review | 29/10/2026, 18:30 – 19:30 (Sincrónico virtual vía Google Meet) |
 | Asistentes | Dilan Stiven Castillo (Scrum Master), Kevin Estiven Lucumi (Dev), Carlos Andres Rosales (Dev), Santiago Edilmo Hurtado (Dev) |
 

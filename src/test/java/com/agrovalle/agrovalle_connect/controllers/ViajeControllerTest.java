@@ -59,14 +59,51 @@ class ViajeControllerTest {
     }
 
     @Test
+    void transportistaAutenticadoConfirmaEntrega() throws Exception {
+        CheckpointViaje checkpoint = new CheckpointViaje();
+        checkpoint.setId(4L);
+        OrdenLogistica orden = new OrdenLogistica();
+        orden.setId(21L);
+        orden.setEstado(OrdenLogistica.Estado.ENTREGADA);
+        orden.setDestino("Cali");
+        checkpoint.setOrdenLogistica(orden);
+        checkpoint.setEstado(OrdenLogistica.Estado.ENTREGADA);
+        checkpoint.setUbicacion("Cali");
+        checkpoint.setFechaHora(Instant.parse("2026-11-25T18:00:00Z"));
+
+        when(checkpointService.registrarEntrega(21L, 15L))
+                .thenReturn(new CheckpointViajeResponseDTO(checkpoint));
+
+        mockMvc.perform(patch("/api/v1/viajes/21/entrega")
+                        .with(user("15").authorities(() -> "ROLE_TRANSPORTISTA")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.viajeId").value(21))
+                .andExpect(jsonPath("$.estado").value("ENTREGADA"))
+                .andExpect(jsonPath("$.ubicacion").value("Cali"));
+    }
+
+    @Test
     void llegadaSinAutenticacionRetorna401() throws Exception {
         mockMvc.perform(patch("/api/v1/viajes/21/llegada"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
+    void entregaSinAutenticacionRetorna401() throws Exception {
+        mockMvc.perform(patch("/api/v1/viajes/21/entrega"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void agricultorNoPuedeRegistrarLlegada() throws Exception {
         mockMvc.perform(patch("/api/v1/viajes/21/llegada")
+                        .with(user("7").authorities(() -> "ROLE_AGRICULTOR")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void agricultorNoPuedeConfirmarEntrega() throws Exception {
+        mockMvc.perform(patch("/api/v1/viajes/21/entrega")
                         .with(user("7").authorities(() -> "ROLE_AGRICULTOR")))
                 .andExpect(status().isForbidden());
     }

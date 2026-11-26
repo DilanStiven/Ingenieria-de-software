@@ -25,8 +25,8 @@ class BilleteraFlywayApplicationTest {
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    void configuraFlywayYAplicaLaMigracionDeBilleteraAlIniciar() {
-        assertEquals("21", flyway.info().current().getVersion().getVersion());
+    void configuraFlywayYAplicaLaMigracionActualAlIniciar() {
+        assertEquals("22", flyway.info().current().getVersion().getVersion());
         Integer billeteras = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM information_schema.tables "
                         + "WHERE table_schema = 'PUBLIC' AND table_name = 'BILLETERA'",
@@ -48,11 +48,18 @@ class BilleteraFlywayApplicationTest {
                         + "WHERE table_schema = 'PUBLIC'"
                         + " AND table_name = 'CALIFICACION_TRANSPORTE'",
                 Integer.class);
+        Integer compradorId = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.columns "
+                        + "WHERE table_schema = 'PUBLIC'"
+                        + " AND table_name = 'NOTIFICACION'"
+                        + " AND column_name = 'COMPRADOR_ID'",
+                Integer.class);
 
         assertEquals(1, billeteras);
         assertEquals(1, notificaciones);
         assertEquals(1, ordenesLogisticas);
         assertEquals(1, resenas);
         assertEquals(1, calificacionesTransporte);
+        assertEquals(1, compradorId);
     }
 }

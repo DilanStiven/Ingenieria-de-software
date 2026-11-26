@@ -18,4 +18,12 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
      * @return notificaciones del agricultor
      */
     List<Notificacion> findByAgricultorIdOrderByFechaCreacionDesc(Long agricultorId);
+
+    /**
+     * Lista las notificaciones del comprador desde la más reciente.
+     *
+     * @param compradorId identificador del destinatario
+     * @return notificaciones del comprador
+     */
+    List<Notificacion> findByCompradorIdOrderByFechaCreacionDesc(Long compradorId);
 }

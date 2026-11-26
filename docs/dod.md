@@ -18,23 +18,24 @@ En el marco metodológico ágil (Scrum / Scrumban) del proyecto **AgroValle Conn
 
 ---
 
-## 2. Matriz de Criterios del Definition of Done (Evolución Sprints 1, 2 y 3)
+## 2. Matriz de Criterios del Definition of Done (Evolución Sprints 1 a 4)
 
 La siguiente lista de verificación categoriza los requisitos del DoD alineados con los atributos de calidad de la norma **ISO/IEC 25010**:
 
 ### A. Adecuación Funcional y Pruebas Automatizadas (TDD)
-- [x] **Criterios de Aceptación BDD:** Todos los escenarios *Given-When-Then* definidos en el Product Backlog para la Historia de Usuario se encuentran implementados y verificados.
+- [x] **Criterios de Aceptación BDD:** HU-08 registra `EN_DESTINO`, permite al transportista asignado confirmar `ENTREGADA` y persiste una notificación consultable por el comprador. HU-13 y HU-14 requieren que la entrega esté completada. La Review de Sprint 4 conserva el hallazgo inicial y su actualización posterior.
 - [x] **Pruebas Unitarias e Integración (JUnit 5 + Mockito):**
   - Cobertura de pruebas unitarias sobre toda la lógica de negocio en la capa de servicios (`@Service`).
   - Pruebas de integración sobre controladores REST mediante `MockMvc` validando códigos HTTP (200, 201, 400, 401, 403, 404).
-  - El 100% de la suite de pruebas automatizadas pasa sin errores ni fallos (`Failures: 0, Errors: 0`).
+  - Última verificación limpia: 171 pruebas, 0 fallos, 0 errores y 1 omitida (`clean verify`).
 - [x] **Umbral Estricto de Cobertura JaCoCo:**
-  - La ejecución de `./mvnw verify` (o `.\mvnw.cmd verify`) certifica una cobertura global superior o igual al **60%** en instrucciones y ramas (alcanzando actualmente >= 90%).
+  - La ejecución de `./mvnw verify` (o `.\mvnw.cmd verify`) certifica una cobertura global superior o igual al **60%** en instrucciones y ramas.
+  - Último reporte local verificado: **90% en instrucciones y 72% en ramas** (25/11/2026).
 
 ### B. Seguridad y Protección de Datos Sensibles
 - [x] **Autenticación y Autorización Stateless (Spring Security + JWT):**
   - Endpoints protegidos mediante tokens criptográficos JWT firmados (HMAC-SHA256) con expiración controlada.
-  - Roles implementados en `RolUsuario`: `AGRICULTOR` y `TRANSPORTISTA`. El rol y autenticación de comprador no están implementados; revisar como dependencia de futuras historias de compra y reputación.
+  - Roles implementados en `RolUsuario`: `AGRICULTOR` y `TRANSPORTISTA`. No existe un rol independiente de comprador; revisar este límite respecto a la autorización de las operaciones de compra y calificación.
 - [x] **Cifrado de Contraseñas:** Ninguna credencial se persiste en texto plano; almacenamiento mediante hash irreversible con `BCryptPasswordEncoder`.
 - [ ] **Aislamiento de Secretos (Zero Hardcoded Secrets):**
   - Prohibición absoluta de credenciales, IPs o tokens quemados en código fuente o archivos versionados.
@@ -57,7 +58,7 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
 ### D. Persistencia y Control de Migraciones de Base de Datos
 - [x] **Normalización Relacional en Tercera Forma Normal (3FN):** Esquema relacional libre de anomalías de inserción, actualización y borrado.
 - [x] **Control de Versiones de BD con Flyway:**
-  - Toda modificación de estructura se documenta mediante scripts SQL inmutables y versionados secuencialmente en `src/main/resources/db/migration/` (`V1__...` a `V17__...`).
+  - Toda modificación de estructura se documenta mediante scripts SQL inmutables y versionados secuencialmente en `src/main/resources/db/migration/` (`V1__...` a `V22__...`).
   - La aplicación inicia y migra la base de datos automáticamente sin intervención manual.
 
 ### E. Integración y Despliegue Continuo (CI/CD DevOps)
@@ -76,10 +77,10 @@ La siguiente lista de verificación categoriza los requisitos del DoD alineados 
 - [x] **Automatización Pre-Commit (Husky):** Hook local que valida Checkstyle y pruebas antes de permitir cualquier commit.
 - [ ] **Trazabilidad de Requerimientos y Diseño:**
   - Requerimientos formalizados bajo ISO/IEC/IEEE 29148:2018 y Backlog BDD en `docs/requirements/`.
-  - Diagramas UML en `docs/diseno/architecture/diagramas-uml.md`. La guía usa HU-12/HU-13 para escenarios distintos a los del Backlog aprobado; las historias futuras HU-08, HU-13, HU-14 y HU-15 no se implementan en esta etapa.
+  - Diagramas UML en `docs/diseno/architecture/diagramas-uml.md`. La guía usa HU-12/HU-13 para escenarios distintos a los del Backlog aprobado; HU-08, HU-13, HU-14 y HU-15 ya se implementaron según el Backlog, aunque el flujo integrado de entrega conserva brechas descritas en la Review de Sprint 4.
   - Decisiones de arquitectura en `docs/diseno/architecture-decisions/ADR-001-despliegue-staging-paas.md` y `ADR-002-estrategia-despliegue-produccion.md`.
-  - [ ] Completar los puntos diarios y los gráficos de Burndown/CFD y añadir evidencia fuente en `docs/metrics/sprint-metrics-corte3.md`.
-- [ ] **Code Freeze:** Pendiente crear el Git Tag `v3.0.0-final` sobre el commit final de `main`. El tag no existe en el repositorio ni en el remoto consultado.
+  - [ ] Completar los puntos diarios y los gráficos de Burndown/CFD y añadir evidencia fuente en `docs/metrics/sprint-metrics-corte3.md`; faltan datos históricos del tablero.
+- [ ] **Code Freeze:** Publicar el tag `v1.0.0` sobre el commit final aprobado de Sprint 4 en `main`, después del PR y de CI. Los tags retrospectivos `v0.1.0`, `v0.2.0` y `v0.3.0` identifican los hitos de los Sprints 1 a 3; la política está en [`versionamiento.md`](versionamiento.md).
 
 ---
 

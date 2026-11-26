@@ -106,12 +106,12 @@ Como cierre de la asignatura **Ingeniería de Software II**, la célula Scrum co
 
 ### 10.1 Evolución de Madurez Técnica (Sprint 0 al Sprint 3)
 - **Sprint 0 (Setup y Readiness):** Curva de fricción inicial configurando el entorno local, estandarizando Java 17 LTS, reglas de Checkstyle y el contrato Definition of Done (DoD).
-- **Sprint 1 (Cimientos del Marketplace):** Inicio del desarrollo de API REST (HU-01, HU-02, HU-04). Aprendizaje sobre separación de responsabilidades entre DTOs y modelos JPA. Factor de cumplimiento del 80%.
-- **Sprint 2 (Logística y Calidad):** Adopción formal de TDD con JUnit 5 y Mockito, incorporación del pipeline de CI en GitHub Actions y patrones GoF (Strategy y Observer). Factor de cumplimiento del 85.7%.
+- **Sprint 1 (Cimientos del Marketplace):** Inicio del desarrollo de API REST (HU-01, HU-02, HU-04). Aprendizaje sobre separación de responsabilidades entre DTOs y modelos JPA. La Review registra 10/10 SP; no se reutiliza el 80% de la tabla de ejemplo de la guía.
+- **Sprint 2 (Logística y Calidad):** Adopción de TDD con JUnit 5 y Mockito, pipeline de CI en GitHub Actions y patrones GoF (Strategy y Observer). El cierre cuantitativo no es verificable con las actas disponibles; no se asigna un factor de cumplimiento.
 - **Sprint 3 (Pedidos, Pagos y Cierre de Entrega):** Consolidación del flujo transaccional de pagos, acreditación de billetera, desacoplamiento de notificaciones y preparación de Entrega Continua (CD). Factor de cumplimiento del **100%**.
 
 ### 10.2 Lecciones Aprendidas Clave
-1. **El valor innegociable de las pruebas automatizadas (TDD):** Contar con 35 clases de pruebas automatizadas y cobertura JaCoCo > 90% permitió refactorizar servicios y agregar migraciones de base de datos sin temor a regresiones.
+1. **El valor innegociable de las pruebas automatizadas (TDD):** Al corte del Sprint 3, el proyecto contaba con 35 clases de pruebas automatizadas y cobertura JaCoCo superior al 90%, lo que permitió refactorizar servicios y agregar migraciones de base de datos con una red de regresión.
 2. **La disciplina del flujo Git (GitFlow + Conventional Commits):** Proteger las ramas `main` y `develop` y exigir revisiones por pares evitó que código roto o sin compilar llegara a las ramas de integración.
 3. **Desacoplamiento de configuración:** Aislar credenciales e IPs de base de datos mediante variables de entorno y perfiles (`application-staging.yml`) es fundamental para la seguridad y portabilidad exigidas por la norma ISO/IEC 25010.
-4. **Control del Trabajo en Progreso (WIP Limits):** Respetar el límite de máximo 3 tareas simultáneas en *In Progress* y 2 en *Code Review* mantuvo el Cycle Time en un promedio óptimo de **1.8 días**, eliminando los cuellos de botella en la entrega final.
+4. **Control del Trabajo en Progreso (WIP Limits):** Se configuraron límites de máximo 3 tareas simultáneas en *In Progress* y 2 en *Code Review*. Sin un historial diario de estados no se puede afirmar que se evitaron cuellos de botella ni calcular un Cycle Time promedio del equipo.

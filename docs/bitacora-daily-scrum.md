@@ -367,9 +367,11 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 
 ## 14. Sprint 4 — Daily #1 (Lunes 23/11/2026)
 
+* **Sprint:** 4 (23/11/2026–25/11/2026).
 * **Hora / Duración:** Hora no informada / 30 minutos, según lo reportado por Dilan.
 * **Asistentes confirmados:** Carlos Andres Rosales, Kevin Estiven Lucumi y Dilan Stiven Castillo.
-* **Otros asistentes o ausencias:** No informados.
+* **Canal:** No informado.
+* **Otros asistentes o ausencias:** No informados; la asistencia de Santiago no está confirmada.
 * **Nota:** La duración reportada fue de 30 minutos; el formato de esta bitácora establece un máximo de 15 minutos.
 
 | Integrante | ¿Qué hizo desde la última Daily? | ¿Qué hará hasta la próxima sesión? | Impedimentos |
@@ -384,6 +386,9 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
   * **Actualización posterior:** adnoireph aprobó y fusionó el PR #150 en `develop` ese día con 1 check exitoso.
   * Publicar los cambios de HU-14 junto con la bitácora y la documentación técnica en `origin/historia-14`.
   * Dejar HU-15 para trabajo posterior; no se reportó como iniciada en esta sesión.
+
+La ficha Sprint 4 que antes se mantenía por separado se consolidó aquí para conservar una sola
+fuente de verdad para las Daily Scrums.
 ---
 
 ## 15. Registro técnico posterior a la Daily — HU-08 (Lunes 23/11/2026)
@@ -400,11 +405,22 @@ asignar una ruta en HU-07; podría acordarse en HU-08 u otra historia.
 | **Kevin Lucumi** | Sin actualización individual registrada. | Pendiente. | No informado. |
 | **Santiago Hurtado** | Sin actualización individual registrada. | Pendiente. | No informado. |
 
-El endpoint registra el estado `EN_DESTINO` y publica el evento de llegada. Esta implementación se
-integró posteriormente en `develop`; la Review del Sprint documenta la compatibilidad pendiente
-con el requisito `ENTREGADA` de HU-13. El listener actual solo escribe un log de aplicación y el
-evento se publica sin identificador del comprador; no se verificó una notificación entregada al
-usuario.
+El endpoint registraba `EN_DESTINO` y publicaba el evento de llegada en el corte inicial. La
+actualización técnica posterior se documenta en la Review de Sprint 4: el evento ahora incluye el
+comprador asociado, el listener persiste la notificación y HU-08 agrega la confirmación de
+`ENTREGADA`. Esta nota inicial conserva el estado y la evidencia disponibles el 23/11/2026.
+
+## 16. Registro técnico posterior al cierre — HU-08 (25/11/2026)
+
+* **Tipo de registro:** actualización de implementación; no representa una Daily Scrum adicional.
+* **Trabajo realizado:** se conectó el ciclo `EN_RUTA` → `EN_DESTINO` → `ENTREGADA`, se agregó la
+  persistencia de notificaciones para el comprador y la consulta de su bandeja autenticada.
+  HU-13 y HU-14 ahora requieren `ENTREGADA` para permitir calificar. La migración V22 amplía el
+  esquema sin modificar migraciones anteriores.
+* **Validación local:** `.\mvnw.cmd clean verify checkstyle:check` — BUILD SUCCESS, 171 pruebas,
+  0 fallos, 0 errores, 1 omitida y 0 violaciones de Checkstyle. Las migraciones V1–V22 se aplicaron
+  en H2; no se ejecutó una validación contra PostgreSQL real.
+* **Evidencia detallada:** actualización posterior de la [Review de Sprint 4](sprints/sprint-4/review.md).
 
 
 ### Registro posterior a la Daily — HU-15.1 (23/11/2026)
